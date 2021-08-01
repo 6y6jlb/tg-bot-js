@@ -1,0 +1,16 @@
+{
+  "name": "Leshka_tg_bot",
+  "version": "1.0.0",
+  "description": "simple tg bot",
+  "main": "index.js",
+  "author": "6y6jlb",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.54.0",
+    "nodemon": "^2.0.12"
+  }
+}
