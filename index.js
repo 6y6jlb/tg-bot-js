@@ -63,9 +63,6 @@ function startBot() {
             return newRandomNumberForGame(chatId)
         }
 
-        if (text === '/') {
-            return bot.sendMessage(chatId, `Все говорят ${text}, а ты купи слона!`)
-        }
         return bot.sendMessage(chatId, `Я тебя не понимаю.. давай попробуем еще раз`)
     });
 
