@@ -1,34 +1,49 @@
 const TelegramApi = require('node-telegram-bot-api');
-const {gameWithNumbersOptions, mainMenuOptions} = require('./utils/const');
+const {
+    mainMenuOptions,
+    newGameWithNumbersOptions,
+    gameWithNumbersOptions,
+    COMMANDS,
+    DESCRIPTIONS,
+    restartGameOptions
+} = require('./utils/const');
+const {state, setGameNumber} = require('./state/state')
 
-
-const token = process.env.TOKEN || '===';
+const token = process.env.TOKEN || '1934492410:AAHcTdrB2rB3lYNELlQF8W4mVT8LPv5AR68';
 
 const bot = new TelegramApi(token, {polling: true});
 
-const chats = {}
+
+const textListener = async (text, chatId, firstName, lastName) => {
+    if (text === COMMANDS.START) {
+        await bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/2.webp')
+        return bot.sendMessage(chatId, `Добро пожаловать ${firstName}!`, mainMenuOptions)
+    } else if (text === COMMANDS.INFO) {
+        return bot.sendMessage(chatId, `Тебя зовут ${firstName && firstName} ${lastName && lastName}`)
+    } else if (text === COMMANDS.PLAY_WITH_ELEPHANTS) {
+        await setGameNumber(2)
+        return bot.sendMessage(chatId, `${firstName}, купи слона!`)
+    } else if (text === COMMANDS.PLAY_WITH_NUMBERS) {
+        await setGameNumber(1)
+        return newRandomNumberForGame(chatId)
+    } else {
+        return bot.sendMessage(chatId, `Я тебя не понимаю.. давай попробуем еще раз`)
+    }
+}
 
 const newRandomNumberForGame = async (chatId) => {
     await bot.sendMessage(chatId, `Сейчас я загадаю число от 0 до 9, а ты должен его угадать`);
     const randomNumber = Math.floor(Math.random() * 10);
-    chats[chatId] = randomNumber;
+    state.chats[chatId] = randomNumber;
     await bot.sendMessage(chatId, `Я загадал число от 0 до 9`, gameWithNumbersOptions);
-}
-
-const newGameWithNumbersOptions = {
-    reply_markup: JSON.stringify({
-        inline_keyboard: [
-            [{text: 'играть еще раз', callback_data: '/new_game_with_numbers'}],
-        ]
-    })
 }
 
 
 bot.setMyCommands([
-    {command: '/start', description: 'приветствие'},
-    {command: '/info', description: 'получение информации'},
-    {command: '/play_with_an_elephant', description: 'поиграем  в слона'},
-    {command: '/play_with_numbers', description: 'поиграем  в числа'},
+    {command: COMMANDS.START, description: DESCRIPTIONS[COMMANDS.START]},
+    {command: COMMANDS.INFO, description: DESCRIPTIONS[COMMANDS.INFO]},
+    {command: COMMANDS.PLAY_WITH_ELEPHANTS, description: DESCRIPTIONS[COMMANDS.PLAY_WITH_ELEPHANTS]},
+    {command: COMMANDS.PLAY_WITH_NUMBERS, description: DESCRIPTIONS[COMMANDS.PLAY_WITH_NUMBERS]},
 ])
 
 function startBot() {
@@ -38,20 +53,21 @@ function startBot() {
         const lastName = msg.from.last_name;
         const firstName = msg.from.first_name;
 
-        if (text === '/start') {
-            await bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/2.webp')
-            return bot.sendMessage(chatId, `Добро пожаловать ${firstName}!`)
+        switch (state.game) {
+            case 0:
+                await textListener(text, chatId, firstName, lastName)
+            case 1:
+                break
+            case 2:
+                if (text === COMMANDS.RESTART) {
+                    return setGameNumber(0)
+                } else if (text) {
+                    return bot.sendMessage(chatId, `Все говорят ${text}, а ты купи слона`, restartGameOptions)
+                }
+
+            default:
+                return
         }
-        if (text === '/info') {
-            return bot.sendMessage(chatId, `Тебя зовут ${firstName && firstName} ${lastName && lastName}`)
-        }
-        if (text === '/play_with_an_elephant') {
-            return bot.sendMessage(chatId, `${firstName}, купи слона!`)
-        }
-        if (text === '/play_with_numbers') {
-            return newRandomNumberForGame(chatId)
-        }
-        return bot.sendMessage(chatId, `Я тебя не понимаю.. давай попробуем еще раз`)
     });
 
     bot.on('callback_query', async msg => {
@@ -59,23 +75,36 @@ function startBot() {
         const chatId = msg.message.chat.id;
         const lastName = msg.from.last_name;
         const firstName = msg.from.first_name;
-
-        if (data === '/new_game_with_numbers') {
-            return newRandomNumberForGame(chatId)
+        console.log(data)
+        switch (state.game) {
+            case 0:
+                await textListener(data, chatId, firstName, lastName)
+            case 1:
+                if (data === COMMANDS.RESTART) {
+                    return setGameNumber(0)
+                } else if (data === COMMANDS.PLAY_WITH_NUMBERS) {
+                    return newRandomNumberForGame(chatId)
+                } else if (data == state.chats[chatId]) {
+                    await bot.sendSticker(chatId, 'https://cdn.tlgrm.app/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/96/6.webp')
+                    await setGameNumber(0)
+                    return bot.sendMessage(chatId, `Поздравляю ${firstName || lastName}, ты угадал!`, newGameWithNumbersOptions)
+                } else if (Object.values(COMMANDS).includes(data)) {
+                    return
+                } else {
+                    return bot.sendMessage(chatId, `Ты выбрал не правильное число`, newGameWithNumbersOptions)
+                }
+            case 2:
+                if (data === COMMANDS.RESTART) {
+                    await setGameNumber(0)
+                    return bot.sendMessage(chatId, `Чего изволите?`, mainMenuOptions)
+                }
+            default:
+                return
         }
-        if (data == chats[chatId]) {
-            //await bot.sendSticker(chatId, 'https://cdn.tlgrm.app/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/96/6.webp')
-            return bot.sendMessage(chatId, `Поздравляю ${firstName | lastName}, ты угадал!`, newGameWithNumbersOptions)
-
-        } else {
-            return bot.sendMessage(chatId, `Ты выбрал не правильное число, я загадал число ${chats[chatId]}`, newGameWithNumbersOptions)
-        }
-
-
     })
-
 }
 
 startBot();
+
 
 
