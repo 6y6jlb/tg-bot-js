@@ -15,7 +15,7 @@ exports.mainMenuOptions = {
             [
                 {text: 'приветствие', callback_data: '/start'},
                 {text: 'получение информации', callback_data: '/info'},
-                {text: 'получение в слона?', callback_data: '/play_with_an_elephant'},
+                {text: 'поиграем в слона?', callback_data: '/play_with_an_elephant'},
                 {text: 'поиграем  в числа?', callback_data: '/play_with_numbers'},],
         ]
     })
