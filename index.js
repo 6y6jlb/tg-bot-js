@@ -1,5 +1,5 @@
 const TelegramApi = require('node-telegram-bot-api');
-const {gameWithNumbersOptions,mainMenuOptions} = require('./utils/const');
+const {gameWithNumbersOptions, mainMenuOptions} = require('./utils/const');
 
 
 const token = process.env.TOKEN || '===';
@@ -18,11 +18,10 @@ const newRandomNumberForGame = async (chatId) => {
 const newGameWithNumbersOptions = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
-            [{text: 'играть еще раз', callback_data: '/new_game_with_numbers'},mainMenuOptions],
+            [{text: 'играть еще раз', callback_data: '/new_game_with_numbers'}, mainMenuOptions],
         ]
     })
 }
-
 
 
 bot.setMyCommands([
@@ -41,7 +40,7 @@ function startBot() {
 
         if (text === '/start') {
             await bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/2.webp')
-            return bot.sendMessage(chatId, `Добро пожаловать ${firstName}!`,mainMenuOptions)
+            return bot.sendMessage(chatId, `Добро пожаловать ${firstName}!`, mainMenuOptions)
         }
         if (text === '/info') {
             return bot.sendMessage(chatId, `Тебя зовут ${firstName && firstName} ${lastName && lastName}`)
@@ -65,7 +64,7 @@ function startBot() {
             return newRandomNumberForGame(chatId)
         }
         if (data == chats[chatId]) {
-            await bot.sendSticker(chatId, 'https://cdn.tlgrm.app/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/96/6.webp')
+            //await bot.sendSticker(chatId, 'https://cdn.tlgrm.app/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/96/6.webp')
             return bot.sendMessage(chatId, `Поздравляю ${firstName || lastName}, ты угадал!`, newGameWithNumbersOptions)
 
         } else {
