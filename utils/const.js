@@ -1,4 +1,4 @@
-const gameWithNumbersOptions = {
+exports.gameWithNumbersOptions = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
             [{text: '1', callback_data: '1'}, {text: '2', callback_data: '2'}, {text: '3', callback_data: '3'},],
@@ -9,7 +9,7 @@ const gameWithNumbersOptions = {
     })
 }
 
-const mainMenuOptions = {
+exports.mainMenuOptions = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
             [
@@ -21,5 +21,3 @@ const mainMenuOptions = {
     })
 }
 
-exports.mainMenuOptions = mainMenuOptions;
-exports.gameWithNumbersOptions = gameWithNumbersOptions;

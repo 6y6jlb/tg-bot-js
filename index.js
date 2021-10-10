@@ -1,6 +1,6 @@
 const TelegramApi = require('node-telegram-bot-api');
-const gameWithNumbersOptions = require('./utils/const');
-const mainMenuOptions = require('./utils/const');
+const {gameWithNumbersOptions,mainMenuOptions} = require('./utils/const');
+
 
 const token = process.env.TOKEN || '===';
 
@@ -18,7 +18,7 @@ const newRandomNumberForGame = async (chatId) => {
 const newGameWithNumbersOptions = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
-            [{text: 'играть еще раз', callback_data: '/new_game_with_numbers'},],
+            [{text: 'играть еще раз', callback_data: '/new_game_with_numbers'},mainMenuOptions],
         ]
     })
 }
@@ -52,7 +52,7 @@ function startBot() {
         if (text === '/play_with_numbers') {
             return newRandomNumberForGame(chatId)
         }
-        return bot.sendMessage(chatId, `Я тебя не понимаю.. давай попробуем еще раз`,mainMenuOptions)
+        return bot.sendMessage(chatId, `Я тебя не понимаю.. давай попробуем еще раз`)
     });
 
     bot.on('callback_query', async msg => {
