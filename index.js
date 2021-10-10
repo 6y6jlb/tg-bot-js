@@ -9,7 +9,7 @@ const {
 } = require('./utils/const');
 const {state, setGameNumber} = require('./state/state')
 
-const token = process.env.TOKEN || '1934492410:AAHcTdrB2rB3lYNELlQF8W4mVT8LPv5AR68';
+const token = process.env.TOKEN || '====';
 
 const bot = new TelegramApi(token, {polling: true});
 
