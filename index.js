@@ -1,6 +1,6 @@
 const TelegramApi = require('node-telegram-bot-api');
-
-
+const gameWithNumbersOptions = require('./utils/const');
+const mainMenuOptions = require('./utils/const');
 
 const token = process.env.TOKEN || '===';
 
@@ -12,7 +12,7 @@ const newRandomNumberForGame = async (chatId) => {
     await bot.sendMessage(chatId, `Сейчас я загадаю число от 0 до 9, а ты должен его угадать`);
     const randomNumber = Math.floor(Math.random() * 10);
     chats[chatId] = randomNumber;
-    await bot.sendMessage(chatId, `Отгадывай`, gameWithNumbersOptions);
+    await bot.sendMessage(chatId, `Я загадал число от 0 до 9`, gameWithNumbersOptions);
 }
 
 const newGameWithNumbersOptions = {
@@ -24,16 +24,6 @@ const newGameWithNumbersOptions = {
 }
 
 
-const gameWithNumbersOptions = {
-    reply_markup: JSON.stringify({
-        inline_keyboard: [
-            [{text: '1', callback_data: '1'},{text: '2', callback_data: '2'},{text: '3', callback_data: '3'},],
-            [{text: '4', callback_data: '4'},{text: '5', callback_data: '5'},{text: '6', callback_data: '6'},],
-            [{text: '7', callback_data: '7'},{text: '8', callback_data: '8'},{text: '1', callback_data: '9'},],
-            [{text: '0', callback_data: '0'},],
-        ]
-    })
-}
 
 bot.setMyCommands([
     {command: '/start', description: 'приветствие'},
@@ -51,7 +41,7 @@ function startBot() {
 
         if (text === '/start') {
             await bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/2.webp')
-            return bot.sendMessage(chatId, `Добро пожаловать ${firstName}!`)
+            return bot.sendMessage(chatId, `Добро пожаловать ${firstName}!`,mainMenuOptions)
         }
         if (text === '/info') {
             return bot.sendMessage(chatId, `Тебя зовут ${firstName && firstName} ${lastName && lastName}`)
@@ -62,22 +52,25 @@ function startBot() {
         if (text === '/play_with_numbers') {
             return newRandomNumberForGame(chatId)
         }
-
-        return bot.sendMessage(chatId, `Я тебя не понимаю.. давай попробуем еще раз`)
+        return bot.sendMessage(chatId, `Я тебя не понимаю.. давай попробуем еще раз`,mainMenuOptions)
     });
 
     bot.on('callback_query', async msg => {
         const data = msg.data;
         const chatId = msg.message.chat.id;
+        const lastName = msg.from.last_name;
+        const firstName = msg.from.first_name;
+
         if (data === '/new_game_with_numbers') {
             return newRandomNumberForGame(chatId)
         }
         if (data == chats[chatId]) {
-           return  bot.sendMessage(chatId, `Поздравляю, ты угадал!`,newGameWithNumbersOptions)
-        } else {
-            return bot.sendMessage(chatId, `Ты выбрал не правильное число, я загадал число ${chats[chatId]}`,newGameWithNumbersOptions)
-        }
+            await bot.sendSticker(chatId, 'https://cdn.tlgrm.app/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/96/6.webp')
+            return bot.sendMessage(chatId, `Поздравляю ${firstName || lastName}, ты угадал!`, newGameWithNumbersOptions)
 
+        } else {
+            return bot.sendMessage(chatId, `Ты выбрал не правильное число, я загадал число ${chats[chatId]}`, newGameWithNumbersOptions)
+        }
 
 
     })
