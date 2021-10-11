@@ -87,6 +87,7 @@ function startBot() {
             case 1:
                 if (data === COMMANDS.RESTART) {
                     await setGameNumber(0)
+                    return bot.sendMessage(chatId, `Чего изволите?`, mainMenuOptions)
                 } else if (data === COMMANDS.PLAY_WITH_NUMBERS) {
                     return newRandomNumberForGame(chatId)
                 } else if (data == state.chats[chatId]) {
@@ -100,7 +101,7 @@ function startBot() {
                 } else {
                     return bot.sendMessage(chatId, `Ты выбрал не правильное число`, newGameWithNumbersOptions)
                 }
-                return
+
             case 2:
                 if (data === COMMANDS.RESTART) {
                     await setGameNumber(0)
