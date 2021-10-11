@@ -5,17 +5,17 @@ const {
     gameWithNumbersOptions,
     COMMANDS,
     DESCRIPTIONS,
-    restartGameOptions
+    restartGameOptions,
+    token
 } = require('./utils/const');
 const {state, setGameNumber} = require('./state/state')
-
-const token = process.env.TOKEN || '====';
 
 const bot = new TelegramApi(token, {polling: true});
 
 
-const textListener = async (text, chatId, firstName, lastName) => {
-    if (text === COMMANDS.START) {
+const macrosListener = async (text, chatId, firstName, lastName) => {
+    if (text === COMMANDS.START || text === COMMANDS.RESTART) {
+        await setGameNumber(0)
         await bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/2.webp')
         return bot.sendMessage(chatId, `Добро пожаловать ${firstName}!`, mainMenuOptions)
     } else if (text === COMMANDS.INFO) {
@@ -23,7 +23,7 @@ const textListener = async (text, chatId, firstName, lastName) => {
     } else if (text === COMMANDS.PLAY_WITH_ELEPHANTS) {
         await setGameNumber(2)
         return bot.sendMessage(chatId, `${firstName}, купи слона!`)
-    } else if (text === COMMANDS.PLAY_WITH_NUMBERS) {
+    } else if (text === COMMANDS.PLAY_WITH_NUMBERS || text === COMMANDS.NEW_GAME_WITH_NUMBERS) {
         await setGameNumber(1)
         return newRandomNumberForGame(chatId)
     } else {
@@ -48,40 +48,45 @@ bot.setMyCommands([
 
 function startBot() {
     bot.on('message', async msg => {
-        const text = msg.text;
-        const chatId = msg.chat.id;
-        const lastName = msg.from.last_name;
-        const firstName = msg.from.first_name;
-
-        switch (state.game) {
-            case 0:
-                await textListener(text, chatId, firstName, lastName)
-            case 1:
-                break
-            case 2:
-                if (text === COMMANDS.RESTART) {
-                    return setGameNumber(0)
-                } else if (text) {
-                    return bot.sendMessage(chatId, `Все говорят ${text}, а ты купи слона`, restartGameOptions)
-                }
-
-            default:
-                return
+            const text = msg.text;
+            const chatId = msg.chat.id;
+            const lastName = msg.from.last_name;
+            const firstName = msg.from.first_name;
+            switch (state.game) {
+                case 0:
+                    return macrosListener(text, chatId, firstName, lastName)
+                case 1:
+                    if (text === COMMANDS.RESTART || text === COMMANDS.START) {
+                        return setGameNumber(0)
+                    } else if (text === COMMANDS.PLAY_WITH_NUMBERS || text === COMMANDS.NEW_GAME_WITH_NUMBERS) {
+                        return newRandomNumberForGame(chatId)
+                    }
+                    return
+                case 2:
+                    if (text === COMMANDS.RESTART || text === COMMANDS.START) {
+                        return setGameNumber(0)
+                    } else if (text) {
+                        return bot.sendMessage(chatId, `Все говорят ${text}, а ты купи слона`, restartGameOptions)
+                    }
+                    return
+                default:
+                    return
+            }
         }
-    });
+    )
+    ;
 
     bot.on('callback_query', async msg => {
         const data = msg.data;
         const chatId = msg.message.chat.id;
         const lastName = msg.from.last_name;
         const firstName = msg.from.first_name;
-        console.log(data)
         switch (state.game) {
             case 0:
-                await textListener(data, chatId, firstName, lastName)
+                return macrosListener(data, chatId, firstName, lastName)
             case 1:
                 if (data === COMMANDS.RESTART) {
-                    return setGameNumber(0)
+                    await setGameNumber(0)
                 } else if (data === COMMANDS.PLAY_WITH_NUMBERS) {
                     return newRandomNumberForGame(chatId)
                 } else if (data == state.chats[chatId]) {
@@ -90,14 +95,18 @@ function startBot() {
                     return bot.sendMessage(chatId, `Поздравляю ${firstName || lastName}, ты угадал!`, newGameWithNumbersOptions)
                 } else if (Object.values(COMMANDS).includes(data)) {
                     return
+                } else if (data === COMMANDS.PLAY_WITH_NUMBERS || data === COMMANDS.NEW_GAME_WITH_NUMBERS) {
+                    return newRandomNumberForGame(chatId)
                 } else {
                     return bot.sendMessage(chatId, `Ты выбрал не правильное число`, newGameWithNumbersOptions)
                 }
+                return
             case 2:
                 if (data === COMMANDS.RESTART) {
                     await setGameNumber(0)
                     return bot.sendMessage(chatId, `Чего изволите?`, mainMenuOptions)
                 }
+                return
             default:
                 return
         }

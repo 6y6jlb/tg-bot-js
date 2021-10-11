@@ -1,9 +1,12 @@
 
+const token = process.env.TOKEN || '===';
+
 const COMMANDS = {
     START: '/start',
     INFO: '/info',
-    PLAY_WITH_NUMBERS: '/play_with_an_elephant',
-    PLAY_WITH_ELEPHANTS: '/play_with_numbers',
+    NEW_GAME_WITH_NUMBERS: '/new_game_with_numbers',
+    PLAY_WITH_NUMBERS: '/play_with_numbers',
+    PLAY_WITH_ELEPHANTS: '/play_with_an_elephant',
     RESTART: '/restart',
 };
 const DESCRIPTIONS = {
@@ -47,7 +50,7 @@ exports.restartGameOptions = {
 exports.newGameWithNumbersOptions = {
     reply_markup: JSON.stringify({
         inline_keyboard: [
-            [{text: 'играть еще раз', callback_data: '/new_game_with_numbers'},
+            [{text: 'играть еще раз', callback_data: COMMANDS.NEW_GAME_WITH_NUMBERS},
                 {text: 'выйти из игры', callback_data: COMMANDS.RESTART}],
         ]
     })
@@ -55,3 +58,4 @@ exports.newGameWithNumbersOptions = {
 
 exports.COMMANDS = COMMANDS;
 exports.DESCRIPTIONS = DESCRIPTIONS;
+exports.token = token;
