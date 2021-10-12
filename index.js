@@ -88,7 +88,7 @@ function startBot() {
                 if (data === COMMANDS.RESTART) {
                     await setGameNumber(0)
                     return bot.sendMessage(chatId, `Чего изволите?`, mainMenuOptions)
-                } else if (data === COMMANDS.PLAY_WITH_NUMBERS) {
+                } else if (data === COMMANDS.PLAY_WITH_NUMBERS || data === COMMANDS.NEW_GAME_WITH_NUMBERS) {
                     return newRandomNumberForGame(chatId)
                 } else if (data == state.chats[chatId]) {
                     await bot.sendSticker(chatId, 'https://cdn.tlgrm.app/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/96/6.webp')
