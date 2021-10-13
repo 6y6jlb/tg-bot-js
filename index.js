@@ -9,7 +9,9 @@ const {
     token
 } = require('./utils/const');
 const {state, setGameNumber} = require('./state/state')
+const express = require('express')
 
+const app = express();
 const bot = new TelegramApi(token, {polling: true});
 
 
@@ -115,6 +117,11 @@ function startBot() {
 }
 
 startBot();
+
+app.get('/', (req, res) => {
+    res.send('bot here')
+});
+
 
 
 

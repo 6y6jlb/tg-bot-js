@@ -1,16 +1,15 @@
 {
-  "name": "Leshka_tg_bot",
+  "name": "leshka-tg-bot",
   "version": "1.0.0",
   "description": "simple tg bot",
   "main": "index.js",
   "author": "6y6jlb",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "node-telegram-bot-api": "^0.54.0",
-    "nodemon": "^2.0.12"
   }
 }
