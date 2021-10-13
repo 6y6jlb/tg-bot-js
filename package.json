@@ -1,5 +1,5 @@
 {
-  "name": "Leshka-tg-bot",
+  "name": "Leshka_tg_bot",
   "version": "1.0.0",
   "description": "simple tg bot",
   "main": "index.js",
@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "node-telegram-bot-api": "^0.54.0",
+    "node-telegram-bot-api": "^0.54.0"
   }
 }
