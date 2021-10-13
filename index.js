@@ -12,6 +12,11 @@ const {state, setGameNumber} = require('./state/state')
 const express = require('express')
 
 const app = express();
+const cors = require('cors')
+const port = process.env.PORT || 3010;
+
+app.use(cors())
+
 const bot = new TelegramApi(token, {polling: true});
 
 
@@ -120,6 +125,10 @@ startBot();
 
 app.get('/', (req, res) => {
     res.send('bot here')
+});
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
 });
 
 

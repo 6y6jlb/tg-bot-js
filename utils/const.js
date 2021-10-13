@@ -1,5 +1,5 @@
 
-const token = process.env.TOKEN || '====';
+const token = process.env.TOKEN || '===';
 
 const COMMANDS = {
     START: '/start',
