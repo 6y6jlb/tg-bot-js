@@ -1,11 +1,34 @@
 import express from "express";
 import TelegramBotApi from "node-telegram-bot-api";
 import CONFIG from "./utils/config";
-
-const app = express();
+import ru from "./i18n-js/json/en.json";
+import ge from "./i18n-js/json/ge.json";
+import en from "./i18n-js/json/en.json";
 import cors from "cors";
 
+const app = express();
+
+import i18next from 'i18next';
+
+i18next.init({
+  lng: 'ge',
+  debug: true,
+  resources: {
+    en: {
+      translation: en
+    },
+    ru: {
+      translation: ru
+    },
+    ge: {
+      translation: ge
+    }
+  }
+});
+
+
 app.use(cors());
+
 
 const bot = new TelegramBotApi(CONFIG.TOKEN, { polling: true });
 
@@ -17,7 +40,7 @@ const macrosListener = async (text, chatId, firstName, lastName) => {
     );
     return bot.sendMessage(
       chatId,
-      `Добро пожаловать ${firstName}!`
+      `${i18next.t("greeting")} - ${firstName}!`
     );
   } else if (text === CONFIG.COMMANDS.INFO) {
     return bot.sendMessage(
