@@ -2,16 +2,20 @@ import express from "express";
 import TelegramBotApi from "node-telegram-bot-api";
 import CONFIG from "./utils/config";
 import ru from "./i18n-js/json/en.json";
-import ge from "./i18n-js/json/ge.json";
 import en from "./i18n-js/json/en.json";
 import cors from "cors";
 
-const app = express();
+
+const app = express()
+  .use(cors())
+  // .use('/auth', appRouter)
+  .listen(CONFIG.PORT, () => console.log(`LISTENING ON PORT: ${CONFIG.PORT} WITH ${CONFIG.ENV} MODE.`));
+;
 
 import i18next from 'i18next';
 
 i18next.init({
-  lng: 'ge',
+  lng: 'en',
   debug: true,
   resources: {
     en: {
@@ -20,27 +24,45 @@ i18next.init({
     ru: {
       translation: ru
     },
-    ge: {
-      translation: ge
-    }
   }
 });
 
 
-app.use(cors());
-
-
 const bot = new TelegramBotApi(CONFIG.TOKEN, { polling: true });
 
-const macrosListener = async (text, chatId, firstName, lastName) => {
-  if (text === CONFIG.COMMANDS.START || text === CONFIG.COMMANDS.RESTART) {
+const macrosListener = async (msg: TelegramBotApi.Message) => {
+  const text = msg.text;
+  const chatId = msg.chat.id;
+  const lastName = msg.from?.last_name;
+  const firstName = msg.from?.first_name;
+
+  if (text === 'keyboard') {
     await bot.sendSticker(
       chatId,
-      "https://tlgrm.ru/_/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/2.webp"
+      CONFIG.STICKERS.GREETING
     );
     return bot.sendMessage(
       chatId,
-      `${i18next.t("greeting")} - ${firstName}!`
+      `${i18next.t("greeting")} - ${firstName}!`,
+      {
+        reply_markup: {
+          keyboard: [
+            [{ text: `${i18next.t('buttons.fill-form')}` }]
+          ]
+        }
+      }
+    );
+  } else if (text === 'inline') {
+    return bot.sendMessage(
+      chatId,
+      `${i18next.t("greeting")} - ${firstName}!`,
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: `${i18next.t('buttons.open-app')}`, web_app: { url: CONFIG.PAGES.MAIN } }]
+          ]
+        }
+      }
     );
   } else if (text === CONFIG.COMMANDS.INFO) {
     return bot.sendMessage(
@@ -55,13 +77,9 @@ const macrosListener = async (text, chatId, firstName, lastName) => {
   }
 };
 
-function startBot() {
+function start() {
   bot.on("message", async (msg) => {
-    const text = msg.text;
-    const chatId = msg.chat.id;
-    const lastName = msg.from?.last_name;
-    const firstName = msg.from?.first_name;
-    return macrosListener(text, chatId, firstName, lastName);
+    return macrosListener(msg);
   });
 
   bot.on("callback_query", async (msg) => {
@@ -74,12 +92,5 @@ function startBot() {
   });
 }
 
-startBot();
+start();
 
-app.get("/", (req, res) => {
-  res.send("bot here");
-});
-
-app.listen(CONFIG.PORT, () => {
-  console.log(`${CONFIG.ENV} app listening at http://localhost:${CONFIG.PORT}`);
-});
