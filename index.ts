@@ -47,7 +47,10 @@ const macrosListener = async (msg: TelegramBotApi.Message) => {
       {
         reply_markup: {
           keyboard: [
-            [{ text: `${i18next.t('buttons.fill-form')}` }]
+            [{ text: `${i18next.t('buttons.weather')}`, web_app: { url: CONFIG.PAGES.WEATHER }}],
+            [{ text: `${i18next.t('buttons.event-reminder')}`, web_app: { url: CONFIG.PAGES.EVENT_REMINDER }}],
+            [{ text: `${i18next.t('buttons.event-weather')}`, web_app: { url: CONFIG.PAGES.EVENT_WEATHER }}],
+            [{ text: `${i18next.t('buttons.profile')}`, web_app: { url: CONFIG.PAGES.PROFILE }}]
           ]
         }
       }
@@ -59,7 +62,10 @@ const macrosListener = async (msg: TelegramBotApi.Message) => {
       {
         reply_markup: {
           inline_keyboard: [
-            [{ text: `${i18next.t('buttons.open-app')}`, web_app: { url: CONFIG.PAGES.MAIN } }]
+            [{ text: `${i18next.t('buttons.weather')}`, web_app: { url: CONFIG.PAGES.WEATHER } }],
+            [{ text: `${i18next.t('buttons.event-reminder')}`, web_app: { url: CONFIG.PAGES.EVENT_REMINDER } }],
+            [{ text: `${i18next.t('buttons.event-weather')}`, web_app: { url: CONFIG.PAGES.EVENT_WEATHER } }],
+            [{ text: `${i18next.t('buttons.profile')}`, web_app: { url: CONFIG.PAGES.PROFILE } }]
           ]
         }
       }

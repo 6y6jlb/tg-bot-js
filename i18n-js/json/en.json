@@ -2,6 +2,10 @@
     "greeting":"Hello",
     "buttons": {
         "fill-form": "Fill the form",
-        "open-app": "Open app"
+        "open-app": "Open app",
+        "weather": "Weather request",
+        "event-reminder": "Event reminder",
+        "event-weather": "Event weather",
+        "profile": "Profile"
     }
 }

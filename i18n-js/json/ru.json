@@ -2,6 +2,10 @@
     "greeting": "Привет",
     "buttons": {
         "fill-form": "Заполните форму",
-        "open-app": "Открыть приложение"
+        "open-app": "Открыть приложение",
+        "weather": "Weather request",
+        "event-reminder": "Event reminder",
+        "event-weather": "Event weather",
+        "profile": "Profile"
     }
 }

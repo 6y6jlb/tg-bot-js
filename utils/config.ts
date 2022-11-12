@@ -20,7 +20,10 @@ const DESCRIPTIONS = {
 };
 
 const PAGES = {
-  MAIN: 'https://monumental-travesseiro-6c016f.netlify.app/'
+  WEATHER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/',
+  EVENT_REMINDER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/event-reminder',
+  EVENT_WEATHER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/event-weather',
+  PROFILE: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/profile',
 };
 
 const STICKERS = {
