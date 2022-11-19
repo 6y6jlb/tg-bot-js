@@ -7,5 +7,11 @@
         "event-reminder": "Event reminder",
         "event-weather": "Event weather",
         "profile": "Profile"
+    },
+    "notifications": {
+        "errors": {
+            "something-went-wrong": "Что-то пошло не по плану",
+            "cant-unterstand": "Я тебя не понимаю.. давай попробуем еще раз"
+        }
     }
 }
