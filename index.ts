@@ -4,23 +4,13 @@ import CONFIG from "./app/utils/config";
 import ru from "./app/i18n-js/json/en.json";
 import en from "./app/i18n-js/json/en.json";
 import cors from "cors";
-import mysql from "mysql2"
+import {Pool} from "pg"
 
-const connection = mysql.createConnection({
-  host: CONFIG.DB_HOST,
-  user: CONFIG.DB_USER,
-  database: CONFIG.DB_NAME,
-  password: CONFIG.DB_PASS
-});
+process.on('uncaughtException', function (err) {
+  console.warn(err);
+}); 
 
-// simple query
-connection.query(
-  'SELECT * FROM `users` ',
-  function (err, results, fields) {
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
-  }
-);
+
 
 const app = express()
   .use(cors())
@@ -43,6 +33,25 @@ i18next.init({
   }
 });
 
+const pool = new Pool({
+  host: CONFIG.DB_HOST,
+  user: CONFIG.DB_USER,
+  database: CONFIG.DB_NAME,
+  password: CONFIG.DB_PASS,
+})
+
+async function selectUsers() {
+  try {
+    const res = await pool.query(
+      "select * from users"
+    );
+    console.log(res.rows)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+selectUsers()
 
 const bot = new TelegramBotApi(CONFIG.TOKEN, { polling: true });
 
@@ -52,10 +61,9 @@ const macrosListener = async (msg: TelegramBotApi.Message) => {
   const lastName = msg.from?.last_name;
   const firstName = msg.from?.first_name;
   const webAppData = msg.web_app_data?.data;
-  console.log(msg)
+  console.log(msg.location)
 
   if (msg.text === CONFIG.COMMANDS.START) {
-
     await bot.sendSticker(
       chatId,
       CONFIG.STICKERS.GREETING
@@ -86,7 +94,7 @@ const macrosListener = async (msg: TelegramBotApi.Message) => {
       console.log(error);
       return bot.sendMessage(
         chatId,
-        i18next.t('notfications.errors.something-went-wrong')
+        i18next.t('notifications.errors.something-went-wrong')
       );
     }
   } else if (text === 'keyboard') {
@@ -100,15 +108,15 @@ const macrosListener = async (msg: TelegramBotApi.Message) => {
       {
         reply_markup: {
           keyboard: [
-            [{ text: `${i18next.t('buttons.weather')}`, web_app: { url: CONFIG.PAGES.WEATHER } }],
-            [{ text: `${i18next.t('buttons.event-reminder')}`, web_app: { url: CONFIG.PAGES.EVENT_REMINDER } }],
-            [{ text: `${i18next.t('buttons.event-weather')}`, web_app: { url: CONFIG.PAGES.EVENT_WEATHER } }],
-            [{ text: `${i18next.t('buttons.profile')}`, web_app: { url: CONFIG.PAGES.PROFILE } }]
+            [{ text: `${i18next.t('buttons.weather')}`, web_app: { url: CONFIG.PAGES.WEATHER } , request_location: true, }],
+            [{ text: `${i18next.t('buttons.event-reminder')}`, web_app: { url: CONFIG.PAGES.EVENT_REMINDER } , request_location: true, }],
+            [{ text: `${i18next.t('buttons.event-weather')}`, web_app: { url: CONFIG.PAGES.EVENT_WEATHER } , request_location: true, }],
+            [{ text: `${i18next.t('buttons.profile')}`, web_app: { url: CONFIG.PAGES.PROFILE } , request_location: true, }]
           ]
         }
       }
     );
-  } else if (text === 'inline') { //no moin button event
+  } else if (text === 'inline') { //no main button event
     return bot.sendMessage(
       chatId,
       `${i18next.t("greeting")} - ${firstName}!`,
@@ -131,7 +139,7 @@ const macrosListener = async (msg: TelegramBotApi.Message) => {
   } else {
     return bot.sendMessage(
       chatId,
-      i18next.t('notfications.errors.cant-understand')
+      i18next.t('notifications.errors.cant-understand')
     );
   }
 };
@@ -141,15 +149,20 @@ function start() {
     return macrosListener(msg);
   });
 
+  bot.on("location", async (msg) => {
+    console.log('location')
+    console.dir(msg.location)
+    // return macrosListener(msg);
+  });
+
   bot.on("callback_query", async (msg) => {
     const data = msg.data;
     const chatId = msg.message?.chat.id;
     const lastName = msg.from.last_name;
     const firstName = msg.from.first_name;
     console.dir(msg)
-    if (chatId) return bot.sendMessage(chatId, `Чего изволите?`);
+    if (chatId) return bot.sendMessage(chatId, i18next.t('callback.request'));
   });
 }
 
 start();
-

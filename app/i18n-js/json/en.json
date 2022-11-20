@@ -13,5 +13,8 @@
             "something-went-wrong": "Something went wrong",
             "cant-unterstand": "I don't understand you.. Let's try again"
         }
+    },
+    "callback": {
+        "request": "What do you want?"
     }
 }
