@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-import TelegramBotApi from "node-telegram-bot-api";
 import { Pool } from "pg";
 import CONFIG from "./app/utils/config";
 
@@ -18,25 +17,6 @@ const app = express()
 
 import Bot from "./app/controllers/Bot";
 
-const pool = new Pool({
-  host: CONFIG.DB_HOST,
-  user: CONFIG.DB_USER,
-  database: CONFIG.DB_NAME,
-  password: CONFIG.DB_PASS,
-})
-
-async function selectUsers() {
-  try {
-    const res = await pool.query(
-      "select * from tasks"
-    );
-    console.log(res.rows)
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-selectUsers()
 
 const bot = new Bot();
 

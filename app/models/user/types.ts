@@ -1,8 +1,4 @@
-class User {
-    
-}
-
-interface IUser {
+export interface IUser {
     id: string,
     created_at: Date,
     name: string,

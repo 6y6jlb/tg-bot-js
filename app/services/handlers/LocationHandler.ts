@@ -1,10 +1,9 @@
 
-import { i18n } from "i18next";
 import TelegramBotApi from "node-telegram-bot-api";
-import CONFIG from "../../utils/config";
+import Bot from "../../controllers/Bot";
 
 
-const locationHandler = async (bot:TelegramBotApi ,msg: TelegramBotApi.Message, i18: i18n) => {
+const locationHandler = async (bot:Bot ,msg: TelegramBotApi.Message) => {
     const text = msg.text;
     const chatId = msg.chat.id;
     const lastName = msg.from?.last_name;
