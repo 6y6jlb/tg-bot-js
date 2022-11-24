@@ -1,6 +1,6 @@
 
 import TelegramBotApi from "node-telegram-bot-api";
-import Bot from "../../controllers/Bot";
+import Bot from "../../controllers/telegram/Bot";
 
 
 const locationHandler = async (bot:Bot ,msg: TelegramBotApi.Message) => {

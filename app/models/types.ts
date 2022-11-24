@@ -1,9 +1,14 @@
-class Task {
-    
+export interface IUser {
+    created_at: Date,
+    name: string,
+    tz?: string,
+    location?: string,
+    currency?: string,
+    language?: string,
+    mess_count: number
 }
 
-interface ITask {
-    id: string,
+export interface ITask {
     last_call?: string,
     user_id: string,
     event_type: EVENT_ENUM,

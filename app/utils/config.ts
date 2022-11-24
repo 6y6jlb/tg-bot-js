@@ -6,12 +6,9 @@ const TOKEN = process.env.TG_BOT_API_KEY || "===";
 const ENV = process.env.NODE_ENV || "===";
 const PORT = process.env.PORT || 8000;
 const INDEX = '/index.html';
-const DB_NAME = process.env.POSTGRESQL_ADDON_DB || '';
-const DB_USER = process.env.POSTGRESQL_ADDON_USER || '';
-const DB_PASS = process.env.POSTGRESQL_ADDON_PASSWORD || '';
-const DB_HOST = process.env.POSTGRESQL_ADDON_HOST || '';
-const DB_PORT = +process.env.POSTGRESQL_ADDON_PORT || 3000;
-const DATABASE_URL = process.env.POSTGRESQL_ADDON_URI || '';
+const MONGO_DB_USER = process.env.MONGO_ATLAS_USER || '';
+const MONGO_DB_PASS = process.env.MONGO_ATLAS_PASS || '';
+const MONGO_DB_NAME = process.env.MONGO_ATLAS_NAME || '';
 
 const COMMANDS = {
   START: "/start",
@@ -51,10 +48,7 @@ export default {
   INDEX,
   PORT,
   ENV,
-  DB_NAME,
-  DB_USER,
-  DB_PASS,
-  DB_HOST,
-  DB_PORT,
-  DATABASE_URL,
+  MONGO_DB_USER,
+  MONGO_DB_NAME,
+  MONGO_DB_PASS,
 };
