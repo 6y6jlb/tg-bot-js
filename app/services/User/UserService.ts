@@ -1,10 +1,10 @@
 import User from "../../models/User";
-import { IUserGetRequest } from "../../requests/User/types";
+import { IGetUserRequest, IUpdateUserRequest, IDeleteUserRequest, IStoreUserRequest } from "../../requests/User/types";
 
 class UsersService {
 
-    get(data?: IUserGetRequest) {
-        if (data?.user_id) {
+    get(data: IGetUserRequest) {
+        if (data._id) {
             return User.findOne(data)
         } else {
             return User.find({})
@@ -12,16 +12,16 @@ class UsersService {
 
     }
 
-    update(userId?: string) {
-
+    update(data: IUpdateUserRequest) {
+        return User.findByIdAndUpdate(data);
     }
 
-    store(userId?: string) {
-
+    store(data: IStoreUserRequest) {
+        return User.create(data)
     }
 
-    delete(userId?: string) {
-
+    delete(data: IDeleteUserRequest) {
+        return User.findByIdAndDelete(data._id)
     }
 
 

@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import CONFIG from "./app/utils/config";
 import usersRouter from "./app/routers/users"
+import tasksRouter from "./app/routers/tasks"
 import mongoose from 'mongoose'
 import Bot from "./app/controllers/telegram/Bot";
 
@@ -18,6 +19,7 @@ async function startApp() {
       .use(cors())
       .use(express.json())
       .use('/api', usersRouter)
+      .use('/api', tasksRouter)
       .listen(CONFIG.PORT, () => console.log(`LISTENING ON PORT: ${CONFIG.PORT} WITH ${CONFIG.ENV} MODE.`));
 
     const bot = new Bot();

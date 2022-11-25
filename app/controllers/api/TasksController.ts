@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
-import UserApiRequest from "../../requests/User/UserApiRequest";
-import UserService from "../../services/User/UserService";
-import User from "../../models/User";
+import TaskApiRequest from "../../requests/Task/TaskApiRequest";
+import TaskService from "../../services/Task/TaskService";
 
 
-class UsersController {
+class TasksController {
     async get(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.get(req);
-            res.json(await UserService.get(data))
+            const data = TaskApiRequest.get(req);
+            res.json(await TaskService.get(data))
         } catch (error) {
             console.log(error)
             res.json(error)
@@ -16,8 +15,8 @@ class UsersController {
     }
     async update(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.update(req);
-            res.json(await UserService.update(data))
+            const data = TaskApiRequest.update(req);
+            res.json(await TaskService.update(data))
         } catch (error) {
             console.log(error)
             res.json(error)
@@ -25,8 +24,8 @@ class UsersController {
     }
     async store(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.store(req);
-            res.json(await UserService.store(data))
+            const data = TaskApiRequest.store(req);
+            res.json(await TaskService.store(data))
         } catch (error) {
             console.log(error)
             res.json(error)
@@ -34,8 +33,8 @@ class UsersController {
     }
     async delete(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.delete(req);
-            res.json(await UserService.delete(data))
+            const data = TaskApiRequest.delete(req);
+            res.json(await TaskService.delete(data))
         } catch (error) {
             console.log(error)
             res.json(error)
@@ -44,4 +43,4 @@ class UsersController {
 
 }
 
-export default new UsersController();
+export default new TasksController();
