@@ -1,7 +1,14 @@
-import {Types} from "mongoose"
+import User from "../../models/User";
+import { IUserGetRequest } from "../../requests/User/types";
 
 class UsersService {
-    get(userId?: Types.ObjectId) {
+
+    get(data?: IUserGetRequest) {
+        if (data?.user_id) {
+            return User.findOne(data)
+        } else {
+            return User.find({})
+        }
 
     }
 

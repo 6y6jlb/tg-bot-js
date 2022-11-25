@@ -1,14 +1,13 @@
 import { Request } from "express";
-import { isNumeric } from "../../helpers/validation";
-import {Types} from "mongoose"
+import { IUserGetRequest } from "./types";
 
 class UserApiRequest {
-    get(request: Request) {
-        const {userId} = request.query
-        // if (typeof userId === Types.ObjectId ){
-        //     return userId;
-        // }
-        throw new Error('Incorrect user id')
+    get(request: Request): IUserGetRequest {
+        const { user_id } = request.query
+        if (user_id) {
+            return {user_id: user_id as string};
+        }
+        return {}
     }
 }
 

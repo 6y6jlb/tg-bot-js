@@ -5,35 +5,34 @@ import User from "../../models/User";
 
 
 class UsersController {
-    async get(req: Request, res: Response) { 
+    async get(req: Request, res: Response) {
         try {
-            const user = await User.create({name: 'test1'})
-            console.log(user)
             const data = UserApiRequest.get(req);
-            // UserService.get(data)
+            res.json(await UserService.get(data))
         } catch (error) {
-            
+            console.log(error)
+            res.json(error)
         }
     }
-    update(req: Request, res: Response) { 
+    update(req: Request, res: Response) {
         try {
-            
+
         } catch (error) {
-            
+
         }
     }
     store(req: Request, res: Response) {
         try {
-            
+
         } catch (error) {
-            
+
         }
-     }
-    delete(req: Request, res: Response) { 
+    }
+    delete(req: Request, res: Response) {
         try {
-            
+
         } catch (error) {
-            
+
         }
     }
 
