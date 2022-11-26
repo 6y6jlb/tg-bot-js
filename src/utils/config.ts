@@ -4,7 +4,7 @@ dotenv.config();
 
 const TOKEN = process.env.TG_BOT_API_KEY || "===";
 const ENV = process.env.NODE_ENV || "===";
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 const INDEX = '/index.html';
 const MONGO_DB_USER = process.env.MONGO_ATLAS_USER || '';
 const MONGO_DB_PASS = process.env.MONGO_ATLAS_PASS || '';

@@ -8,7 +8,7 @@ const callbackHandler = async (bot:Bot ,msg: TelegramBotApi.CallbackQuery) => {
     const chatId = msg.message?.chat.id;
     const lastName = msg.from.last_name;
     const firstName = msg.from.first_name;
-    console.dir(msg)
+    console.log(msg)
     if (chatId) return bot.instance.sendMessage(chatId, bot.i18.t('callback.request'));
 
   };

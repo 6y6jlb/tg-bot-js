@@ -9,8 +9,7 @@ export interface IStoreTaskRequest {
     user_id: string,
     event_type: EVENT_ENUM,
     options: string,
-    call_at_hour: number,
-    call_at_minute: number,
+    call_at: Date,
     queue?: boolean,
     tz: string,
     is_regular: boolean
@@ -22,8 +21,7 @@ export interface IUpdateTaskRequest {
     user_id: string,
     event_type: EVENT_ENUM,
     options: string,
-    call_at_hour: number,
-    call_at_minute: number,
+    call_at: Date,
     queue?: boolean,
     tz: string,
     is_regular: boolean

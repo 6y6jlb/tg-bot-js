@@ -11,7 +11,7 @@
     "notifications": {
         "errors": {
             "something-went-wrong": "Something went wrong",
-            "cant-unterstand": "I don't understand you.. Let's try again"
+            "cant-understand": "I don't understand you.. Let's try again"
         }
     },
     "callback": {

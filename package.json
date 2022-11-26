@@ -4,6 +4,7 @@
   "description": "tg bot with app",
   "main": "index.ts",
   "author": "AlexB",
+  "homepage": ".",
   "license": "MIT",
   "scripts": {
     "start": "node --loader ts-node/esm index.ts"

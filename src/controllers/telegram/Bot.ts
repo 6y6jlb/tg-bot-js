@@ -26,23 +26,23 @@ class Bot {
         },
       }
     });
-
+    
     this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
     this.i18 = i18next;
   }
 
   start() {
-    // this.instance.on("message", async (msg) => {
-    //   messageHandler(this, msg);
-    // });
+    this.instance.on("message", async (msg) => {
+      messageHandler(this, msg);
+    });
 
-    // this.instance.on("location", async (msg) => {
-    //   locationHandler(this, msg)
-    // });
+    this.instance.on("location", async (msg) => {
+      locationHandler(this, msg)
+    });
 
-    // this.instance.on("callback_query", async (msg) => {
-    //   callbackHandler(this, msg)
-    // });
+    this.instance.on("callback_query", async (msg) => {
+      callbackHandler(this, msg)
+    });
   }
 }
 

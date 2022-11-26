@@ -12,14 +12,14 @@ class TaskApiRequest {
 
 
     store(request: Request): IStoreTaskRequest {
-        const {tz, call_at_hour, call_at_minute, is_regular, options, event_type} = request.body
-        return { tz, call_at_hour, call_at_minute, is_regular, options, event_type } as IStoreTaskRequest;
+        const { tz, call_at, is_regular, options, event_type } = request.body
+        return { tz, call_at, is_regular, options, event_type } as IStoreTaskRequest;
     }
 
     update(request: Request): IUpdateTaskRequest {
-        const { task_id,tz, call_at_hour, call_at_minute, is_regular, options, event_type} = request.body
+        const { task_id, tz, call_at, is_regular, options, event_type } = request.body
         if (task_id) {
-            return { _id: task_id, tz, call_at_hour, call_at_minute, is_regular, options, event_type } as IUpdateTaskRequest;
+            return { _id: task_id, tz, call_at, is_regular, options, event_type } as IUpdateTaskRequest;
         }
         throw new Error('Incorrect data')
     }

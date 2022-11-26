@@ -11,7 +11,7 @@
     "notifications": {
         "errors": {
             "something-went-wrong": "Что-то пошло не по плану",
-            "cant-unterstand": "Я тебя не понимаю.. давай попробуем еще раз"
+            "cant-understand": "Я тебя не понимаю.. давай попробуем еще раз"
         }
     },
     "callback": {
