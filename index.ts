@@ -1,10 +1,10 @@
 import cors from "cors";
 import express from "express";
-import CONFIG from "./app/utils/config";
-import usersRouter from "./app/routers/users"
-import tasksRouter from "./app/routers/tasks"
+import CONFIG from "./src/utils/config";
+import usersRouter from "./src/routers/users"
+import tasksRouter from "./src/routers/tasks"
 import mongoose from 'mongoose'
-import Bot from "./app/controllers/telegram/Bot";
+import Bot from "./src/controllers/telegram/Bot";
 
 process.on('uncaughtException', function (err) {
   console.warn(err);
