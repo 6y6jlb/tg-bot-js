@@ -10,6 +10,10 @@
         "profile": "Profile"
     },
     "notifications": {
+        "common": {
+            "start":"Server started at: {{date}}",
+            "new-user":"New user with {{userId}} was created. First name is {{userName}}"
+        },
         "errors": {
             "something-went-wrong": "Something went wrong",
             "cant-understand": "I don't understand you.. Let's try again"

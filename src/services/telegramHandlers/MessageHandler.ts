@@ -8,9 +8,12 @@ import UserService from "../User/UserService";
 const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const text = msg.text;
   const chatId = msg.chat.id;
-  
+
   if (!UserService.isUserExists(msg.from?.id)) {
     await UserService.store({ id: String(msg.from.id), name: msg.from.first_name, })
+    await bot.adminService.sendMesssageToAdmin(
+      bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId: msg.from.id, userName: msg.from.first_name }) }
+    )
 
     return bot.instance.sendMessage(
       chatId,

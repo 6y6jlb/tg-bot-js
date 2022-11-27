@@ -1,6 +1,6 @@
 {
     "greeting": "Привет",
-    "your-name-is":"Тебя зовут",
+    "your-name-is": "Тебя зовут",
     "buttons": {
         "fill-form": "Заполните форму",
         "open-app": "Открыть приложение",
@@ -10,6 +10,10 @@
         "profile": "Profile"
     },
     "notifications": {
+        "common": {
+            "start": "Server started at: {{date}}",
+            "new-user": "New user with {{userId}} was created. First name is {{userName}}"
+        },
         "errors": {
             "something-went-wrong": "Что-то пошло не по плану",
             "cant-understand": "Я тебя не понимаю.. давай попробуем еще раз"
