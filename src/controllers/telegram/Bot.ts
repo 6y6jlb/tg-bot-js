@@ -1,6 +1,5 @@
-import i18next, { i18n } from 'i18next';
 import TelegramBotApi from "node-telegram-bot-api";
-import { default as en, default as ru } from "../../i18n-js/json/en.json";
+import LocaleService from '../../services/Locale/LocaleService';
 import callbackHandler from '../../services/telegramHandlers/CallbackHandler';
 import locationHandler from '../../services/telegramHandlers/LocationHandler';
 import messageHandler from "../../services/telegramHandlers/MessageHandler";
@@ -8,27 +7,15 @@ import config from "../../utils/config";
 
 
 class Bot {
+
   instance: TelegramBotApi;
-  i18: i18n;
-
-
+  localeService: typeof LocaleService;
+  
   constructor() {
 
-    i18next.init({
-      lng: 'en',
-      debug: true,
-      resources: {
-        en: {
-          translation: en
-        },
-        ru: {
-          translation: ru
-        },
-      }
-    });
-    
     this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
-    this.i18 = i18next;
+    this.localeService = LocaleService;
+    
   }
 
   start() {

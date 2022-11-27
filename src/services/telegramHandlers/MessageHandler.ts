@@ -1,43 +1,57 @@
 
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
-import CONFIG from "../../utils/config";
+import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
+import UserService from "../User/UserService";
 
 
 const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const text = msg.text;
   const chatId = msg.chat.id;
-  const lastName = msg.from?.last_name;
-  const firstName = msg.from?.first_name;
-  const webAppData = msg.web_app_data;
-  const location = msg.location
   
+  if (!UserService.isUserExists(msg.from?.id)) {
+    await UserService.store({ id: String(msg.from.id), name: msg.from.first_name, })
 
-  if (msg.text === CONFIG.COMMANDS.START) {
-
-    await bot.instance.sendSticker(
-      chatId,
-      CONFIG.STICKERS.GREETING
-    );
     return bot.instance.sendMessage(
       chatId,
-      `${bot.i18.t("greeting")} - ${firstName}!`,
+      `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
       {
         reply_markup: {
           keyboard: [
-            [{ text: `${bot.i18.t('buttons.weather')}`, web_app: { url: CONFIG.PAGES.WEATHER }, }],
-            [{ text: `${bot.i18.t('buttons.event-reminder')}`, web_app: { url: CONFIG.PAGES.EVENT_REMINDER }, }],
-            [{ text: `${bot.i18.t('buttons.event-weather')}`, web_app: { url: CONFIG.PAGES.EVENT_WEATHER }, }],
-            [{ text: `${bot.i18.t('buttons.profile')}`, web_app: { url: CONFIG.PAGES.PROFILE },}]
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.WEATHER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
           ]
         }
       }
     );
-  } else if (webAppData) {
+
+  }
+  else if (msg.text === COMMANDS.START) {
+
+    await bot.instance.sendSticker(
+      chatId,
+      STICKERS.GREETING
+    );
+    return bot.instance.sendMessage(
+      chatId,
+      `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
+      {
+        reply_markup: {
+          keyboard: [
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.WEATHER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
+          ]
+        }
+      }
+    );
+  } else if (msg.web_app_data) {
     try {
-      
-      console.log(webAppData)
-      const parsedData = JSON.parse(webAppData.data);
+
+      const parsedData = JSON.parse(msg.web_app_data?.data);
       return bot.instance.sendMessage(
         chatId,
         `${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}`
@@ -47,7 +61,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       console.log(error);
       return bot.instance.sendMessage(
         chatId,
-        bot.i18.t('notifications.errors.something-went-wrong')
+        bot.localeService.i18.t('notifications.errors.something-went-wrong')
       );
     }
     // } else if (text === 'inline') { //no main button event
@@ -65,15 +79,15 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
     //       }
     //     }
     //   );
-  } else if (text === CONFIG.COMMANDS.INFO) {
+  } else if (text === COMMANDS.INFO) {
     return bot.instance.sendMessage(
       chatId,
-      `Тебя зовут ${firstName && firstName} ${lastName && lastName}`
+      `${bot.localeService.i18.t('your-name-is')} - ${msg.from?.first_name} ${msg.from?.last_name}`
     );
   } else {
     return bot.instance.sendMessage(
       chatId,
-      bot.i18.t('notifications.errors.cant-understand')
+      bot.localeService.i18.t('notifications.errors.cant-understand')
     );
   }
 };

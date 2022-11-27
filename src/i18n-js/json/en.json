@@ -1,5 +1,6 @@
 {
     "greeting":"Hello",
+    "your-name-is":"Your name is",
     "buttons": {
         "fill-form": "Fill the form",
         "open-app": "Open app",

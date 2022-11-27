@@ -4,7 +4,7 @@ import { IGetUserRequest, IUpdateUserRequest, IDeleteUserRequest, IStoreUserRequ
 class UsersService {
 
     get(data: IGetUserRequest) {
-        if (data._id) {
+        if (data.id) {
             return User.findOne(data)
         } else {
             return User.find({})
@@ -13,7 +13,7 @@ class UsersService {
     }
 
     update(data: IUpdateUserRequest) {
-        return User.findByIdAndUpdate(data);
+        return User.findOneAndUpdate(data);
     }
 
     store(data: IStoreUserRequest) {
@@ -21,7 +21,16 @@ class UsersService {
     }
 
     delete(data: IDeleteUserRequest) {
-        return User.findByIdAndDelete(data._id)
+        return User.findOneAndDelete(data)
+    }
+    isUserExists(userId: number) {
+        return User.exists({ id: userId }, function (err, doc) {
+            if (err) {
+                return false
+            } else {
+                return doc
+            }
+        })
     }
 
 

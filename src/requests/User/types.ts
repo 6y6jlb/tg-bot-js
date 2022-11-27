@@ -1,8 +1,9 @@
 export interface IGetUserRequest {
-    _id?: string
+    id?: string
 }
 
 export interface IStoreUserRequest {
+    id: string,
     name: string,
     language?: string,
     currency?: string,
@@ -11,7 +12,7 @@ export interface IStoreUserRequest {
 }
 
 export interface IUpdateUserRequest {
-    _id: string
+    id: string
     name: string,
     language?: string,
     currency?: string,
@@ -20,5 +21,5 @@ export interface IUpdateUserRequest {
 }
 
 export interface IDeleteUserRequest {
-    _id: string
+    id: string
 }

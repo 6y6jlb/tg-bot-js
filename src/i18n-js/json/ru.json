@@ -1,5 +1,6 @@
 {
     "greeting": "Привет",
+    "your-name-is":"Тебя зовут",
     "buttons": {
         "fill-form": "Заполните форму",
         "open-app": "Открыть приложение",

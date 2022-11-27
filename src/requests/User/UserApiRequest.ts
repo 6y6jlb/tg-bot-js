@@ -5,7 +5,7 @@ class UserApiRequest {
     get(request: Request): IGetUserRequest {
         const { user_id } = request.query
         if (user_id) {
-            return { _id: user_id } as IGetUserRequest;
+            return { id: user_id } as IGetUserRequest;
         }
         return {}
     }
@@ -18,7 +18,7 @@ class UserApiRequest {
     update(request: Request): IUpdateUserRequest {
         const { user_id, name, language, currency, location, tz } = request.body
         if (user_id) {
-            return { _id: user_id, name, language, currency, location, tz } as IUpdateUserRequest;
+            return { id: user_id, name, language, currency, location, tz } as IUpdateUserRequest;
         }
         throw new Error('Incorrect data')
     }
@@ -26,7 +26,7 @@ class UserApiRequest {
     delete(request: Request): IDeleteUserRequest {
         const { user_id } = request.query
         if (user_id) {
-            return { _id: user_id } as IDeleteUserRequest;
+            return { id: user_id } as IDeleteUserRequest;
         }
         throw new Error('Incorrect data')
     }

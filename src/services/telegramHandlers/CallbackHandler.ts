@@ -9,7 +9,7 @@ const callbackHandler = async (bot:Bot ,msg: TelegramBotApi.CallbackQuery) => {
     const lastName = msg.from.last_name;
     const firstName = msg.from.first_name;
     console.log(msg)
-    if (chatId) return bot.instance.sendMessage(chatId, bot.i18.t('callback.request'));
+    if (chatId) return bot.instance.sendMessage(chatId, bot.localeService.i18.t('callback.request'));
 
   };
 
