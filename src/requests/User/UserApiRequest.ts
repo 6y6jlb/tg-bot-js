@@ -1,4 +1,6 @@
+import { DeleteUserError } from './../../exceptions/User';
 import { Request } from "express";
+import { UpdateUserError } from "../../exceptions/User";
 import { IDeleteUserRequest, IGetUserRequest, IStoreUserRequest, IUpdateUserRequest } from "./types";
 
 class UserApiRequest {
@@ -20,7 +22,7 @@ class UserApiRequest {
         if (user_id) {
             return { id: user_id, name, language, currency, location, tz } as IUpdateUserRequest;
         }
-        throw new Error('Incorrect data')
+        throw new UpdateUserError('Incorrect data')
     }
 
     delete(request: Request): IDeleteUserRequest {
@@ -28,7 +30,7 @@ class UserApiRequest {
         if (user_id) {
             return { id: user_id } as IDeleteUserRequest;
         }
-        throw new Error('Incorrect data')
+        throw new DeleteUserError('Incorrect data')
     }
 }
 
