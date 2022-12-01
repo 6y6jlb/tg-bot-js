@@ -23,14 +23,8 @@ class UsersService {
     delete(data: IDeleteUserRequest) {
         return User.findOneAndDelete(data)
     }
-    isUserExists(userId: number) {
-        return User.exists({ id: userId }, function (err, doc) {
-            if (err) {
-                return false
-            } else {
-                return doc
-            }
-        })
+    async isUserExists(userId: number) {
+        return await User.exists({ id: userId })
     }
 
 
