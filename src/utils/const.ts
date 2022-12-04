@@ -24,4 +24,13 @@ export const STICKERS = {
   GREETING: "https://tlgrm.ru/_/stickers/401/755/4017559a-cf38-4208-ba63-faaf7908c8d3/2.webp"
 };
 
+export const SERVICE_ROUTES = {
+  OPEN_WEATHER : {
+    BASE: 'https://api.openweathermap.org/data/2.5/',
+    ENTPOINTS: {
+      WEATHER:'weather'
+    }
+  }
+}
+
 

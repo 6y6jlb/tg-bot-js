@@ -15,6 +15,8 @@ const ADMINS = [
 ];
 
 
+const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+
 export default {
   TOKEN,
   ADMINS,
@@ -23,4 +25,5 @@ export default {
   MONGO_DB_USER,
   MONGO_DB_NAME,
   MONGO_DB_PASS,
+  WEATHER_API_KEY
 };
