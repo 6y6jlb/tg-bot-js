@@ -3,7 +3,7 @@ import WeatherClient from "../../dal/Weather/Client"
 
 class WeatherService {
     get(data: IGetWeatehrRequest) {
-        return WeatherClient.get(data);
+            return WeatherClient.get(data);
     }
 
 }

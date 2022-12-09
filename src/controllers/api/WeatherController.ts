@@ -5,11 +5,11 @@ import WeatherService from "../../services/Weather/WeatherService";
 class WeatherController {
     async get(req: Request, res: Response) {
         try {
-            const data = WeatherApiRequest.get(req);
-            res.json(await WeatherService.get(data))
+            const validParams = WeatherApiRequest.get(req);
+            const data = await WeatherService.get(validParams);
+            res.json(data)
         } catch (error) {
-            console.log(error)
-            res.json(error)
+            res.status(error.code || 400).json(error.message)
         }
     }
 }
