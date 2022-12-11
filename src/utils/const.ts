@@ -14,7 +14,8 @@ export const DESCRIPTIONS = {
 };
 
 export const PAGES = {
-  WEATHER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/',
+  INDEX: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/',
+  WEATHER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/weather',
   EVENT_REMINDER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/event-reminder',
   EVENT_WEATHER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/event-weather',
   PROFILE: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/profile',

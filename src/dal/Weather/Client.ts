@@ -9,9 +9,10 @@ class WeatherClient extends Client {
     async get(params: IGetWeatehrRequest): Promise<IOpenWeatherResponse> {
         const url = new URL(SERVICE_ROUTES.OPEN_WEATHER.BASE + SERVICE_ROUTES.OPEN_WEATHER.ENTPOINTS.WEATHER);
 
+
         url.searchParams.append('appid', config.WEATHER_API_KEY);
-        url.searchParams.append('units', 'metric');
-        url.searchParams.append('lang', 'en');
+        url.searchParams.append('units', params.units || 'metric');
+        url.searchParams.append('lang', params.lang || 'ru');
 
         if (params.city) {
             url.searchParams.append('q', params.city);
@@ -26,7 +27,12 @@ class WeatherClient extends Client {
             },
         });
         await this.throwOnError(response);
-        return response.json(); // parses JSON response into native JavaScript objects
+        const data = await response.json();
+        return {
+            ...data,
+            units: params.units || 'metric',
+            lang: params.lang || 'ru'
+        };
     }
 
 }
