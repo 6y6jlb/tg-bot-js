@@ -6,6 +6,8 @@ import tasksRouter from "./src/routers/tasks"
 import weatherRouter from "./src/routers/weather"
 import mongoose from 'mongoose'
 import Bot from "./src/controllers/telegram/Bot";
+import https from "https"
+import fs from "fs"
 
 
 
@@ -19,14 +21,22 @@ async function startApp() {
     await mongoose.connect(`mongodb+srv://${CONFIG.MONGO_DB_USER}:${CONFIG.MONGO_DB_PASS}@${CONFIG.MONGO_DB_NAME}.n2dmfie.mongodb.net/?retryWrites=true&w=majority`)
 
 
+    
+    
+
     const app = express()
       .use(cors())
       .use(express.json())
       .use('/api', usersRouter)
       .use('/api', tasksRouter)
       .use('/api', weatherRouter)
-      .use(express.static(__dirname))
-      .listen(CONFIG.PORT, () => console.log(`LISTENING ON PORT: ${CONFIG.PORT} WITH ${CONFIG.ENV} MODE.`));
+      .use(express.static(__dirname));
+
+      https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
+    }, app)
+    .listen(CONFIG.PORT)
       
 
     const bot = new Bot();
