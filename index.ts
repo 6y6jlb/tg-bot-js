@@ -21,9 +21,6 @@ async function startApp() {
     await mongoose.connect(`mongodb+srv://${CONFIG.MONGO_DB_USER}:${CONFIG.MONGO_DB_PASS}@${CONFIG.MONGO_DB_NAME}.n2dmfie.mongodb.net/?retryWrites=true&w=majority`)
 
 
-    
-    
-
     const app = express()
       .use(cors())
       .use(express.json())

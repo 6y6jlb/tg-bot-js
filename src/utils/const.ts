@@ -14,11 +14,11 @@ export const DESCRIPTIONS = {
 };
 
 export const PAGES = {
-  INDEX: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/',
-  WEATHER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/weather',
-  EVENT_REMINDER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/event-reminder',
-  EVENT_WEATHER: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/event-weather',
-  PROFILE: 'https://6y6jlb.github.io/tg-bot-frontend-v1/#/profile',
+  INDEX: 'https://monumental-travesseiro-6c016f.netlify.app/#/',
+  WEATHER: 'https://monumental-travesseiro-6c016f.netlify.app/#/weather',
+  EVENT_REMINDER: 'https://monumental-travesseiro-6c016f.netlify.app/#/event-reminder',
+  EVENT_WEATHER: 'https://monumental-travesseiro-6c016f.netlify.app/#/event-weather',
+  PROFILE: 'https://monumental-travesseiro-6c016f.netlify.app/#/profile',
 };
 
 export const STICKERS = {
