@@ -16,7 +16,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId: msg.from.id, userName: msg.from.first_name }) }
     )
 
-    return bot.instance.sendMessage(
+    await bot.instance.sendMessage(
       chatId,
       `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
       {
@@ -38,7 +38,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       chatId,
       STICKERS.GREETING
     );
-    return bot.instance.sendMessage(
+    await bot.instance.sendMessage(
       chatId,
       `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
       {
@@ -52,18 +52,30 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         }
       }
     );
+
+    await bot.instance.sendMessage(chatId,
+      `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`, {
+      reply_markup: {
+        inline_keyboard: [
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.WEATHER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
+            [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
+          ]
+      }
+    })
   } else if (msg.web_app_data) {
     try {
 
       const parsedData = JSON.parse(msg.web_app_data?.data);
-      return bot.instance.sendMessage(
+      await bot.instance.sendMessage(
         chatId,
         `${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}`
       );
 
     } catch (error) {
       console.log(error);
-      return bot.instance.sendMessage(
+      await bot.instance.sendMessage(
         chatId,
         bot.localeService.i18.t('notifications.errors.something-went-wrong')
       );
@@ -84,12 +96,12 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
     //     }
     //   );
   } else if (text === COMMANDS.INFO) {
-    return bot.instance.sendMessage(
+    await bot.instance.sendMessage(
       chatId,
       `${bot.localeService.i18.t('your-name-is')} - ${msg.from?.first_name} ${msg.from?.last_name}`
     );
   } else {
-    return bot.instance.sendMessage(
+    await bot.instance.sendMessage(
       chatId,
       bot.localeService.i18.t('notifications.errors.cant-understand')
     );
