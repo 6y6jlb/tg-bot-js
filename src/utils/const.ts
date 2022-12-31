@@ -5,6 +5,8 @@ export const COMMANDS = {
   START: "/start",
   INFO: "/info",
   RESTART: "/restart",
+  WEATHER: "/weather",
+
 };
 
 export const DESCRIPTIONS = {

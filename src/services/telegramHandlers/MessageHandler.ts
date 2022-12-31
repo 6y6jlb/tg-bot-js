@@ -28,39 +28,6 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       }
     );
 
-  }
-  else if (msg.text === COMMANDS.START) {
-
-    await bot.instance.sendSticker(
-      chatId,
-      STICKERS.GREETING
-    );
-    await bot.instance.sendMessage(
-      chatId,
-      `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
-      {
-        reply_markup: {
-          keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
-            // [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
-            // [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
-            // [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
-          ]
-        }
-      }
-    );
-
-  } else if (msg.text === 'inline-test') {
-    await bot.instance.sendMessage(chatId,
-      `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`, {
-      reply_markup: {
-        inline_keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
-          ]
-      }
-    })
-  
-  
   } else if (msg.web_app_data) {
     try {
 
@@ -77,33 +44,77 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         bot.localeService.i18.t('notifications.errors.something-went-wrong')
       );
     }
-    // } else if (text === 'inline') { //no main button event
-    //   return bot.instance.sendMessage(
-    //     chatId,
-    //     `${bot.i18.t("greeting")} - ${firstName}!`,
-    //     {
-    //       reply_markup: {
-    //         inline_keyboard: [
-    //           [{ text: `${bot.i18.t('buttons.weather')}`, web_app: { url: CONFIG.PAGES.WEATHER } }],
-    //           [{ text: `${bot.i18.t('buttons.event-reminder')}`, web_app: { url: CONFIG.PAGES.EVENT_REMINDER } }],
-    //           [{ text: `${bot.i18.t('buttons.event-weather')}`, web_app: { url: CONFIG.PAGES.EVENT_WEATHER } }],
-    //           [{ text: `${bot.i18.t('buttons.profile')}`, web_app: { url: CONFIG.PAGES.PROFILE } }]
-    //         ]
-    //       }
-    //     }
-    //   );
-  } else if (text === COMMANDS.INFO) {
-    await bot.instance.sendMessage(
-      chatId,
-      `${bot.localeService.i18.t('your-name-is')} - ${msg.from?.first_name} ${msg.from?.last_name}`
-    );
+  } else if(bot.appType !== 0) {
+    switch (bot.appType) {
+      case 1:
+        const weather = await bot.weatherService.get({city: text})
+        await bot.instance.sendMessage(
+          chatId,
+          `Город: ${weather.name}, Температура: ${String(weather.main.temp)}, Ощущается как: ${String(weather.main.feels_like)}, Влажность: ${String(weather.main.humidity)}`
+        );
+        break;
+    
+      default:
+        await bot.instance.sendMessage(
+          chatId,
+          bot.localeService.i18.t('notifications.errors.cant-understand')
+        );
+        break;
+    }
   } else {
-    await bot.instance.sendMessage(
-      chatId,
-      bot.localeService.i18.t('notifications.errors.cant-understand')
-    );
+    switch (text) {
+      case COMMANDS.START:
+        await bot.instance.sendSticker(
+          chatId,
+          STICKERS.GREETING
+        );
+        await bot.instance.sendMessage(
+          chatId,
+          `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
+          {
+            reply_markup: {
+              keyboard: [
+                [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
+                // [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
+                // [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
+                // [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
+              ]
+            }
+          }
+        );
+        break;
+
+      case COMMANDS.RESTART:
+        bot.appType = 0;
+        await bot.instance.sendMessage(
+          chatId,
+          `${bot.localeService.i18.t('your-name-is')} - ${msg.from?.first_name} ${msg.from?.last_name}`
+        );
+        break;
+      case COMMANDS.WEATHER:
+        bot.appType = 1;
+        await bot.instance.sendMessage(
+          chatId,
+          `${bot.localeService.i18.t('weather.get-description')}`,
+          {
+            reply_markup: {
+              inline_keyboard: [
+                [{ text: `${bot.localeService.i18.t('buttons.reset')}`, callback_data: COMMANDS.RESTART}],
+               ]
+            }
+          }
+        );
+        break;
+
+      default:
+        await bot.instance.sendMessage(
+          chatId,
+          bot.localeService.i18.t('notifications.errors.cant-understand')
+        );
+        break;
+    }
   }
 };
 
 
-export default messageHandler
+export default messageHandler;

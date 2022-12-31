@@ -6,19 +6,23 @@ import locationHandler from '../../services/telegramHandlers/LocationHandler';
 import messageHandler from "../../services/telegramHandlers/MessageHandler";
 import config from "../../utils/config";
 import moment from "moment"
+import WeatherService from "../../services/Weather/WeatherService";
 
 class Bot {
 
   instance: TelegramBotApi;
   localeService: typeof LocaleService;
   adminService: typeof AdminService;
+  weatherService: typeof WeatherService;
+  appType: Number;
   
   constructor() {
 
     this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
     this.localeService = LocaleService;
     this.adminService = AdminService;
-    
+    this.weatherService = WeatherService;
+    this.appType = 0;
   }
 
   start() {

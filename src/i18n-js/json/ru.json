@@ -1,13 +1,17 @@
 {
     "greeting": "Привет",
     "your-name-is": "Тебя зовут",
+    "weather": {
+        "get-description": "Для получени погоды введите город на русском или английском языке."
+    },
     "buttons": {
         "fill-form": "Заполните форму",
         "open-app": "Открыть приложение",
         "weather": "Weather request",
         "event-reminder": "Event reminder",
         "event-weather": "Event weather",
-        "profile": "Profile"
+        "profile": "Profile",
+        "reset": "Сброс"
     },
     "notifications": {
         "common": {
