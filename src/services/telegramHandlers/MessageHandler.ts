@@ -22,10 +22,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       {
         reply_markup: {
           keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.WEATHER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
           ]
         }
       }
@@ -44,26 +41,26 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       {
         reply_markup: {
           keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.WEATHER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
+            // [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
+            // [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
+            // [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
           ]
         }
       }
     );
 
+  } else if (msg.text === 'inline-test') {
     await bot.instance.sendMessage(chatId,
       `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`, {
       reply_markup: {
         inline_keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.WEATHER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
-            [{ text: `${bot.localeService.i18.t('buttons.profile')}`, web_app: { url: PAGES.PROFILE }, }]
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
           ]
       }
     })
+  
+  
   } else if (msg.web_app_data) {
     try {
 
