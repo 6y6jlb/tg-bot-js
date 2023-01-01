@@ -1,6 +1,5 @@
-import { APP_TYPE_ENUM } from "../../models/types";
 import UserSettings from "../../models/UserSettings";
-import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IStoreUserSettingsRequest, IUpdateUserSettingsRequest } from './../../requests/UserSettings/types';
+import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IUpdateUserSettingsRequest } from './../../requests/UserSettings/types';
 
 class UsersService {
 
@@ -17,13 +16,26 @@ class UsersService {
         return UserSettings.findOneAndUpdate(data);
     }
 
-    store(data: IStoreUserSettingsRequest) {
+    store(data: IGetUserSettingsRequest) {
         return UserSettings.create(data)
     }
 
     delete(data: IDeleteUserSettingsRequest) {
         return UserSettings.findOneAndDelete(data)
     }
+
+    async updateOrCreate(data: IUpdateUserSettingsRequest) {
+        const existedUser = await this.getExisterUserSettings(data.user_id);
+        if(existedUser) {
+            return this.update(data);
+        }
+        return this.store(data);
+    }
+
+    async getExisterUserSettings(userId: Number) {
+        return await UserSettings.exists({ user_id: userId })
+    }
+
 
 
 }

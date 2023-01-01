@@ -13,7 +13,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const userId = msg.from?.id;
 
   const existedUser = userId ? await UserService.isUserExists(userId) : null;
-
+  console.log('existedUser', existedUser)
   if (!existedUser) {
     await UserService.store({ id: String(msg.from.id), name: msg.from.first_name, })
     await bot.adminService.sendMesssageToAdmin(
@@ -50,10 +50,12 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
     }
   } else {
 
-  const userSettings = userId ? await UserSettingsService.get({ user_id: userId }) : null;
-  
+    const userSettings = userId ? await UserSettingsService.get({ user_id: userId }) : null;
+    if (!userSettings)
+
     switch (text) {
       case COMMANDS.START:
+        UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
         await bot.instance.sendSticker(
           chatId,
           STICKERS.GREETING
@@ -75,14 +77,14 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         break;
 
       case COMMANDS.RESTART:
-        bot.appType = 0;
+        UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
         await bot.instance.sendMessage(
           chatId,
           `${bot.localeService.i18.t('your-name-is')} - ${msg.from?.first_name} ${msg.from?.last_name}`
         );
         break;
       case COMMANDS.WEATHER:
-        bot.appType = 1;
+        UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.WEATHER, created_at: new Date()})
         await bot.instance.sendMessage(
           chatId,
           `${bot.localeService.i18.t('weather.get-description')}`,

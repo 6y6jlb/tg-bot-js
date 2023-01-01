@@ -14,7 +14,6 @@ class Bot {
   localeService: typeof LocaleService;
   adminService: typeof AdminService;
   weatherService: typeof WeatherService;
-  appType: Number;
   
   constructor() {
 
@@ -22,7 +21,6 @@ class Bot {
     this.localeService = LocaleService;
     this.adminService = AdminService;
     this.weatherService = WeatherService;
-    this.appType = 0;
   }
 
   start() {

@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import { IUserSettings } from './types';
+import { APP_TYPE_ENUM, IUserSettings } from './types';
 
-const UserSetttings = new mongoose.Schema<IUserSettings>({
+const UserSettings = new mongoose.Schema<IUserSettings>({
     user_id: { type: Number, ref: 'User' },
-    app_type: { type: Number, required: true },
+    app_type: { type: Number, required: true, default: APP_TYPE_ENUM.DEFAULT },
     created_at: { type: Date, required: true },
 })
 
-export default mongoose.model('UserSetttings', UserSetttings);
+export default mongoose.model('UserSettings', UserSettings);
