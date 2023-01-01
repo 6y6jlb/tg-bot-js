@@ -51,7 +51,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   } else {
 
     const userSettings = userId ? await UserSettingsService.get({ user_id: userId }) : null;
-    if (!userSettings)
+    // if (!userSettings)
 
     switch (text) {
       case COMMANDS.START:

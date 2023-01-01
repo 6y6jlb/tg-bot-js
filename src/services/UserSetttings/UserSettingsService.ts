@@ -3,33 +3,33 @@ import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IUpdateUserSetting
 
 class UsersService {
 
-    get(data: IGetUserSettingsRequest) {
+    async get(data: IGetUserSettingsRequest) {
         if (data._id || data.user_id) {
-            return UserSettings.findOne(data)
+            return await UserSettings.findOne(data)
         } else {
-            return UserSettings.find({})
+            return await UserSettings.find({})
         }
 
     }
 
-    update(data: IUpdateUserSettingsRequest) {
-        return UserSettings.findOneAndUpdate(data);
+    async update(data: IUpdateUserSettingsRequest) {
+        return await UserSettings.findOneAndUpdate(data);;
     }
 
-    store(data: IGetUserSettingsRequest) {
-        return UserSettings.create(data)
+    async store(data: IGetUserSettingsRequest) {
+        return await UserSettings.create(data)
     }
 
-    delete(data: IDeleteUserSettingsRequest) {
-        return UserSettings.findOneAndDelete(data)
+    async delete(data: IDeleteUserSettingsRequest) {
+        return await UserSettings.findOneAndDelete(data)
     }
 
     async updateOrCreate(data: IUpdateUserSettingsRequest) {
-        const existedUser = await this.getExisterUserSettings(data.user_id);
-        if(existedUser) {
-            return this.update(data);
+        const existedUserSettings = await this.getExisterUserSettings(data.user_id);
+        if(existedUserSettings) {
+            return await this.update(data);
         }
-        return this.store(data);
+        return await this.store(data);
     }
 
     async getExisterUserSettings(userId: Number) {
