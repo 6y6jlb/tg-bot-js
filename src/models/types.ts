@@ -8,7 +8,6 @@ export interface IUser {
     location?: string,
     currency?: string,
     language?: string,
-    mess_count: number
 }
 
 export interface ITask {
@@ -23,7 +22,19 @@ export interface ITask {
     is_regular: boolean
 }
 
+export interface IUserSettings {
+    _id?: Schema.Types.ObjectId,
+    created_at: Date,
+    user_id: Number,
+    app_type: APP_TYPE_ENUM,
+}
+
 export enum EVENT_ENUM {
     WEATHER = 1,
     REMINDER = 2
+}
+
+export enum APP_TYPE_ENUM {
+    DEFAULT = 0,
+    WEATHER = 1
 }

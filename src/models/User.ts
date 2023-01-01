@@ -9,7 +9,6 @@ const User = new mongoose.Schema<IUser>({
     location: { type: String, required: false },
     currency: { type: String, required: false },
     language: { type: String, required: false },
-    mess_count: { type: Number, required: false, default: 1 }
 })
 
 export default mongoose.model('User', User);

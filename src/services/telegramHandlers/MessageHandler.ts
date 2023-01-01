@@ -1,15 +1,19 @@
 
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
+import { APP_TYPE_ENUM } from "../../models/types";
 import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
 import UserService from "../User/UserService";
+import UserSettingsService from "../UserSetttings/UserSettingsService";
 
 
 const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const text = msg.text;
   const chatId = msg.chat.id;
+  const userId = msg.from?.id;
 
-  const existedUser = await UserService.isUserExists(msg.from?.id);
+  const existedUser = userId ? await UserService.isUserExists(userId) : null;
+
   if (!existedUser) {
     await UserService.store({ id: String(msg.from.id), name: msg.from.first_name, })
     await bot.adminService.sendMesssageToAdmin(
@@ -44,24 +48,10 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         bot.localeService.i18.t('notifications.errors.something-went-wrong')
       );
     }
-  } else if(bot.appType !== 0) {
-    switch (bot.appType) {
-      case 1:
-        const weather = await bot.weatherService.get({city: text})
-        await bot.instance.sendMessage(
-          chatId,
-          `Город: ${weather.name}, Температура: ${String(weather.main.temp)}, Ощущается как: ${String(weather.main.feels_like)}, Влажность: ${String(weather.main.humidity)}`
-        );
-        break;
-    
-      default:
-        await bot.instance.sendMessage(
-          chatId,
-          bot.localeService.i18.t('notifications.errors.cant-understand')
-        );
-        break;
-    }
   } else {
+
+  const userSettings = userId ? await UserSettingsService.get({ user_id: userId }) : null;
+  
     switch (text) {
       case COMMANDS.START:
         await bot.instance.sendSticker(
@@ -99,8 +89,8 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           {
             reply_markup: {
               inline_keyboard: [
-                [{ text: `${bot.localeService.i18.t('buttons.reset')}`, callback_data: COMMANDS.RESTART}],
-               ]
+                [{ text: `${bot.localeService.i18.t('buttons.reset')}`, callback_data: COMMANDS.RESTART }],
+              ]
             }
           }
         );
@@ -118,3 +108,24 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
 
 export default messageHandler;
+/* 
+
+else if (userSettings) {
+  console.log(userSettings)
+  switch (bot.appType) {
+    case 1:
+      const weather = await bot.weatherService.get({ city: text })
+      await bot.instance.sendMessage(
+        chatId,
+        `Город: ${weather.name}, Температура: ${String(weather.main.temp)}, Ощущается как: ${String(weather.main.feels_like)}, Влажность: ${String(weather.main.humidity)}`
+      );
+      break;
+
+    default:
+      await bot.instance.sendMessage(
+        chatId,
+        bot.localeService.i18.t('notifications.errors.cant-understand')
+      );
+      break;
+  } 
+  */
