@@ -2,7 +2,9 @@
     "greeting":"Hello",
     "your-name-is":"Your name is",
     "weather": {
-        "get-description": "To get the weather, enter the city in Russian or English."
+        "get-description": "To get the weather, enter the city in Russian or English.",
+        "tg-string":"City: {{city}},\nTemp: {{temp}},\nFeels like: {{feel}},\nHumidity: {{humidity}}"
+          
         },
     "buttons": {
         "fill-form": "Fill the form",

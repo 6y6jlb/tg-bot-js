@@ -1,14 +1,15 @@
+import { IUserSettings } from './../../models/types';
 import UserSettings from "../../models/UserSettings";
 import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IUpdateUserSettingsRequest } from './../../requests/UserSettings/types';
+import { GetUserSettingsError } from '../../exceptions/UserSettings';
 
 class UsersService {
 
     async get(data: IGetUserSettingsRequest) {
         if (data._id || data.user_id) {
-            return await UserSettings.findOne(data)
-        } else {
-            return await UserSettings.find({})
+            return await UserSettings.findOne(data) as IUserSettings
         }
+        throw new GetUserSettingsError('Incorrect data: ' + JSON.stringify(data))
 
     }
 
@@ -26,7 +27,7 @@ class UsersService {
 
     async updateOrCreate(data: IUpdateUserSettingsRequest) {
         const existedUserSettings = await this.getExisterUserSettings(data.user_id);
-        if(existedUserSettings) {
+        if (existedUserSettings) {
             return await this.update(data);
         }
         return await this.store(data);
