@@ -1,19 +1,29 @@
 {
-    "greeting":"Hello",
-    "your-name-is":"Your name is",
+    "your-name-is": "Your name is",
+    "guest": "Guest",
+    "tasks": {
+        "info-title": "Existed tasks:",
+        "info-line": "\nUser: {{userId}}, event: {{event}}, will be call at: {{date}}"
+    },
     "weather": {
         "get-description": "To get the weather, enter the city in Russian or English.",
-        "tg-string":"City: {{city}},\nTemp: {{temp}},\nFeels like: {{feel}},\nHumidity: {{humidity}}"
-          
+        "tg-string": "City: {{city}},\nTemp: {{temp}},\nFeels like: {{feel}},\nHumidity: {{humidity}}"
+    },
+    "actions": {
+        "greeting": "Hello",
+        "reset": {
+            "description": "App param does reset!"
         },
-        "actions": {
-            "reset": {
-                "description":"App param does reset!"
-            },
-            "undefined": {
-                "description":"I cant understand!"
-            }
+        "undefined": {
+            "description": "I cant understand!"
         },
+        "tasks": {
+            "description-time": "Enter the time of the task call in the format 02:22",
+            "description-type": "Select the task type.",
+            "description-city": "Enter the city name.",
+            "description-option": "Enter the string that will be shown when the task is called."
+        }
+    },
     "buttons": {
         "fill-form": "Fill the form",
         "open-app": "Open app",
@@ -21,12 +31,13 @@
         "event-reminder": "Event reminder",
         "event-weather": "Event weather",
         "profile": "Profile",
-        "reset": "Reset"
+        "reset": "Reset",
+        "tasks-new'": "Create new task"
     },
     "notifications": {
         "common": {
-            "start":"Server started at: {{date}}",
-            "new-user":"New user with {{userId}} was created. First name is {{userName}}"
+            "start": "Server started at: {{date}}",
+            "new-user": "New user with {{userId}} was created. First name is {{userName}}"
         },
         "errors": {
             "something-went-wrong": "Something went wrong",

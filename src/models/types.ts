@@ -16,7 +16,7 @@ export interface ITask {
     user_id: number,
     event_type: EVENT_ENUM,
     options: string,
-    call_at: Date,
+    call_at: String,
     queue?: boolean,
     tz: string,
     is_regular: boolean
@@ -36,5 +36,6 @@ export enum EVENT_ENUM {
 
 export enum APP_TYPE_ENUM {
     DEFAULT = 0,
-    WEATHER = 1
+    WEATHER = 1,
+    TASK = 2,
 }

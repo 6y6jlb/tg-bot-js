@@ -1,11 +1,14 @@
 
 export const INDEX = '/index.html';
 
+
 export const COMMANDS = {
   START: "/start",
   INFO: "/info",
   RESTART: "/restart",
   WEATHER: "/weather",
+  TASKS: "/tasks",
+  TASKS_STORE: "/tasks-store",
 
 };
 

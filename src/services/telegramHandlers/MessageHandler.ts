@@ -1,8 +1,10 @@
+import { ITask, EVENT_ENUM } from './../../models/types';
 
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { APP_TYPE_ENUM } from "../../models/types";
 import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
+import TaskService from "../Task/TaskService";
 import UserService from "../User/UserService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 
@@ -60,7 +62,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         );
         await bot.instance.sendMessage(
           chatId,
-          `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
+          `${bot.localeService.i18.t("action.greeting", { userName: msg.from?.first_name ?? bot.localeService.i18.t('guest') })} - ${msg.from?.first_name}!`,
           {
             reply_markup: {
               keyboard: [
@@ -72,6 +74,17 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
             }
           }
         );
+        break;
+
+      case COMMANDS.TASKS:
+        const tasks = await TaskService.get({}) as ITask[];
+        let message = bot.localeService.i18.t('tasks.info-title');
+        for (let task = 0; task < tasks.length; task++) {
+          const currentTask = tasks[task];
+          message += `${bot.localeService.i18.t('tasks.info-line', { userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: currentTask.call_at, escapeValue: false })}`;
+
+        }
+        await bot.instance.sendMessage(chatId, message, { parse_mode: 'HTML' });
         break;
 
       case COMMANDS.RESTART:
@@ -105,7 +118,15 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
                 chatId,
                 bot.localeService.i18.t('weather.tg-string', {
                   city: weather.name, temp: String(weather.main.temp), feel: String(weather.main.feels_like), humidity: String(weather.main.humidity), escapeValue: false
-                }), { parse_mode: 'HTML' });
+                }),
+                {
+                  parse_mode: 'HTML',
+                  reply_markup: {
+                    inline_keyboard: [
+                      [{ text: `${bot.localeService.i18.t('buttons.tasks-new')}`, callback_data: COMMANDS.TASKS_STORE }],
+                    ]
+                  }
+                });
               return;
 
 
