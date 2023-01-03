@@ -1,7 +1,7 @@
 import { Schema } from "mongoose"
 
 export interface IUser {
-    id?: Number,
+    id?: number,
     created_at: Date,
     name: string,
     tz?: string,
@@ -13,7 +13,7 @@ export interface IUser {
 export interface ITask {
     _id?: Schema.Types.ObjectId,
     last_call?: Date,
-    user_id: Number,
+    user_id: number,
     event_type: EVENT_ENUM,
     options: string,
     call_at: Date,
@@ -25,7 +25,7 @@ export interface ITask {
 export interface IUserSettings {
     _id?: Schema.Types.ObjectId,
     created_at: Date,
-    user_id: Number,
+    user_id: number,
     app_type: APP_TYPE_ENUM,
 }
 

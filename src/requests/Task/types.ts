@@ -1,7 +1,8 @@
 import { EVENT_ENUM } from "../../models/types"
 
 export interface IGetTaskRequest {
-    _id?: string
+    _id?: string,
+    created_at?: any
 }
 
 export interface IStoreTaskRequest {

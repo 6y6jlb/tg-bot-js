@@ -1,12 +1,13 @@
+import moment from "moment";
 import TelegramBotApi from "node-telegram-bot-api";
 import AdminService from "../../services/Admin/AdminService";
+import { CronScheduler } from "../../services/Cron/CronScheduler";
 import LocaleService from '../../services/Locale/LocaleService';
 import callbackHandler from '../../services/telegramHandlers/CallbackHandler';
 import locationHandler from '../../services/telegramHandlers/LocationHandler';
 import messageHandler from "../../services/telegramHandlers/MessageHandler";
-import config from "../../utils/config";
-import moment from "moment"
 import WeatherService from "../../services/Weather/WeatherService";
+import config from "../../utils/config";
 
 class Bot {
 
@@ -14,6 +15,7 @@ class Bot {
   localeService: typeof LocaleService;
   adminService: typeof AdminService;
   weatherService: typeof WeatherService;
+  scheduler: CronScheduler;
   
   constructor() {
 
@@ -21,9 +23,11 @@ class Bot {
     this.localeService = LocaleService;
     this.adminService = AdminService;
     this.weatherService = WeatherService;
+    this.scheduler = new CronScheduler(this.instance);
   }
 
   start() {
+    this.scheduler.start()
 
     this.instance.on("message", async (msg) => {
       messageHandler(this, msg);

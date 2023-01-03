@@ -6,6 +6,14 @@
         "tg-string":"Город: {{city}},\nТемпература: {{temp}},\nОщущается как: {{feel}},\nВлажность: {{humidity}}"
           
     },
+    "actions": {
+        "reset": {
+            "description":"Параментры приложения были сброшены!"
+        },
+        "undefined": {
+            "description":"Я не понимаю команду!"
+        }
+    },
     "buttons": {
         "fill-form": "Заполните форму",
         "open-app": "Открыть приложение",

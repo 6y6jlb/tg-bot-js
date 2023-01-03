@@ -6,6 +6,14 @@
         "tg-string":"City: {{city}},\nTemp: {{temp}},\nFeels like: {{feel}},\nHumidity: {{humidity}}"
           
         },
+        "actions": {
+            "reset": {
+                "description":"App param does reset!"
+            },
+            "undefined": {
+                "description":"I cant understand!"
+            }
+        },
     "buttons": {
         "fill-form": "Fill the form",
         "open-app": "Open app",

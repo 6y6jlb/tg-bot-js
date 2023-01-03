@@ -7,7 +7,7 @@ class TaskService {
         if (data._id) {
             return Task.findOne(data)
         } else {
-            return Task.find({})
+            return Task.find(data)
         }
 
     }
