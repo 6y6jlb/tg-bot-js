@@ -28,7 +28,8 @@ async function startApp() {
       .use('/api', usersRouter)
       .use('/api', tasksRouter)
       .use('/api', weatherRouter)
-      .use(express.static(__dirname));
+      .use(express.static(__dirname))
+      ;
 
       https.createServer({
         key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),

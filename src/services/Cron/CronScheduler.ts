@@ -28,13 +28,19 @@ export class CronScheduler {
     })
   }
 
-  public async start() {
+  private async callTasks() {
     const tasks = await this.getTasks() as ITask[];
     for (let task = 0; task < tasks.length; task++) {
       const currentTask = tasks[task];
       const callAt = moment(currentTask.call_at, 'HH:mm').toDate()
       this.makeTask(convertDateToCronExpression(callAt), currentTask.user_id, currentTask.options);
-
     }
+  }
+
+  public async start() {
+    cron.schedule('* 30 * * * *', () => {
+      console.log('tasks called')
+      this.callTasks();
+    });
   }
 }

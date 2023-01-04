@@ -10,7 +10,6 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
   const data = msg.data;
   const chatId = msg.message?.chat.id;
   const userId = msg.from?.id;
-  console.log('callback', msg)
   if (data === COMMANDS.RESTART) {
     UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
     await bot.instance.sendMessage(

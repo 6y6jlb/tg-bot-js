@@ -1,5 +1,6 @@
+import moment from "moment-timezone";
 import Task from "../../models/Task";
-import { IDeleteTaskRequest,IGetTaskRequest,IStoreTaskRequest,IUpdateTaskRequest } from "../../requests/Task/types";
+import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "../../requests/Task/types";
 
 class TaskService {
 
@@ -17,7 +18,9 @@ class TaskService {
     }
 
     store(data: IStoreTaskRequest) {
-        return Task.create(data)
+        const baseFormat = 'HH:mm'
+        const callAt = moment.tz(data.call_at, baseFormat, data.tz).utc().format(baseFormat)
+        return Task.create({ ...data, call_at: callAt })
     }
 
     delete(data: IDeleteTaskRequest) {
