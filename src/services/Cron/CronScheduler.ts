@@ -32,7 +32,8 @@ export class CronScheduler {
     const tasks = await this.getTasks() as ITask[];
     for (let task = 0; task < tasks.length; task++) {
       const currentTask = tasks[task];
-      this.makeTask(convertDateToCronExpression(currentTask.call_at), currentTask.user_id, currentTask.options);
+      const callAt = moment(currentTask.call_at, 'HH:mm').toDate()
+      this.makeTask(convertDateToCronExpression(callAt), currentTask.user_id, currentTask.options);
 
     }
   }

@@ -16,7 +16,7 @@ export interface ITask {
     user_id: number,
     event_type: EVENT_ENUM,
     options: string,
-    call_at: String,
+    call_at: string,
     queue?: boolean,
     tz: string,
     is_regular: boolean

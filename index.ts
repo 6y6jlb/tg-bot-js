@@ -30,11 +30,11 @@ async function startApp() {
       .use('/api', weatherRouter)
       .use(express.static(__dirname));
 
-    //   https.createServer({
-    //     key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
-    //     cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
-    // }, app)
-    // .listen(CONFIG.PORT)
+      https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
+    }, app)
+    .listen(CONFIG.PORT)
       
 
     const bot = new Bot();
