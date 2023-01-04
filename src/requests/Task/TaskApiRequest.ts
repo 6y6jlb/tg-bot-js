@@ -17,9 +17,10 @@ class TaskApiRequest {
     }
 
     update(request: Request): IUpdateTaskRequest {
-        const { task_id, tz, call_at, is_regular, options, event_type } = request.body
+        const { task_id, tz, call_at, is_regular, options, event_type, queue } = request.body
+        console.log(request.body)
         if (task_id) {
-            return { _id: task_id, tz, call_at, is_regular, options, event_type } as IUpdateTaskRequest;
+            return { _id: task_id, payload: { tz, call_at, is_regular, options, event_type, queue } } as IUpdateTaskRequest;
         }
         throw new Error('Incorrect data')
     }

@@ -12,10 +12,15 @@ export class CronScheduler {
     this.bot = bot;
   }
 
-  public makeTask(expression: string, chatId: number, message: string) {
-    cron.schedule(expression, () => {
+  public makeTask(expression: string, chatId: number, message: string, taskId: any, timezone: string) {
+    const task = cron.schedule(expression, () => {
+      TaskService.update({ _id: taskId, payload: { queue: false } })
       this.bot.sendMessage(chatId, message);
+    }, {
+      scheduled: true,
+      timezone
     });
+    task.start()
   }
 
   private async getTasks() {
@@ -32,20 +37,17 @@ export class CronScheduler {
 
   private async callTasks() {
     const tasks = await this.getTasks() as ITask[];
-    console.log('tasks')
-    console.log(tasks)
     for (let task = 0; task < tasks.length; task++) {
       const currentTask = tasks[task];
       const callAt = moment(currentTask.call_at, 'H:mm').toDate()
       const expression = convertDateToCronExpression(callAt)
-      console.log(expression)
-      this.makeTask(expression, currentTask.user_id, currentTask.options);
-      TaskService.update({ _id: currentTask._id, queue: true })
+      this.makeTask(expression, currentTask.user_id, currentTask.options, currentTask._id, currentTask.tz);
+      TaskService.update({ _id: currentTask._id, payload: { queue: true } })
     }
   }
 
   public async start() {
-    cron.schedule('1 * * * * *', () => {
+    cron.schedule('30 * * * * *', () => {
       this.callTasks();
     });
   }

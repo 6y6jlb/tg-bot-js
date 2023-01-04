@@ -14,7 +14,7 @@ class TaskService {
     }
 
     update(data: IUpdateTaskRequest) {
-        return Task.findByIdAndUpdate(data);
+        return Task.findByIdAndUpdate(data._id, data.payload);
     }
 
     store(data: IStoreTaskRequest) {
