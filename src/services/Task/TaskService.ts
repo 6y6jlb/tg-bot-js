@@ -18,8 +18,12 @@ class TaskService {
     }
 
     store(data: IStoreTaskRequest) {
-        const baseFormat = 'HH:mm'
-        const callAt = moment.tz(data.call_at, baseFormat, data.tz).utc().format(baseFormat)
+        const baseFormat = 'H:mm'
+        let callAt = data.call_at.trim();
+        if (data.call_at.length > 1 && data.call_at[0] === '0') {
+            callAt = callAt[1]
+        }
+        callAt = moment.tz(callAt, baseFormat, data.tz).utc().format(baseFormat)
         return Task.create({ ...data, call_at: callAt })
     }
 

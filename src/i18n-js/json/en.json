@@ -4,7 +4,7 @@
     "tasks": {
         "info-title": "Existed tasks:",
         "info-line": "\nUser: {{userId}}, event: {{event}}, will be call at: {{date}}",
-        "description-time": "Enter the time of the task call in the format 02:22",
+        "description-time": "Enter the time of the task call in the format 2:22",
         "description-timezone": "About timezone you can read here\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>link to wiki</a>",
         "description-type": "Select the task type.",
         "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",

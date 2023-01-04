@@ -19,27 +19,33 @@ export class CronScheduler {
   }
 
   private async getTasks() {
-    const currentDate = moment.now();
-    const nextHourDate = moment(currentDate).add(1, 'hour');
+    const currentDate = moment(new Date()).format('H:mm');
+    const nextHourDate = moment(currentDate, 'H:mm').add(1, 'hour').format('H:mm');
     return await TaskService.get({
-      created_at: {
-        $between: [currentDate, nextHourDate],
+      queue: false,
+      call_at: {
+        $gt: currentDate,
+        $lt: nextHourDate,
       },
     })
   }
 
   private async callTasks() {
     const tasks = await this.getTasks() as ITask[];
+    console.log('tasks')
+    console.log(tasks)
     for (let task = 0; task < tasks.length; task++) {
       const currentTask = tasks[task];
-      const callAt = moment(currentTask.call_at, 'HH:mm').toDate()
-      this.makeTask(convertDateToCronExpression(callAt), currentTask.user_id, currentTask.options);
+      const callAt = moment(currentTask.call_at, 'H:mm').toDate()
+      const expression = convertDateToCronExpression(callAt)
+      console.log(expression)
+      this.makeTask(expression, currentTask.user_id, currentTask.options);
+      TaskService.update({ _id: currentTask._id, queue: true })
     }
   }
 
   public async start() {
-    cron.schedule('* 30 * * * *', () => {
-      console.log('tasks called')
+    cron.schedule('1 * * * * *', () => {
       this.callTasks();
     });
   }

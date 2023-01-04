@@ -8,7 +8,7 @@
         "description-timezone": "Почитать про таймзоны можно тут\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>ССылка на википедию</a>",
         "description-type": "Выберите тип задачи.",
         "description-city": "Введите время, название населенного пункта\nи таймзону в формате:\n02:22 - Батуми - asia/tbilisi",
-        "description-option": "Введите время, сообщение\nи таймзону в формате:\n02:22 - Батуми - asia/tbilisi",
+        "description-option": "Введите время, сообщение\nи таймзону в формате:\n2:22 - Батуми - asia/tbilisi",
         "store" : {
             "success": "Задача с типом {{eventType}} была сохранена",
             "error": "Что-то случилось, повторите попытку позже"
