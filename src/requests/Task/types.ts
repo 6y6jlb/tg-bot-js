@@ -6,11 +6,11 @@ export interface IGetTaskRequest {
 }
 
 export interface IStoreTaskRequest {
-    last_call?: string,
-    user_id: string,
+    last_call?: Date,
+    user_id: number,
     event_type: EVENT_ENUM,
     options: string,
-    call_at: Date,
+    call_at: string,
     queue?: boolean,
     tz: string,
     is_regular: boolean
@@ -18,11 +18,11 @@ export interface IStoreTaskRequest {
 
 export interface IUpdateTaskRequest {
     _id: string
-    last_call?: string,
-    user_id: string,
+    last_call?: Date,
+    user_id: number,
     event_type: EVENT_ENUM,
     options: string,
-    call_at: Date,
+    call_at: string,
     queue?: boolean,
     tz: string,
     is_regular: boolean

@@ -36,6 +36,8 @@ export enum EVENT_ENUM {
 
 export enum APP_TYPE_ENUM {
     DEFAULT = 0,
-    WEATHER = 1,
-    TASK = 2,
+    WEATHER_REQUEST = 1,
+    TASK_STORE_TYPE_DEFAULT = 2,
+    TASK_STORE_TYPE_WEATHER = 3,
+    TASK_STORE_TYPE_REMINDER = 4,
 }

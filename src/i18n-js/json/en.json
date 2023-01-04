@@ -3,11 +3,20 @@
     "guest": "Guest",
     "tasks": {
         "info-title": "Existed tasks:",
-        "info-line": "\nUser: {{userId}}, event: {{event}}, will be call at: {{date}}"
+        "info-line": "\nUser: {{userId}}, event: {{event}}, will be call at: {{date}}",
+        "description-time": "Enter the time of the task call in the format 02:22",
+        "description-timezone": "About timezone you can read here\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>link to wiki</a>",
+        "description-type": "Select the task type.",
+        "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
+        "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
+        "store": {
+            "success": "Task with {{eventType}} type  was saved",
+            "error": "Something wend wrong"
+        }
     },
     "weather": {
         "get-description": "To get the weather, enter the city in Russian or English.",
-        "tg-string": "City: {{city}},\nTemp: {{temp}},\nFeels like: {{feel}},\nHumidity: {{humidity}}"
+        "tg-string": "City: {{city}},\nTemp: {{temp}},\nFeels like: {{feel}},\nHumidity: {{humidity}}."
     },
     "actions": {
         "greeting": "Hello",
@@ -16,12 +25,6 @@
         },
         "undefined": {
             "description": "I cant understand!"
-        },
-        "tasks": {
-            "description-time": "Enter the time of the task call in the format 02:22",
-            "description-type": "Select the task type.",
-            "description-city": "Enter the city name.",
-            "description-option": "Enter the string that will be shown when the task is called."
         }
     },
     "buttons": {
@@ -32,7 +35,9 @@
         "event-weather": "Event weather",
         "profile": "Profile",
         "reset": "Reset",
-        "tasks-new'": "Create new task"
+        "tasks-new": "Create new task",
+        "tasks-type-reminder": "Напоминание",
+        "tasks-type-weather": "Погода"
     },
     "notifications": {
         "common": {

@@ -3,7 +3,16 @@
     "guest":"Гость",
     "tasks":{
         "info-title":"Существующие задачи:",
-        "info-line":"\nПользователь: {{userId}}, тип задачи: {{event}}, будет вызвана в: {{date}}"
+        "info-line":"\nПользователь: {{userId}}, тип задачи: {{event}}, будет вызвана в: {{date}}",
+        "description-time": "Введите время в формате 02:22",
+        "description-timezone": "Почитать про таймзоны можно тут\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>ССылка на википедию</a>",
+        "description-type": "Выберите тип задачи.",
+        "description-city": "Введите время, название населенного пункта\nи таймзону в формате:\n02:22 - Батуми - asia/tbilisi",
+        "description-option": "Введите время, сообщение\nи таймзону в формате:\n02:22 - Батуми - asia/tbilisi",
+        "store" : {
+            "success": "Задача с типом {{eventType}} была сохранена",
+            "error": "Что-то случилось, повторите попытку позже"
+        }
     },
     "weather": {
         "get-description": "Для получени погоды введите город на русском или английском языке.",
@@ -17,12 +26,6 @@
         },
         "undefined": {
             "description":"Я не понимаю команду!"
-        },
-        "tasks": {
-            "description-time": "Введите время в формате 02:22",
-            "description-type": "Выберите тип задачи.",
-            "description-city": "Введите название населенного пункта.",
-            "description-option": "Введите строку которая будет показаны при вызове задачи."
         }
     },
     "buttons": {
@@ -33,7 +36,9 @@
         "event-weather": "Event weather",
         "profile": "Profile",
         "reset": "Сброс",
-        "tasks-new'": "Создать новую задачу"
+        "tasks-new": "New task",
+        "task-type-reminder":"Reminder",
+        "task-type-weather":"Weather"
     },
     "notifications": {
         "common": {

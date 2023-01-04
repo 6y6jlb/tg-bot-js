@@ -1,5 +1,4 @@
 import { ITask, EVENT_ENUM } from './../../models/types';
-
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { APP_TYPE_ENUM } from "../../models/types";
@@ -7,12 +6,14 @@ import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
 import TaskService from "../Task/TaskService";
 import UserService from "../User/UserService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
+import { taskCreationValidator } from '../../helpers/validation';
 
 
 const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const text = msg.text;
   const chatId = msg.chat.id;
   const userId = msg.from?.id;
+
 
   const existedUser = userId ? await UserService.isUserExists(userId) : null;
   if (!existedUser) {
@@ -23,7 +24,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
     await bot.instance.sendMessage(
       chatId,
-      `${bot.localeService.i18.t("greeting")} - ${msg.from?.first_name}!`,
+      `${bot.localeService.i18.t("action.greeting")} - ${msg.from?.first_name}!`,
       {
         reply_markup: {
           keyboard: [
@@ -84,7 +85,14 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           message += `${bot.localeService.i18.t('tasks.info-line', { userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: currentTask.call_at, escapeValue: false })}`;
 
         }
-        await bot.instance.sendMessage(chatId, message, { parse_mode: 'HTML' });
+        await bot.instance.sendMessage(chatId, message, {
+          parse_mode: 'HTML',
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: `${bot.localeService.i18.t('buttons.tasks-new')}`, callback_data: COMMANDS.TASKS_STORE }],
+            ]
+          }
+        });
         break;
 
       case COMMANDS.RESTART:
@@ -95,7 +103,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         );
         break;
       case COMMANDS.WEATHER:
-        UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.WEATHER, created_at: new Date() })
+        UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.WEATHER_REQUEST, created_at: new Date() })
         await bot.instance.sendMessage(
           chatId,
           `${bot.localeService.i18.t('weather.get-description')}`,
@@ -112,7 +120,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       default:
         if (userSettings) {
           switch (userSettings.app_type) {
-            case APP_TYPE_ENUM.WEATHER:
+            case APP_TYPE_ENUM.WEATHER_REQUEST:
               const weather = await bot.weatherService.get({ city: text })
               await bot.instance.sendMessage(
                 chatId,
@@ -121,14 +129,32 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
                 }),
                 {
                   parse_mode: 'HTML',
-                  reply_markup: {
-                    inline_keyboard: [
-                      [{ text: `${bot.localeService.i18.t('buttons.tasks-new')}`, callback_data: COMMANDS.TASKS_STORE }],
-                    ]
-                  }
                 });
-              return;
+              break;
 
+            case APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER:
+            case APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER:
+              UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
+              const { time, options, timezone } = taskCreationValidator(text)
+              const eventType = userSettings.app_type === APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER ? EVENT_ENUM.REMINDER : EVENT_ENUM.WEATHER;
+              const newTask = TaskService.store({ call_at: time, is_regular: true, options, tz: timezone, user_id: msg.from?.id, event_type: eventType })
+              console.log(newTask)
+              if (newTask) {
+                await bot.instance.sendMessage(
+                  chatId,
+                  bot.localeService.i18.t('tasks.store.success', { eventType: EVENT_ENUM[eventType].toLocaleLowerCase() }),
+                  {
+                    parse_mode: 'HTML',
+                  });
+              } else {
+                await bot.instance.sendMessage(
+                  chatId,
+                  bot.localeService.i18.t('tasks.store.error'),
+                  {
+                    parse_mode: 'HTML',
+                  });
+              }
+              break;
 
             default:
               break;

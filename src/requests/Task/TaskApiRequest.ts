@@ -12,8 +12,8 @@ class TaskApiRequest {
 
 
     store(request: Request): IStoreTaskRequest {
-        const { tz, call_at, is_regular, options, event_type } = request.body
-        return { tz, call_at, is_regular, options, event_type } as IStoreTaskRequest;
+        const { user_id, tz, call_at, is_regular, options, event_type } = request.body
+        return { user_id, tz, call_at, is_regular, options, event_type } as IStoreTaskRequest;
     }
 
     update(request: Request): IUpdateTaskRequest {
