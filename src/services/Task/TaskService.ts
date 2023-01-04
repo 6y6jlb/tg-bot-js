@@ -3,6 +3,10 @@ import Task from "../../models/Task";
 import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "../../requests/Task/types";
 
 class TaskService {
+    FORMAT: string;
+    constructor() {
+        this.FORMAT = 'H:mm';
+    }
 
     get(data: IGetTaskRequest) {
         if (data._id) {
@@ -18,17 +22,21 @@ class TaskService {
     }
 
     store(data: IStoreTaskRequest) {
-        const baseFormat = 'H:mm'
-        let callAt = data.call_at.trim();
-        if (data.call_at.length > 1 && data.call_at[0] === '0') {
-            callAt = callAt[1]
-        }
-        callAt = moment.tz(callAt, baseFormat, data.tz).utc().format(baseFormat)
+        let callAt = this.timeCorrection(data.call_at)
+        callAt = moment.tz(callAt, this.FORMAT, data.tz).utc().format(this.FORMAT)
         return Task.create({ ...data, call_at: callAt })
     }
 
     delete(data: IDeleteTaskRequest) {
         return Task.findByIdAndDelete(data._id)
+    }
+
+    public timeCorrection(time: string) {
+        let newTime = time.trim();
+        if (newTime.length > 1 && newTime[0] === '0') {
+            newTime = newTime.slice(1)
+        }
+        return newTime;
     }
 
 

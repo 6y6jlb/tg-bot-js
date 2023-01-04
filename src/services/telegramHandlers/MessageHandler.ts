@@ -7,6 +7,8 @@ import TaskService from "../Task/TaskService";
 import UserService from "../User/UserService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { taskCreationValidator } from '../../helpers/validation';
+import config from '../../utils/config';
+import moment from 'moment-timezone';
 
 
 const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
@@ -82,7 +84,9 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         let message = bot.localeService.i18.t('tasks.info-title');
         for (let task = 0; task < tasks.length; task++) {
           const currentTask = tasks[task];
-          message += `${bot.localeService.i18.t('tasks.info-line', { userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: currentTask.call_at, escapeValue: false })}`;
+          const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').format(TaskService.FORMAT)
+
+          message += `${bot.localeService.i18.t('tasks.info-line', { userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: callAt, escapeValue: false })}`;
 
         }
         await bot.instance.sendMessage(chatId, message, {
