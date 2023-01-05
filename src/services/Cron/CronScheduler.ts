@@ -12,14 +12,20 @@ export class CronScheduler {
     this.bot = bot;
   }
 
-  public makeTask(expression: string, chatId: number, message: string, taskId: any, timezone: string) {
-    const task = cron.schedule(expression, () => {
-      TaskService.update({ _id: taskId, payload: { queue: false } })
-      this.bot.sendMessage(chatId, message);
-    }, {
-      scheduled: true,
-      timezone
-    });
+  public makeTask(expression: string, userId: number, message: string, taskId: any, timezone: string) {
+    try {
+      cron.schedule(expression, () => {
+        console.info(`Task executed - expr: ${expression}, user_id: ${userId}, message: ${message}, tz: ${timezone}`)
+        TaskService.update({ _id: taskId, payload: { queue: false } })
+        this.bot.sendMessage(userId, message);
+      }, {
+        scheduled: true,
+        timezone
+      });
+      console.info(`Task added - expr: ${expression}, user_id: ${userId}, message: ${message}, tz: ${timezone}`)
+    } catch (error) {
+      console.warn(error.message)
+    }
   }
 
   private async getTasks() {
@@ -46,8 +52,14 @@ export class CronScheduler {
   }
 
   public async start() {
-    cron.schedule('30 * * * * *', () => {
-      this.callTasks();
-    });
+    try {
+      console.info(`Schedule started, date - ${moment().format('HH:mma M.D.YYYY')}`)
+      cron.schedule('30 * * * * *', () => {
+        this.callTasks();
+      });
+    } catch (error) {
+      console.warn(error.message)
+    }
+
   }
 }

@@ -42,8 +42,9 @@ class Bot {
     });
     
     this.adminService.sendMesssageToAdmin(
-      this.instance, {text: this.localeService.i18.t('notifications.common.start',{date: moment().format('h:mma M.D.YYYY')})}
+      this.instance, {text: this.localeService.i18.t('notifications.common.start',{date: moment().format('HH:mma M.D.YYYY')})}
       )
+      console.info(`Telegram bot started at ${moment().format('HH:mma M.D.YYYY')}`)
   }
 }
 

@@ -36,8 +36,8 @@
         "profile": "Profile",
         "reset": "Reset",
         "tasks-new": "Create new task",
-        "task-type-reminder":"Reminder",
-        "task-type-weather":"Weather"
+        "tasks-type-reminder":"Reminder",
+        "tasks-type-weather":"Weather"
 
     },
     "notifications": {

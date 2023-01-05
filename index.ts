@@ -18,8 +18,8 @@ process.on('uncaughtException', function (err) {
 
 async function startApp() {
   try {
-
     await mongoose.connect(`mongodb+srv://${CONFIG.MONGO_DB_USER}:${CONFIG.MONGO_DB_PASS}@${CONFIG.MONGO_DB_NAME}.n2dmfie.mongodb.net/?retryWrites=true&w=majority`)
+    console.info(`Mongo connected`)
 
 
     const app = express()
@@ -29,12 +29,12 @@ async function startApp() {
       .use('/api', tasksRouter)
       .use('/api', weatherRouter)
       .use(express.static(__dirname))
-    //   ;
+      ;
 
-    //   https.createServer({
-    //     key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
-    //     cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
-    // }, app)
+      https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
+    }, app)
     .listen(CONFIG.PORT)
       
 
