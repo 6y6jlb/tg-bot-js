@@ -20,7 +20,6 @@ export class CronScheduler {
       scheduled: true,
       timezone
     });
-    task.start()
   }
 
   private async getTasks() {

@@ -4,6 +4,7 @@ export interface IGetTaskRequest {
     _id?: any,
     call_at?: any,
     queue?: boolean,
+    user_id?: number
 }
 
 export interface IStoreTaskRequest {

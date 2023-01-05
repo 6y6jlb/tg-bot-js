@@ -13,6 +13,10 @@ class AdminService {
         }
 
     }
+
+    public checkAdmin(user_id: number) {
+        return this.adminList.includes(String(user_id));
+    }
 }
 
 export default new AdminService();

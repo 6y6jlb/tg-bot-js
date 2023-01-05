@@ -1,5 +1,5 @@
 {
-    "your-name-is": "Тебя зовут",
+    "your-name-is": "Тебя зовут - {{name}}",
     "guest":"Гость",
     "tasks":{
         "info-title":"Существующие задачи:",
@@ -31,14 +31,14 @@
     "buttons": {
         "fill-form": "Заполните форму",
         "open-app": "Открыть приложение",
-        "weather": "Weather request",
-        "event-reminder": "Event reminder",
-        "event-weather": "Event weather",
-        "profile": "Profile",
+        "weather": "Запрос погоды",
+        "event-reminder": "Событие(напоминание)",
+        "event-weather": "Событие(погода)",
+        "profile": "Профайл",
         "reset": "Сброс",
-        "tasks-new": "New task",
-        "task-type-reminder":"Reminder",
-        "task-type-weather":"Weather"
+        "tasks-new": "Новая задача",
+        "tasks-type-reminder": "Напоминание",
+        "tasks-type-weather": "Погода"
     },
     "notifications": {
         "common": {

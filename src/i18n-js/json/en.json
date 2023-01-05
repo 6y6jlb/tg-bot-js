@@ -1,5 +1,5 @@
 {
-    "your-name-is": "Your name is",
+    "your-name-is": "Your name is - {{name}}",
     "guest": "Guest",
     "tasks": {
         "info-title": "Existed tasks:",
@@ -36,8 +36,9 @@
         "profile": "Profile",
         "reset": "Reset",
         "tasks-new": "Create new task",
-        "tasks-type-reminder": "Напоминание",
-        "tasks-type-weather": "Погода"
+        "task-type-reminder":"Reminder",
+        "task-type-weather":"Weather"
+
     },
     "notifications": {
         "common": {
