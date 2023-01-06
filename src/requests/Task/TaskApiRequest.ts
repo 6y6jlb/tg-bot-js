@@ -1,3 +1,4 @@
+import { UpdateTaskError, DeleteTaskError } from './../../exceptions/Task';
 import { Request } from "express";
 import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "./types";
 
@@ -17,12 +18,13 @@ class TaskApiRequest {
     }
 
     update(request: Request): IUpdateTaskRequest {
-        const { task_id, tz, call_at, is_regular, options, event_type, queue } = request.body
-        console.log(request.body)
+        const { task_id } = request.body
+        const payload = request.body
+
         if (task_id) {
-            return { _id: task_id, payload: { tz, call_at, is_regular, options, event_type, queue } } as IUpdateTaskRequest;
+            return { _id: task_id, payload } as IUpdateTaskRequest;
         }
-        throw new Error('Incorrect data')
+        throw new UpdateTaskError('Incorrect data')
     }
 
     delete(request: Request): IDeleteTaskRequest {
@@ -30,7 +32,7 @@ class TaskApiRequest {
         if (task_id) {
             return { _id: task_id } as IDeleteTaskRequest;
         }
-        throw new Error('Incorrect data')
+        throw new DeleteTaskError('Incorrect data')
     }
 }
 

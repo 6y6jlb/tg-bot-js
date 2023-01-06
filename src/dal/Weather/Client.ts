@@ -6,7 +6,7 @@ import Client from "../absctract/Client"
 import fetch, { RequestInfo, RequestInit } from 'node-fetch';
 
 class WeatherClient extends Client {
-    async get(params: IGetWeatehrRequest): Promise<IOpenWeatherResponse> {
+    async get(params: IGetWeatehrRequest): Promise<IOpenWeatherResponse & IGetWeatehrRequest> {
         const url = new URL(SERVICE_ROUTES.OPEN_WEATHER.BASE + SERVICE_ROUTES.OPEN_WEATHER.ENTPOINTS.WEATHER);
 
 

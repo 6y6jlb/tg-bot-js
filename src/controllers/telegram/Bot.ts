@@ -23,7 +23,7 @@ class Bot {
     this.localeService = LocaleService;
     this.adminService = AdminService;
     this.weatherService = WeatherService;
-    this.scheduler = new CronScheduler(this.instance);
+    this.scheduler = new CronScheduler(this.instance, this.localeService);
   }
 
   start() {

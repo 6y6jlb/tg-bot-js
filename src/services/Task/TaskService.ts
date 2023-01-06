@@ -9,12 +9,12 @@ class TaskService {
         this.FORMAT = 'H:mm';
     }
 
-    get(data: IGetTaskRequest) {
+    async get(data: IGetTaskRequest) {
         try {
             if (data._id) {
-                return Task.findOne(data)
+                return await Task.findOne(data)
             } else {
-                return Task.find(data)
+                return await Task.find(data)
             }
 
         } catch (error) {
@@ -22,27 +22,27 @@ class TaskService {
         }
     }
 
-    update(data: IUpdateTaskRequest) {
+    async update(data: IUpdateTaskRequest) {
         try {
-            return Task.findByIdAndUpdate(data._id, data.payload);
+            return await Task.findByIdAndUpdate(data._id, data.payload,{ new: true });
         } catch (error) {
             throw new UpdateTaskError(error.message)
         }
     }
 
-    store(data: IStoreTaskRequest) {
+    async store(data: IStoreTaskRequest) {
         try {
             let callAt = this.timeCorrection(data.call_at)
             callAt = moment.tz(callAt, this.FORMAT, data.tz).utc().format(this.FORMAT)
-            return Task.create({ ...data, call_at: callAt })
+            return await Task.create({ ...data, call_at: callAt })
         } catch (error) {
             throw new CreateTaskError(error.message)
         }
     }
 
-    delete(data: IDeleteTaskRequest) {
+    async delete(data: IDeleteTaskRequest) {
         try {
-            return Task.findByIdAndDelete(data._id)
+            return await Task.findByIdAndDelete(data._id)
         } catch (error) {
             throw new DeleteTaskError(error.message)
         }

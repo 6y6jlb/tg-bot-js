@@ -16,8 +16,8 @@ class TasksController {
     async update(req: Request, res: Response) {
         try {
             const data = TaskApiRequest.update(req);
-            console.log(data)
-            res.json(await TaskService.update(data))
+            const task = await TaskService.update(data);
+            res.json(task)
         } catch (error) {
             console.log(error)
             res.json(error)

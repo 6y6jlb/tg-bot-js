@@ -7,6 +7,7 @@ import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
 import TaskService from "../Task/TaskService";
 import UserService from "../User/UserService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
+import { TEMPERATURE_SIGN } from '../Weather/const';
 import { EVENT_ENUM, ITask } from './../../models/types';
 
 
@@ -115,7 +116,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
         await bot.instance.sendMessage(
           chatId,
-          bot.localeService.i18.t('your-name-is', {name})
+          bot.localeService.i18.t('your-name-is', { name })
         );
 
         break;
@@ -152,7 +153,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
               await bot.instance.sendMessage(
                 chatId,
                 bot.localeService.i18.t('weather.tg-string', {
-                  city: weather.name, temp: String(weather.main.temp), feel: String(weather.main.feels_like), humidity: String(weather.main.humidity), escapeValue: false
+                  city: weather.name, temp: String(weather.main.temp), feel: String(weather.main.feels_like), humidity: String(weather.main.humidity), sign: TEMPERATURE_SIGN[weather.units], escapeValue: false
                 }),
                 {
                   parse_mode: 'HTML',
