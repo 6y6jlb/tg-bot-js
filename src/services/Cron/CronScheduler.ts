@@ -13,19 +13,16 @@ export class CronScheduler {
   }
 
   public makeTask(expression: string, userId: number, message: string, taskId: any, timezone: string) {
-    try {
-      cron.schedule(expression, () => {
-        console.info(`Task executed - expr: ${expression}, user_id: ${userId}, message: ${message}, tz: ${timezone}`)
+    cron.schedule(expression, () => {
+      try {
         TaskService.update({ _id: taskId, payload: { queue: false } })
         this.bot.sendMessage(userId, message);
-      }, {
-        scheduled: true,
-        timezone
-      });
-      console.info(`Task added - expr: ${expression}, user_id: ${userId}, message: ${message}, tz: ${timezone}`)
-    } catch (error) {
-      console.warn(error.message)
-    }
+        console.info(`Task executed - expr: ${expression}, user_id: ${userId}, message: ${message}, tz: ${timezone}`)
+      } catch (error) {
+        console.warn(error.message)
+      }
+    });
+    console.info(`Task added - expr: ${expression}, user_id: ${userId}, message: ${message}, tz: ${timezone}`)
   }
 
   private async getTasks() {

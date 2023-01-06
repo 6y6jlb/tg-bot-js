@@ -1,6 +1,7 @@
 import moment from "moment-timezone";
 import Task from "../../models/Task";
 import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "../../requests/Task/types";
+import { CreateTaskError, DeleteTaskError, TaskError, UpdateTaskError } from './../../exceptions/Task';
 
 class TaskService {
     FORMAT: string;
@@ -9,26 +10,42 @@ class TaskService {
     }
 
     get(data: IGetTaskRequest) {
-        if (data._id) {
-            return Task.findOne(data)
-        } else {
-            return Task.find(data)
-        }
+        try {
+            if (data._id) {
+                return Task.findOne(data)
+            } else {
+                return Task.find(data)
+            }
 
+        } catch (error) {
+            throw new TaskError(error.message)
+        }
     }
 
     update(data: IUpdateTaskRequest) {
-        return Task.findByIdAndUpdate(data._id, data.payload);
+        try {
+            return Task.findByIdAndUpdate(data._id, data.payload);
+        } catch (error) {
+            throw new UpdateTaskError(error.message)
+        }
     }
 
     store(data: IStoreTaskRequest) {
-        let callAt = this.timeCorrection(data.call_at)
-        callAt = moment.tz(callAt, this.FORMAT, data.tz).utc().format(this.FORMAT)
-        return Task.create({ ...data, call_at: callAt })
+        try {
+            let callAt = this.timeCorrection(data.call_at)
+            callAt = moment.tz(callAt, this.FORMAT, data.tz).utc().format(this.FORMAT)
+            return Task.create({ ...data, call_at: callAt })
+        } catch (error) {
+            throw new CreateTaskError(error.message)
+        }
     }
 
     delete(data: IDeleteTaskRequest) {
-        return Task.findByIdAndDelete(data._id)
+        try {
+            return Task.findByIdAndDelete(data._id)
+        } catch (error) {
+            throw new DeleteTaskError(error.message)
+        }
     }
 
     public timeCorrection(time: string) {

@@ -12,10 +12,17 @@ export class CreateTaskError extends Error {
     }
 };
 
-export class DeleteUserError extends Error {
+export class DeleteTaskError extends Error {
     constructor(message: string) {
         super(message);
         this.name = "DeleteTaskError";
+    }
+};
+
+export class TaskError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "TaskError";
     }
 };
 
