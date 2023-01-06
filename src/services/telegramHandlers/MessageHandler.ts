@@ -92,7 +92,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         let message = bot.localeService.i18.t('tasks.info-title');
         for (let task = 0; task < tasks.length; task++) {
           const currentTask = tasks[task];
-          const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').format(TaskService.FORMAT)
+          const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').tz(currentTask.tz).format(TaskService.FORMAT)
 
           message += `${bot.localeService.i18.t('tasks.info-line', { userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: callAt, escapeValue: false })}`;
 
