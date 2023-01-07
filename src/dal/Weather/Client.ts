@@ -28,11 +28,17 @@ class WeatherClient extends Client {
         });
         await this.throwOnError(response);
         const data = await response.json();
+        const icon = this.getIcon(data.weather[0].icon)
         return {
             ...data,
+            icon,
             units: params.units || 'metric',
             lang: params.lang || 'ru'
         };
+    }
+
+    private getIcon(value:string) {
+        return `http://openweathermap.org/img/wn/${value}@4x.png`
     }
 
 }

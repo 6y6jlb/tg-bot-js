@@ -16,7 +16,7 @@ class Bot {
   adminService: typeof AdminService;
   weatherService: typeof WeatherService;
   scheduler: CronScheduler;
-  
+
   constructor() {
 
     this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
@@ -40,11 +40,11 @@ class Bot {
     this.instance.on("callback_query", async (msg) => {
       callbackHandler(this, msg)
     });
-    
+    const now = moment().format('HH:mma MD.DD.YYYY');
     this.adminService.sendMesssageToAdmin(
-      this.instance, {text: this.localeService.i18.t('notifications.common.start',{date: moment().format('HH:mma M.D.YYYY')})}
-      )
-      console.info(`Telegram bot started at ${moment().format('HH:mma M.D.YYYY')}`)
+      this.instance, { text: this.localeService.i18.t('notifications.common.start', { date: now }) }
+    )
+    console.info(`Telegram bot started at ${now}`)
   }
 }
 

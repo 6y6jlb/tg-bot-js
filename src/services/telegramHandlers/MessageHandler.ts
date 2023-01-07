@@ -150,10 +150,12 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
             case APP_TYPE_ENUM.WEATHER_REQUEST:
 
               const weather = await bot.weatherService.get({ city: text })
+              await bot.instance.sendPhoto(
+                chatId, weather.icon);
               await bot.instance.sendMessage(
                 chatId,
                 bot.localeService.i18.t('weather.tg-string', {
-                  city: weather.name, temp: String(weather.main.temp), feel: String(weather.main.feels_like), humidity: String(weather.main.humidity), sign: TEMPERATURE_SIGN[weather.units], escapeValue: false
+                  city: weather.name, temp: weather.main.temp, feel: weather.main.feels_like, humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
                 }),
                 {
                   parse_mode: 'HTML',

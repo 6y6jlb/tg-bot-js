@@ -23,12 +23,12 @@ export class CronScheduler {
         await TaskService.update({ _id: task._id, payload: { queue: false } })
         const message = await this.getMessage(task.event_type, task.options);
         await this.bot.sendMessage(task.user_id, message);
-        console.info(`Task executed - expr: ${expression}, user_id: ${task.user_id}, message: ${message}`)
+        console.info(`Task executed - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
       } catch (error) {
         console.warn(error.message)
       }
     });
-    console.info(`Task added - expr: ${expression}, user_id: ${task.user_id}, message: ${task.options}`)
+    console.info(`Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
   }
 
   private async getTasks() {
@@ -56,7 +56,7 @@ export class CronScheduler {
 
   public async start() {
     try {
-      console.info(`Schedule started, date - ${moment().format('HH:mma M.D.YYYY')}`)
+      console.info(`Schedule started, date - ${moment().format('HH:mma MM.DD.YYYY')}`)
       cron.schedule('30 * * * * *', () => {
         this.callTasks();
       });
@@ -70,7 +70,7 @@ export class CronScheduler {
       case EVENT_ENUM.WEATHER:
         const weather = await WeatherService.get({ city: options })
         return this.localeService.i18.t('weather.tg-string', {
-          city: weather.name, temp: String(weather.main.temp), feel: String(weather.main.feels_like), humidity: String(weather.main.humidity), sign: TEMPERATURE_SIGN[weather.units], escapeValue: false
+          city: weather.name, temp: String(weather.main.temp), feel: weather.main.feels_like, humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
         });
 
 
