@@ -10,6 +10,7 @@ export const COMMANDS = {
   TASKS: "/tasks",
   TASKS_STORE: "/tasks-store",
   TASKS_DELETE: "/tasks-delete",
+  TASKS_MAKE_REGULAR: "/tasks-make-regular",
 
 };
 

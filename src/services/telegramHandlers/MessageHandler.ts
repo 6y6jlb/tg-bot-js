@@ -18,7 +18,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const userId = msg.from?.id;
   const name = msg.from.username || msg.from.first_name;
 
-  const existedUser = userId ? await UserService.isUserExists(userId) : null;
+  const existedUser = userId ? await UserService.isUserExists(userId) : null
 
   if (!existedUser) {
 
@@ -179,15 +179,24 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
               const { time, options, timezone } = taskCreationValidator(text)
               const eventType = userSettings.app_type === APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER ? EVENT_ENUM.REMINDER : EVENT_ENUM.WEATHER;
-              const newTask = TaskService.store({ call_at: time, is_regular: true, options, tz: timezone, user_id: msg.from?.id, event_type: eventType })
+              const newTask = await TaskService.store({ call_at: time, is_regular: true, options, tz: timezone, user_id: msg.from?.id, event_type: eventType })
 
               if (newTask) {
 
                 await bot.instance.sendMessage(
                   chatId,
-                  bot.localeService.i18.t('tasks.store.success', { eventType: EVENT_ENUM[eventType].toLocaleLowerCase() }),
+                  bot.localeService.i18.t('tasks.store.success', { eventType: EVENT_ENUM[eventType].toLocaleLowerCase() })
+                  + '\n' +
+                  bot.localeService.i18.t('tasks.update.make-regular-description')
+                  ,
                   {
                     parse_mode: 'HTML',
+                    reply_markup: {
+                      inline_keyboard: [
+                        [{ text: bot.localeService.i18.t('buttons.yes'), callback_data: `${COMMANDS.TASKS_MAKE_REGULAR}?task_id=${newTask._id}` }],
+                        // [{ text: bot.localeService.i18.t('buttons.no'), callback_data: COMMANDS.RESTART }],
+                      ]
+                    }
                   });
 
               } else {

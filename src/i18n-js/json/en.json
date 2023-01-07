@@ -11,8 +11,13 @@
         "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
         "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
         "reqular": {
-            "true": "is reqular task",
-            "false": "is not a regular task"
+            "true": "Is reqular task",
+            "false": "Is not a regular task"
+        },
+        "update": {
+            "make-regular-description":"Do you want to make task regular?",
+            "success": "Task was saved",
+            "error": "Something wend wrong"
         },
         "store": {
             "success": "Task with {{eventType}} type  was saved",
@@ -41,6 +46,8 @@
         }
     },
     "buttons": {
+        "yes":"Yes",
+        "no":"No",
         "fill-form": "Fill the form",
         "open-app": "Open app",
         "weather": "Weather request",

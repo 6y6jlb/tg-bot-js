@@ -20,10 +20,16 @@ export class CronScheduler {
   public makeTask(expression: string, task: ITask) {
     cron.schedule(expression, async () => {
       try {
-        await TaskService.update({ _id: task._id, payload: { queue: false } })
         const message = await this.getMessage(task.event_type, task.options);
         await this.bot.sendMessage(task.user_id, message);
-        console.info(`Task executed - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
+
+        if (task.is_regular) {
+          await TaskService.update({ _id: task._id, payload: { queue: false } })
+        } else {
+          await TaskService.delete({ _id: task._id })
+        }
+
+        console.info(`Task executed${task.is_regular ? '' : 'and was deleted'} - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
       } catch (error) {
         console.warn(error.message)
       }
@@ -44,37 +50,49 @@ export class CronScheduler {
   }
 
   private async callTasks() {
+
     const tasks = await this.getTasks() as ITask[];
+
     for (let i = 0; i < tasks.length; i++) {
       const currentTask = tasks[i];
       const callAt = moment(currentTask.call_at, 'H:mm').toDate()
       const expression = convertDateToCronExpression(callAt)
+
       this.makeTask(expression, currentTask);
+
       TaskService.update({ _id: currentTask._id, payload: { queue: true } })
     }
   }
 
   public async start() {
+
     try {
+
       console.info(`Schedule started, date - ${moment().format('HH:mma MM.DD.YYYY')}`)
       cron.schedule('30 * * * * *', () => {
         this.callTasks();
       });
+
     } catch (error) {
+
       console.warn(error.message)
     }
   }
 
   private async getMessage(eventType: EVENT_ENUM, options: string) {
+
     switch (eventType) {
+
       case EVENT_ENUM.WEATHER:
+
         const weather = await WeatherService.get({ city: options })
+
         return this.localeService.i18.t('weather.tg-string', {
           city: weather.name, temp: String(weather.main.temp), feel: weather.main.feels_like, humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
         });
 
-
       default:
+
         return options;
     }
   }

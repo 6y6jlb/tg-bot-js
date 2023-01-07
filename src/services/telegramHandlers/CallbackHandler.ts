@@ -4,6 +4,7 @@ import Bot from "../../controllers/telegram/Bot";
 import { APP_TYPE_ENUM } from "../../models/types";
 import { COMMANDS } from "../../utils/const";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
+import TaskService from '../Task/TaskService';
 
 
 const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
@@ -26,6 +27,21 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
     );
   }
 
+  else if (data.includes(COMMANDS.TASKS_MAKE_REGULAR)) {
+    const params = new URLSearchParams(data.split('?')[1])
+    const taskId = params.has('task_id') && params.get('task_id')
+    if (taskId) {
+      await TaskService.update({ _id: taskId, payload: { is_regular: true } })
+      await bot.instance.sendMessage(
+        chatId,
+        `${bot.localeService.i18.t('tasks.update.success')}`,)
+    } else {
+      await bot.instance.sendMessage(
+        chatId,
+        `${bot.localeService.i18.t('tasks.update.error')}`,)
+    }
+  }
+
   else if (data.includes(COMMANDS.TASKS_STORE)) {
     if (data === COMMANDS.TASKS_STORE) {
       UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_DEFAULT, created_at: new Date() })
@@ -36,8 +52,8 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
           parse_mode: 'HTML',
           reply_markup: {
             inline_keyboard: [
-              [{ text: `${bot.localeService.i18.t('buttons.tasks-type-weather')}`, callback_data: COMMANDS.TASKS_STORE + '/type=' + EVENT_ENUM[EVENT_ENUM.WEATHER] }],
-              [{ text: `${bot.localeService.i18.t('buttons.tasks-type-reminder')}`, callback_data: COMMANDS.TASKS_STORE + '/type=' + EVENT_ENUM[EVENT_ENUM.REMINDER] }],
+              [{ text: `${bot.localeService.i18.t('buttons.tasks-type-weather')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.WEATHER] }],
+              [{ text: `${bot.localeService.i18.t('buttons.tasks-type-reminder')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.REMINDER] }],
             ]
           }
         }
