@@ -37,7 +37,7 @@ class WeatherClient extends Client {
         };
     }
 
-    private getIcon(value:string) {
+    private getIcon(value: string) {
         return `http://openweathermap.org/img/wn/${value}@4x.png`
     }
 

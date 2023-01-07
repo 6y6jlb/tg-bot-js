@@ -18,6 +18,14 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
     );
   }
 
+  else if (data === COMMANDS.TASKS_DELETE) {
+    UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.TASK_DELETE, created_at: new Date() })
+    await bot.instance.sendMessage(
+      chatId,
+      `${bot.localeService.i18.t('actions.tasks.delete-description')}`
+    );
+  }
+
   else if (data.includes(COMMANDS.TASKS_STORE)) {
     if (data === COMMANDS.TASKS_STORE) {
       UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_DEFAULT, created_at: new Date() })
@@ -35,6 +43,7 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
         }
       );
     }
+
     else if (data.includes('/type=' + EVENT_ENUM[EVENT_ENUM.WEATHER])) {
       UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER, created_at: new Date() })
       await bot.instance.sendMessage(
@@ -54,6 +63,7 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
         }
       );
     }
+
     else if (data.includes('/type=' + EVENT_ENUM[EVENT_ENUM.REMINDER])) {
       UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER, created_at: new Date() })
       await bot.instance.sendMessage(
@@ -73,6 +83,7 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
         }
       );
     }
+
     else {
       console.log('else', data);
     }

@@ -2,24 +2,37 @@
     "your-name-is": "Your name is - {{name}}",
     "guest": "Guest",
     "tasks": {
+        "reset-with-delete-task-description": "You can specify another task or exit the task deletion mode by clicking to button bellow.",
         "info-title": "Existed tasks:",
-        "info-line": "\nUser: {{userId}}, event: {{event}}, will be call at: {{date}}",
+        "info-line": "\nID: {{taskId}},\nUser: {{userId}},\nevent: {{event}},\nwill be call at: {{date}}\n{{regular}}\n",
         "description-time": "Enter the time of the task call in the format 2:22",
         "description-timezone": "About timezone you can read here\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>link to wiki</a>",
         "description-type": "Select the task type.",
         "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
         "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
+        "reqular": {
+            "true": "is reqular task",
+            "false": "is not a regular task"
+        },
         "store": {
             "success": "Task with {{eventType}} type  was saved",
+            "error": "Something wend wrong"
+        },
+        "delete": {
+            "success": "Task was deleted",
             "error": "Something wend wrong"
         }
     },
     "weather": {
+        "reset-with-weather-description": "You can specify another city or exit the weather query mode by clicking to button bellow.",
         "get-description": "To get the weather, enter the city in Russian or English.",
         "tg-string": "City: {{city}},\nTemp: {{temp}}{{sign}},\nFeels like: {{feel}},\nHumidity: {{humidity}}\n{{description}} and wind speed: {{windSpeed}}\nPressure: {{pressure}}."
     },
     "actions": {
         "greeting": "Hello",
+        "tasks": {
+            "delete-description": "Enter the number of the task you want to delete!"
+        },
         "reset": {
             "description": "App param does reset!"
         },
@@ -36,9 +49,9 @@
         "profile": "Profile",
         "reset": "Reset",
         "tasks-new": "Create new task",
-        "tasks-type-reminder":"Reminder",
-        "tasks-type-weather":"Weather"
-
+        "tasks-delete": "Remove task",
+        "tasks-type-reminder": "Reminder",
+        "tasks-type-weather": "Weather"
     },
     "notifications": {
         "common": {

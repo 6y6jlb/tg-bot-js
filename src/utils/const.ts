@@ -9,6 +9,7 @@ export const COMMANDS = {
   WEATHER: "/weather",
   TASKS: "/tasks",
   TASKS_STORE: "/tasks-store",
+  TASKS_DELETE: "/tasks-delete",
 
 };
 

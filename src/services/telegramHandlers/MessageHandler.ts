@@ -91,11 +91,13 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         const tasks = await TaskService.get(isAdmin ? {} : { user_id: userId }) as ITask[];
 
         let message = bot.localeService.i18.t('tasks.info-title');
+
         for (let task = 0; task < tasks.length; task++) {
+
           const currentTask = tasks[task];
           const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').tz(currentTask.tz).format(TaskService.FORMAT)
 
-          message += `${bot.localeService.i18.t('tasks.info-line', { userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: callAt, escapeValue: false })}`;
+          message += `${bot.localeService.i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: callAt, isReqular: bot.localeService.i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
 
         }
 
@@ -104,6 +106,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           reply_markup: {
             inline_keyboard: [
               [{ text: bot.localeService.i18.t('buttons.tasks-new'), callback_data: COMMANDS.TASKS_STORE }],
+              [{ text: bot.localeService.i18.t('buttons.tasks-delete'), callback_data: COMMANDS.TASKS_DELETE }],
             ]
           }
         });
@@ -156,9 +159,15 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
                 chatId,
                 bot.localeService.i18.t('weather.tg-string', {
                   city: weather.name, temp: weather.main.temp, feel: weather.main.feels_like, humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
-                }),
+                }) + '\n' +
+                bot.localeService.i18.t('weather.buttons.reset-with-weather-description'),
                 {
                   parse_mode: 'HTML',
+                  reply_markup: {
+                    inline_keyboard: [
+                      [{ text: bot.localeService.i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
+                    ]
+                  }
                 });
 
               break;
@@ -166,7 +175,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
             case APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER:
             case APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER:
 
-              UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
+              await UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
 
               const { time, options, timezone } = taskCreationValidator(text)
               const eventType = userSettings.app_type === APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER ? EVENT_ENUM.REMINDER : EVENT_ENUM.WEATHER;
@@ -189,6 +198,38 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
                   {
                     parse_mode: 'HTML',
                   });
+              }
+              break;
+
+            case APP_TYPE_ENUM.TASK_DELETE:
+              try {
+                await TaskService.delete({ _id: text })
+                await bot.instance.sendMessage(
+                  chatId,
+                  bot.localeService.i18.t('tasks.delete.success')
+                  + '\n' +
+                  bot.localeService.i18.t('tasks.reset-with-delete-task-description'),
+                  {
+                    parse_mode: 'HTML',
+                    reply_markup: {
+                      inline_keyboard: [
+                        [{ text: bot.localeService.i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
+                      ]
+                    }
+                  }
+                );
+              } catch (error) {
+                await bot.instance.sendMessage(
+                  chatId,
+                  bot.localeService.i18.t('tasks.delete.error'),
+                  {
+                    reply_markup: {
+                      inline_keyboard: [
+                        [{ text: bot.localeService.i18.t('buttons.reset-with-delete-task-description'), callback_data: COMMANDS.RESTART }],
+                      ]
+                    }
+                  }
+                );
               }
               break;
 
