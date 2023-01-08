@@ -4,7 +4,7 @@
     "tasks": {
         "reset-with-delete-task-description": "You can specify another task or exit the task deletion mode by clicking to button bellow.",
         "info-title": "Existed tasks:",
-        "info-line": "\nID: {{taskId}},\nUser: {{userId}},\nevent: {{event}},\nwill be call at: {{date}}\n{{regular_dectription}}\n",
+        "info-line": "\nID: {{taskId}},\nUser: {{userId}},\nevent: {{event}},\nwill be call at: {{date}}\n{{regular_desctription}}\n",
         "description-time": "Enter the time of the task call in the format 2:22",
         "description-timezone": "About timezone you can read here\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>link to wiki</a>",
         "description-type": "Select the task type.",

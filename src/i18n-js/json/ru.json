@@ -4,7 +4,7 @@
     "tasks": {
         "reset-with-delete-task-description": "Вы можете указать еще одну задачу или выйти из режима удаления задач нажав на эту кнопку.",
         "info-title": "Существующие задачи:",
-        "info-line": "\nID: {{taskId}},\nПользователь: {{userId}},\nтип задачи: {{event}},\nбудет вызвана в: {{date}}\n{{regular_dectription}}\n",
+        "info-line": "\nID: {{taskId}},\nПользователь: {{userId}},\nтип задачи: {{event}},\nбудет вызвана в: {{date}}\n{{regular_desctription}}\n",
         "description-time": "Введите время в формате 02:22",
         "description-timezone": "Почитать про таймзоны можно тут\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>ССылка на википедию</a>",
         "description-type": "Выберите тип задачи.",
