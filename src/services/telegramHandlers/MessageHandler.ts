@@ -30,7 +30,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
     await bot.instance.sendMessage(
       chatId,
-      bot.localeService.i18.t("action.greeting", { userName: name ?? bot.localeService.i18.t('guest') }),
+      bot.localeService.i18.t("actions.greeting", { userName: name ?? bot.localeService.i18.t('guest') }),
       {
         reply_markup: {
           keyboard: [
@@ -71,7 +71,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         await bot.instance.sendSticker(chatId, STICKERS.GREETING);
         await bot.instance.sendMessage(
           chatId,
-          bot.localeService.i18.t("action.greeting", { userName: msg.from?.first_name ?? bot.localeService.i18.t('guest') }),
+          bot.localeService.i18.t("actions.greeting", { userName: msg.from?.first_name ?? bot.localeService.i18.t('guest') }),
           {
             reply_markup: {
               keyboard: [
@@ -97,7 +97,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           const currentTask = tasks[task];
           const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').tz(currentTask.tz).format(TaskService.FORMAT)
 
-          message += `${bot.localeService.i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: callAt, isReqular: bot.localeService.i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
+          message += `${bot.localeService.i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: callAt, regular_decription: bot.localeService.i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
 
         }
 
