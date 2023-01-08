@@ -4,9 +4,9 @@ import { GetWeatherError } from '../../exceptions/Weather';
 
 class WeatherApiRequest {
     get(request: Request): IGetWeatehrRequest {
-        const { city } = request.query
+        const { city, lang, units } = request.query
         if (city) {
-            return { city } as IGetWeatehrRequest;
+            return { city, lang, units } as IGetWeatehrRequest;
         }
         throw new GetWeatherError('Incorrect data')
     }

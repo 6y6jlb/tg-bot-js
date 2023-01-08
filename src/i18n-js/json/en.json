@@ -35,6 +35,7 @@
     },
     "actions": {
         "greeting": "Hello",
+        "info":"User info: {{userId}}\nName:{{name}}\nCreated at:{{createdAt}}\nLangugage:{{lang}}\nTimezone:{{tz}}",
         "tasks": {
             "delete-description": "Enter the number of the task you want to delete!"
         },

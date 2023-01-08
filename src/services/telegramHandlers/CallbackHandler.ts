@@ -80,7 +80,7 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
       );
     }
 
-    else if (data.includes('/type=' + EVENT_ENUM[EVENT_ENUM.REMINDER])) {
+    else if (data.includes('?type=' + EVENT_ENUM[EVENT_ENUM.REMINDER])) {
       UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER, created_at: new Date() })
       await bot.instance.sendMessage(
         chatId,

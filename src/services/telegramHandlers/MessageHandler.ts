@@ -2,7 +2,7 @@ import moment from 'moment-timezone';
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { taskCreationValidator } from '../../helpers/validation';
-import { APP_TYPE_ENUM } from "../../models/types";
+import { APP_TYPE_ENUM, IUser } from "../../models/types";
 import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
 import TaskService from "../Task/TaskService";
 import UserService from "../User/UserService";
@@ -119,7 +119,17 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
         await bot.instance.sendMessage(
           chatId,
-          bot.localeService.i18.t('your-name-is', { name })
+          bot.localeService.i18.t('actions.reset.description')
+        );
+
+        break;
+
+      case COMMANDS.INFO:
+        const user = await UserService.get({ id: userId }) as IUser;
+
+        await bot.instance.sendMessage(
+          chatId,
+          bot.localeService.i18.t('actions.info', { name: user.name,  userId: user.id, lang: user.language, tz: user.tz, createdAt: user.created_at })
         );
 
         break;
