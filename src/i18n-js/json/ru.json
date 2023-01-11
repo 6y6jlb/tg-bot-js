@@ -9,7 +9,7 @@
         "description-timezone": "Почитать про таймзоны можно тут\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>ССылка на википедию</a>",
         "description-type": "Выберите тип задачи.",
         "description-city": "Введите время, название населенного пункта\nи таймзону в формате:\n02:22 - Батуми - asia/tbilisi",
-        "description-option": "Введите время, сообщение\nи таймзону в формате:\n2:22 - Батуми - asia/tbilisi",
+        "description-option": "Введите время, сообщение\nи таймзону в формате:\n2:22 - <b>Мое сообщенение здесь</b> - asia/tbilisi",
         "reqular": {
             "true": "Регулярная задача",
             "false": "Не регулярная задача"

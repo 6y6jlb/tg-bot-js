@@ -9,7 +9,7 @@
         "description-timezone": "About timezone you can read here\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>link to wiki</a>",
         "description-type": "Select the task type.",
         "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
-        "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
+        "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - <b>My message here</b> - asia/tbilisi",
         "reqular": {
             "true": "Is reqular task",
             "false": "Is not a regular task"

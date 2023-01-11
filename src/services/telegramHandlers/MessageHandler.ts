@@ -189,7 +189,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
               const { time, options, timezone } = taskCreationValidator(text)
               const eventType = userSettings.app_type === APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER ? EVENT_ENUM.REMINDER : EVENT_ENUM.WEATHER;
-              const newTask = await TaskService.store({ call_at: time, is_regular: true, options, tz: timezone, user_id: msg.from?.id, event_type: eventType })
+              const newTask = await TaskService.store({ call_at: time, is_regular: false, options, tz: timezone, user_id: msg.from?.id, event_type: eventType })
 
               if (newTask) {
 
