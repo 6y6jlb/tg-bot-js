@@ -29,7 +29,7 @@ export class CronScheduler {
           await TaskService.delete({ _id: task._id })
         }
 
-        console.info(`Task executed${task.is_regular ? '' : 'and was deleted'} - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
+        console.info(`Task executed${task.is_regular ? '' : ' and was deleted'} - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
       } catch (error) {
         console.warn(error.message)
       }

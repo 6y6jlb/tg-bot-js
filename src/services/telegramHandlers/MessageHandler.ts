@@ -18,6 +18,9 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const userId = msg.from?.id;
   const name = msg.from.username || msg.from.first_name;
 
+  let message = '';
+  let params = {};
+
   const existedUser = userId ? await UserService.isUserExists(userId) : null
 
   if (!existedUser) {
@@ -90,14 +93,14 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         const isAdmin = bot.adminService.checkAdmin(userId)
         const tasks = await TaskService.get(isAdmin ? {} : { user_id: userId }) as ITask[];
 
-        let message = bot.localeService.i18.t('tasks.info-title');
+        message = bot.localeService.i18.t('tasks.info-title');
 
         for (let task = 0; task < tasks.length; task++) {
 
           const currentTask = tasks[task];
           const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').tz(currentTask.tz).format(TaskService.FORMAT)
 
-          message += `${bot.localeService.i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], date: callAt, regular_desctription: bot.localeService.i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
+          message += `${bot.localeService.i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], options: currentTask.options, date: callAt, regular_desctription: bot.localeService.i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
 
         }
 
@@ -115,32 +118,41 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
       case COMMANDS.RESTART:
 
-        UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
+        try {
 
-        await bot.instance.sendMessage(
-          chatId,
-          bot.localeService.i18.t('actions.reset.description')
-        );
+          UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
+          message = bot.localeService.i18.t('actions.reset.description');
+        } catch (error) {
+          message = error.message;
+        }
 
+        await bot.instance.sendMessage(chatId, message);
         break;
 
       case COMMANDS.INFO:
-        const user = await UserService.get({ id: userId }) as IUser;
 
-        await bot.instance.sendMessage(
-          chatId,
-          bot.localeService.i18.t('actions.info', { name: user.name,  userId: user.id, lang: user.language, tz: user.tz, createdAt: user.created_at })
-        );
+        try {
+          const user = await UserService.get({ id: userId }) as IUser;
+          message = bot.localeService.i18.t('actions.info', { name: user.name, userId: user.id, lang: user.language, tz: user.tz, createdAt: user.created_at })
+        } catch (error) {
+          message = error.message;
+        }
 
+        await bot.instance.sendMessage(chatId, message);
         break;
 
       case COMMANDS.WEATHER:
 
-        UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.WEATHER_REQUEST, created_at: new Date() })
+        try {
+          UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.WEATHER_REQUEST, created_at: new Date() })
+          message = bot.localeService.i18.t('weather.get-description');
+        } catch (error) {
+          message = error.message;
+        }
 
         await bot.instance.sendMessage(
           chatId,
-          bot.localeService.i18.t('weather.get-description'),
+          message,
           {
             reply_markup: {
               inline_keyboard: [
@@ -185,39 +197,40 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
             case APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER:
             case APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER:
 
-              await UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
+              let params = {};
+              try {
+                await UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
 
-              const { time, options, timezone } = taskCreationValidator(text)
-              const eventType = userSettings.app_type === APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER ? EVENT_ENUM.REMINDER : EVENT_ENUM.WEATHER;
-              const newTask = await TaskService.store({ call_at: time, is_regular: false, options, tz: timezone, user_id: msg.from?.id, event_type: eventType })
+                const { time, options, timezone } = taskCreationValidator(text)
+                const eventType = userSettings.app_type === APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER ? EVENT_ENUM.REMINDER : EVENT_ENUM.WEATHER;
+                const newTask = await TaskService.store({ call_at: time, is_regular: false, options, tz: timezone, user_id: msg.from?.id, event_type: eventType })
 
-              if (newTask) {
-
-                await bot.instance.sendMessage(
-                  chatId,
-                  bot.localeService.i18.t('tasks.store.success', { eventType: EVENT_ENUM[eventType].toLocaleLowerCase() })
+                message = bot.localeService.i18.t('tasks.store.success', { eventType: EVENT_ENUM[eventType].toLocaleLowerCase() })
                   + '\n' +
-                  bot.localeService.i18.t('tasks.update.make-regular-description')
-                  ,
-                  {
-                    parse_mode: 'HTML',
-                    reply_markup: {
-                      inline_keyboard: [
-                        [{ text: bot.localeService.i18.t('buttons.yes'), callback_data: `${COMMANDS.TASKS_MAKE_REGULAR}?task_id=${newTask._id}` }],
-                        // [{ text: bot.localeService.i18.t('buttons.no'), callback_data: COMMANDS.RESTART }],
-                      ]
-                    }
-                  });
+                  bot.localeService.i18.t('tasks.update.make-regular-description');
 
-              } else {
+                params = {
+                  parse_mode: 'HTML',
+                  reply_markup: {
+                    inline_keyboard: [
+                      [{ text: bot.localeService.i18.t('buttons.yes'), callback_data: `${COMMANDS.TASKS_MAKE_REGULAR}?task_id=${newTask._id}` }],
+                      // [{ text: bot.localeService.i18.t('buttons.no'), callback_data: COMMANDS.RESTART }],
+                    ]
+                  }
+                };
 
-                await bot.instance.sendMessage(
-                  chatId,
-                  bot.localeService.i18.t('tasks.store.error'),
-                  {
-                    parse_mode: 'HTML',
-                  });
+              } catch (error) {
+                message = bot.localeService.i18.t('tasks.store.error');
+                params = {
+                  parse_mode: 'HTML',
+                }
               }
+
+              await bot.instance.sendMessage(
+                chatId,
+                message,
+                params,
+              );
               break;
 
             case APP_TYPE_ENUM.TASK_DELETE:

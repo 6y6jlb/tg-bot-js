@@ -4,12 +4,12 @@
     "tasks": {
         "reset-with-delete-task-description": "Вы можете указать еще одну задачу или выйти из режима удаления задач нажав на эту кнопку.",
         "info-title": "Существующие задачи:",
-        "info-line": "\nID: {{taskId}},\nПользователь: {{userId}},\nтип задачи: {{event}},\nбудет вызвана в: {{date}}\n{{regular_desctription}}\n",
+        "info-line": "\nID: {{taskId}},\nПользователь: {{userId}},\nТип задачи: {{event}},\n{{options}},\nБудет вызвана в: {{date}}\n{{regular_desctription}}\n",
         "description-time": "Введите время в формате 02:22",
         "description-timezone": "Почитать про таймзоны можно тут\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>ССылка на википедию</a>",
         "description-type": "Выберите тип задачи.",
         "description-city": "Введите время, название населенного пункта\nи таймзону в формате:\n02:22 - Батуми - asia/tbilisi",
-        "description-option": "Введите время, сообщение\nи таймзону в формате:\n2:22 - <b>Мое сообщенение здесь</b> - asia/tbilisi",
+        "description-option": "Введите время, сообщение\nи таймзону в формате:\n2:22 - Мое сообщенение здесь - asia/tbilisi",
         "reqular": {
             "true": "Регулярная задача",
             "false": "Не регулярная задача"
