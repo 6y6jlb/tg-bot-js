@@ -32,6 +32,9 @@ export const STICKERS = {
 };
 
 export const SERVICE_ROUTES = {
+  RANDOM_DOG: {
+    BASE: 'https://random.dog/woof.json'
+  },
   OPEN_WEATHER : {
     BASE: 'https://api.openweathermap.org/data/2.5/',
     ENTPOINTS: {
@@ -39,5 +42,6 @@ export const SERVICE_ROUTES = {
     }
   }
 }
+
 
 

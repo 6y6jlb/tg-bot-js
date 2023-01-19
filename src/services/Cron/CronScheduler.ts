@@ -7,6 +7,7 @@ import { EVENT_ENUM, ITask } from '../../models/types';
 import TaskService from '../Task/TaskService';
 import WeatherService from '../Weather/WeatherService';
 import LocaleService from '../Locale/LocaleService';
+import RandomDogService from '../RandomDog/RandomDogService';
 
 export class CronScheduler {
   private bot: TelegramBot;
@@ -20,8 +21,11 @@ export class CronScheduler {
   public makeTask(expression: string, task: ITask) {
     cron.schedule(expression, async () => {
       try {
-        const message = await this.getMessage(task.event_type, task.options);
+        const {message, icon} = await this.getMessage(task.event_type, task.options);
         await this.bot.sendMessage(task.user_id, message);
+        if(icon) {
+          await this.bot.sendPhoto(task.user_id, icon)
+        }
 
         if (task.is_regular) {
           await TaskService.update({ _id: task._id, payload: { queue: false } })
@@ -73,7 +77,7 @@ export class CronScheduler {
         this.callTasks();
         job.stop()
       });
-      
+
 
     } catch (error) {
 
@@ -89,13 +93,21 @@ export class CronScheduler {
 
         const weather = await WeatherService.get({ city: options })
 
-        return this.localeService.i18.t('weather.tg-string', {
-          city: weather.name, temp: String(weather.main.temp), feel: weather.main.feels_like, humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
-        });
+        return {
+          message: this.localeService.i18.t('weather.tg-string', {
+            city: weather.name, temp: String(weather.main.temp), feel: weather.main.feels_like, humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
+          })
+        };
+
+      case EVENT_ENUM.REMINDER:
+        const icon = await RandomDogService.getIcon()
+        return {
+          icon, message: options
+        }
 
       default:
 
-        return options;
+        return { message: options };
     }
   }
 }
