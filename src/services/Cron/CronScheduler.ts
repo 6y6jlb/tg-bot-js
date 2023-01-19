@@ -69,9 +69,11 @@ export class CronScheduler {
     try {
 
       console.info(`Schedule started, date - ${moment().format('HH:mma MM.DD.YYYY')}`)
-      cron.schedule('30 * * * * *', () => {
+      const job = cron.schedule('30 * * * * *', () => {
         this.callTasks();
+        job.stop()
       });
+      
 
     } catch (error) {
 
