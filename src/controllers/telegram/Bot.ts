@@ -40,7 +40,7 @@ class Bot {
     this.instance.on("callback_query", async (msg) => {
       callbackHandler(this, msg)
     });
-    const now = moment().format('HH:mma MD.DD.YYYY');
+    const now = moment().format('HH:mma MM.DD.YYYY');
     this.adminService.sendMesssageToAdmin(
       this.instance, { text: this.localeService.i18.t('notifications.common.start', { date: now }) }
     )
