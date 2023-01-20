@@ -1,11 +1,11 @@
 import fetch from 'node-fetch';
 import { SERVICE_ROUTES } from "../../utils/const";
 import Client from "../absctract/Client";
-import { IRandomDog } from './types';
+import { IRandomFox } from './types';
 
-class RandomDogClient extends Client {
-    async get(): Promise<IRandomDog> {
-        const url = new URL(SERVICE_ROUTES.RANDOM_DOG.BASE);
+class RandomFoxClient extends Client {
+    async get(): Promise<IRandomFox> {
+        const url = new URL(SERVICE_ROUTES.RANDOM_FOX.BASE);
 
         const response = await fetch(url, {
             method: 'GET',
@@ -23,4 +23,4 @@ class RandomDogClient extends Client {
     
 }
 
-export default new RandomDogClient();
+export default new RandomFoxClient();

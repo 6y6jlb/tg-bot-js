@@ -1,5 +1,5 @@
-import RandomDogClient from '../../dal/RandomDog/Client';
-import { IRandomDog } from '../../dal/RandomDog/types';
+import RandomDogClient from '../../../dal/RandomDog/Client';
+import { IRandomDog } from '../../../dal/RandomDog/types';
 
 class RandomDogService {
     private get() {

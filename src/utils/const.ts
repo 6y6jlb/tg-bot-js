@@ -40,6 +40,9 @@ export const SERVICE_ROUTES = {
     ENTPOINTS: {
       WEATHER:'weather'
     }
+  },
+  RANDOM_FOX : {
+    BASE: 'https://randomfox.ca/floof/'
   }
 }
 

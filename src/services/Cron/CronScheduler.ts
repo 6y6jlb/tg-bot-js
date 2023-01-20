@@ -1,13 +1,13 @@
-import { TEMPERATURE_SIGN } from './../Weather/const';
-import { convertDateToCronExpression } from './../../helpers/cron';
 import moment from 'moment';
 import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
 import { EVENT_ENUM, ITask } from '../../models/types';
+import LocaleService from '../Locale/LocaleService';
+import RandomImageService from '../Random/RandomImageService';
 import TaskService from '../Task/TaskService';
 import WeatherService from '../Weather/WeatherService';
-import LocaleService from '../Locale/LocaleService';
-import RandomDogService from '../RandomDog/RandomDogService';
+import { convertDateToCronExpression } from './../../helpers/cron';
+import { TEMPERATURE_SIGN } from './../Weather/const';
 
 export class CronScheduler {
   private bot: TelegramBot;
@@ -100,7 +100,7 @@ export class CronScheduler {
         };
 
       case EVENT_ENUM.REMINDER:
-        const icon = await RandomDogService.getIcon()
+        const icon = await RandomImageService.get()
         return {
           icon, message: options
         }
