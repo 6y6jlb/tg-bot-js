@@ -36,6 +36,8 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       bot.localeService.i18.t("actions.greeting", { userName: name ?? bot.localeService.i18.t('guest') }),
       {
         reply_markup: {
+          one_time_keyboard: true,
+              remove_keyboard: true,
           keyboard: [
             [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
           ]
@@ -77,6 +79,8 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           bot.localeService.i18.t("actions.greeting", { userName: msg.from?.first_name ?? bot.localeService.i18.t('guest') }),
           {
             reply_markup: {
+              one_time_keyboard: true,
+              remove_keyboard: true,
               keyboard: [
                 [{ text: bot.localeService.i18.t('buttons.weather'), web_app: { url: PAGES.INDEX }, }],
                 // [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
