@@ -16,16 +16,19 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const text = msg.text;
   const chatId = msg.chat.id;
   const userId = msg.from?.id;
+  const language = msg.from?.language_code || 'en';
   const name = msg.from.username || msg.from.first_name;
 
   let message = '';
   let params = {};
 
-  const existedUser = userId ? await UserService.isUserExists(userId) : null
+  const existedUser = userId ? await UserService.isUserExists(userId) : null;
+
+  bot.localeService.changeLanguage(language);
 
   if (!existedUser) {
 
-    await UserService.store({ id: String(userId), name })
+    await UserService.store({ id: String(userId), name, language })
 
     await bot.adminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
@@ -178,7 +181,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
             case APP_TYPE_ENUM.WEATHER_REQUEST:
 
-              const weather = await bot.weatherService.get({ city: text })
+              const weather = await bot.weatherService.get({ city: text, lang: bot.localeService.getLanguage() })
               await bot.instance.sendPhoto(
                 chatId, weather.icon);
               await bot.instance.sendMessage(

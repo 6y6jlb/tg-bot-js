@@ -12,7 +12,7 @@ class WeatherClient extends Client {
 
         url.searchParams.append('appid', config.WEATHER_API_KEY);
         url.searchParams.append('units', params.units || 'metric');
-        url.searchParams.append('lang', params.lang || 'ru');
+        url.searchParams.append('lang', params.lang || 'en');
 
         if (params.city) {
             url.searchParams.append('q', params.city);
