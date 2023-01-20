@@ -15,7 +15,11 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
     UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() })
     await bot.instance.sendMessage(
       chatId,
-      `${bot.localeService.i18.t('actions.reset.description')}`
+      `${bot.localeService.i18.t('actions.reset.description'),{
+        reply_markup: {
+          remove_keyboard: true,
+        }
+      }}`
     );
   }
 

@@ -33,16 +33,15 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
     await bot.adminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
     )
-
+   
     await bot.instance.sendMessage(
       chatId,
       bot.localeService.i18.t("actions.greeting", { userName: name ?? bot.localeService.i18.t('guest') }),
       {
         reply_markup: {
           one_time_keyboard: true,
-              remove_keyboard: true,
-          keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
+          inline_keyboard: [
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX },}],
           ]
         }
       }
@@ -83,8 +82,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           {
             reply_markup: {
               one_time_keyboard: true,
-              remove_keyboard: true,
-              keyboard: [
+              inline_keyboard: [
                 [{ text: bot.localeService.i18.t('buttons.weather'), web_app: { url: PAGES.INDEX }, }],
                 // [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
                 // [{ text: `${bot.localeService.i18.t('buttons.event-weather')}`, web_app: { url: PAGES.EVENT_WEATHER }, }],
@@ -140,7 +138,11 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
         try {
           const user = await UserService.get({ id: userId }) as IUser;
-          message = bot.localeService.i18.t('actions.info', { name: user.name, userId: user.id, lang: user.language, tz: user.tz, createdAt: user.created_at })
+
+          const createdAt = moment(user.created_at,).tz(user.tz).format('HH:mma M.D.YYYY')
+
+
+          message = bot.localeService.i18.t('actions.info', { name: user.name, userId: user.id, lang: user.language, tz: user.tz, createdAt })
         } catch (error) {
           message = error.message;
         }
