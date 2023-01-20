@@ -189,7 +189,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
                 bot.localeService.i18.t('weather.tg-string', {
                   city: weather.name, temp: weather.main.temp, feel: weather.main.feels_like, humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
                 }) + '\n' +
-                bot.localeService.i18.t('weather.buttons.reset-with-weather-description'),
+                bot.localeService.i18.t('weather.reset-with-description'),
                 {
                   parse_mode: 'HTML',
                   reply_markup: {

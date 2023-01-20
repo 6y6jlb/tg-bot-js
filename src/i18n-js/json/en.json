@@ -29,7 +29,7 @@
         }
     },
     "weather": {
-        "reset-with-weather-description": "You can specify another city or exit the weather query mode by clicking to button bellow.",
+        "reset-with-description": "You can specify another city or exit the weather query mode by clicking to button bellow.",
         "get-description": "To get the weather, enter the city in Russian or English.",
         "tg-string": "City: {{city}},\nTemp: {{temp}}{{sign}},\nFeels like: {{feel}},\nHumidity: {{humidity}}\n{{description}} and wind speed: {{windSpeed}}\nPressure: {{pressure}}."
     },
