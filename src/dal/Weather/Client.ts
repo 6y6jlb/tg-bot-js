@@ -1,9 +1,9 @@
-import { IOpenWeatherResponse } from './types';
+import fetch from 'node-fetch';
 import { IGetWeatehrRequest } from "../../requests/Weather/types";
 import config from "../../utils/config";
 import { SERVICE_ROUTES } from "../../utils/const";
-import Client from "../absctract/Client"
-import fetch, { RequestInfo, RequestInit } from 'node-fetch';
+import Client from "../absctract/Client";
+import { IOpenWeatherResponse } from './types';
 
 class WeatherClient extends Client {
     async get(params: IGetWeatehrRequest): Promise<IOpenWeatherResponse & IGetWeatehrRequest> {
@@ -28,6 +28,7 @@ class WeatherClient extends Client {
         });
         await this.throwOnError(response);
         const data = await response.json();
+
         const icon = this.getIcon(data.weather[0].icon)
         return {
             ...data,
