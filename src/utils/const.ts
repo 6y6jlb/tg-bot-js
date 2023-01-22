@@ -8,6 +8,7 @@ export const COMMANDS = {
   RESTART: "/restart",
   WEATHER: "/weather",
   TASKS: "/tasks",
+  RANOM_IMAGE: "/ranom-image",
   TASKS_STORE: "/tasks-store",
   TASKS_DELETE: "/tasks-delete",
   TASKS_MAKE_REGULAR: "/tasks-make-regular",

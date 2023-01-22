@@ -4,6 +4,7 @@ import Bot from "../../controllers/telegram/Bot";
 import { taskCreationValidator } from '../../helpers/validation';
 import { APP_TYPE_ENUM, IUser } from "../../models/types";
 import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
+import RandomService from '../Random/RandomService';
 import TaskService from "../Task/TaskService";
 import UserService from "../User/UserService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
@@ -22,6 +23,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
   let message = '';
   let params = {};
+  let imageUrl = '';
 
   const existedUser = userId ? await UserService.isUserExists(userId) : null;
 
@@ -172,6 +174,25 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
             }
           }
         );
+
+        break;
+
+        case COMMANDS.RANOM_IMAGE:
+
+        try {
+
+          imageUrl = await RandomService.getMessage();
+          message = bot.localeService.i18.t('random.get-image');
+
+        } catch (error) {
+          
+          message = error.message;
+
+        }
+
+      
+        await bot.instance.sendMessage(chatId, message, getResetOptions())
+        await bot.instance.sendPhoto(chatId,imageUrl);
 
         break;
 
