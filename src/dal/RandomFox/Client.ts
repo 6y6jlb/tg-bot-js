@@ -5,7 +5,7 @@ import { IRandomFox } from './types';
 
 class RandomFoxClient extends Client {
     async get(): Promise<IRandomFox> {
-        const url = new URL(SERVICE_ROUTES.RANDOM_FOX.BASE);
+        const url = new URL(SERVICE_ROUTES.RANDOM_FOX.BASE + SERVICE_ROUTES.RANDOM_FOX.IMAGE);
 
         const response = await fetch(url, {
             method: 'GET',

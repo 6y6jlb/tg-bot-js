@@ -33,7 +33,8 @@ export const STICKERS = {
 
 export const SERVICE_ROUTES = {
   RANDOM_DOG: {
-    BASE: 'https://random.dog/woof.json'
+    BASE: 'https://random.dog/',
+    IMAGE: 'woof.json'
   },
   OPEN_WEATHER : {
     BASE: 'https://api.openweathermap.org/data/2.5/',
@@ -42,7 +43,12 @@ export const SERVICE_ROUTES = {
     }
   },
   RANDOM_FOX : {
-    BASE: 'https://randomfox.ca/floof/'
+    BASE: 'https://randomfox.ca/',
+    IMAGE:'floof'
+  },
+  RANDOM_CAT: {
+    BASE: 'https://api.thecatapi.com/v1/',
+    IMAGE: 'images/search'
   }
 }
 
