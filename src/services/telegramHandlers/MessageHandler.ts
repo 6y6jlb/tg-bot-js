@@ -9,6 +9,7 @@ import UserService from "../User/UserService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { TEMPERATURE_SIGN } from '../Weather/const';
 import { EVENT_ENUM, ITask } from './../../models/types';
+import { getResetOptions } from './template';
 
 
 
@@ -33,7 +34,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
     await bot.adminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
     )
-   
+
     await bot.instance.sendMessage(
       chatId,
       bot.localeService.i18.t("actions.greeting", { userName: name ?? bot.localeService.i18.t('guest') }),
@@ -41,7 +42,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         reply_markup: {
           one_time_keyboard: true,
           inline_keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX },}],
+            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
           ]
         }
       }
@@ -82,6 +83,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           {
             reply_markup: {
               one_time_keyboard: true,
+              resize_keyboard: true,
               inline_keyboard: [
                 [{ text: bot.localeService.i18.t('buttons.weather'), web_app: { url: PAGES.INDEX }, }],
                 // [{ text: `${bot.localeService.i18.t('buttons.event-reminder')}`, web_app: { url: PAGES.EVENT_REMINDER }, }],
@@ -131,7 +133,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           message = error.message;
         }
 
-        await bot.instance.sendMessage(chatId, message);
+        await bot.instance.sendMessage(chatId, text, getResetOptions())
         break;
 
       case COMMANDS.INFO:
