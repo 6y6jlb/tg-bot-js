@@ -3,17 +3,24 @@ import RandomDogService from "./RandomDog/RandomDogService";
 import RandomFoxService from "./RandomFox/RandomFoxService";
 
 class RandomImage {
-    async get() {
+    async getImage():Promise<string> {
+        let imageUrl = '';
         switch (Math.floor(Math.random() * 3)) {
             case 1:
-                return await RandomDogService.getIcon();
+                imageUrl = await RandomDogService.getIcon();
 
             case 2:
-                return await RandomFoxService.getIcon()
+                imageUrl = await RandomFoxService.getIcon()
         
             default:
-                return await RandomCatService.getIcon();
+                imageUrl = await RandomCatService.getIcon();
         }
+
+        return imageUrl;
+    }
+
+    async getMessage() {
+        return '';
     }
 
     

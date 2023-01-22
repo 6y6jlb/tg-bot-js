@@ -3,7 +3,7 @@ import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
 import { EVENT_ENUM, ITask } from '../../models/types';
 import LocaleService from '../Locale/LocaleService';
-import RandomImageService from '../Random/RandomImageService';
+import RandomService from '../Random/RandomService';
 import TaskService from '../Task/TaskService';
 import WeatherService from '../Weather/WeatherService';
 import { convertDateToCronExpression } from './../../helpers/cron';
@@ -22,7 +22,7 @@ export class CronScheduler {
     cron.schedule(expression, async () => {
       try {
         const {message, icon} = await this.getMessage(task.event_type, task.options);
-        
+
         if(icon) {
           await this.bot.sendPhoto(task.user_id, icon)
         }
@@ -103,7 +103,7 @@ export class CronScheduler {
         };
 
       case EVENT_ENUM.REMINDER:
-        const icon = await RandomImageService.get()
+        const icon = await RandomService.getImage()
         return {
           icon, message: options
         }
