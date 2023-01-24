@@ -8,17 +8,17 @@ class RandomImage {
         switch (Math.floor(Math.random() * 3)) {
             case 1:
                 imageUrl = await RandomDogService.getIcon();
-                console.info('RandomDogService was uses for random image')
+                break;
 
             case 2:
                 imageUrl = await RandomFoxService.getIcon();
-                console.info('RandomFoxService was uses for random image')
+                break;
 
             default:
                 imageUrl = await RandomCatService.getIcon();
-                console.info('RandomCatService was uses for random image')
+                break;
         }
-
+        console.info('Image url ' + imageUrl)
         return imageUrl;
     }
 
