@@ -19,7 +19,7 @@ export class CronScheduler {
   }
 
   public makeTask(expression: string, task: ITask) {
-    cron.schedule(expression, async () => {
+    const job = cron.schedule(expression, async () => {
       try {
         const {message, icon} = await this.getMessage(task.event_type, task.options);
 
@@ -38,7 +38,9 @@ export class CronScheduler {
         console.info(`Task executed${task.is_regular ? '' : ' and was deleted'} - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
       } catch (error) {
         console.warn(error.message)
-      }
+      } finally {
+        job.stop()
+      } 
     });
     console.info(`Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
   }
