@@ -8,7 +8,7 @@ class RandomCatService {
 
     async getIcon() {
         const data = await this.get()
-        return data.url;
+        return data[0]?.url;
     }
 
 }

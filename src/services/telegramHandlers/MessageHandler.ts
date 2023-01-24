@@ -133,9 +133,10 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           message = bot.localeService.i18.t('actions.reset.description');
         } catch (error) {
           message = error.message;
+          console.error(error)
         }
 
-        await bot.instance.sendMessage(chatId, text, getResetOptions())
+        await bot.instance.sendMessage(chatId, message, getResetOptions())
         break;
 
       case COMMANDS.INFO:
@@ -145,10 +146,11 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
           const createdAt = moment(user.created_at,).tz(user.tz).format('HH:mma M.D.YYYY')
 
-
           message = bot.localeService.i18.t('actions.info', { name: user.name, userId: user.id, lang: user.language, tz: user.tz, createdAt })
+
         } catch (error) {
           message = error.message;
+          console.error(error)
         }
 
         await bot.instance.sendMessage(chatId, message);

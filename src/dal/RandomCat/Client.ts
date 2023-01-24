@@ -4,7 +4,7 @@ import Client from "../absctract/Client";
 import { IRandomCat } from './types';
 
 class RandomFoxClient extends Client {
-    async get(): Promise<IRandomCat> {
+    async get(): Promise<IRandomCat[]> {
         const url = new URL(SERVICE_ROUTES.RANDOM_CAT.BASE + SERVICE_ROUTES.RANDOM_CAT.IMAGE);
 
         const response = await fetch(url, {
