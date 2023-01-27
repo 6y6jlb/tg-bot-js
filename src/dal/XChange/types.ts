@@ -18,5 +18,10 @@ export interface IOpeneXChangeRatesLatest {
 }
 
 export interface IOpeneXChangeRatesLatestGet {
-    base?: string
+    base?: string,
+}
+
+export interface IOpeneXChangeRatesLatestGetRate {
+    target?: string,
+    current?: string,
 }

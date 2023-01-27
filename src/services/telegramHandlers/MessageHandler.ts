@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
-import { taskCreationValidator } from '../../helpers/validation';
+import { exhangeRequestValidation, taskCreationValidator } from '../../helpers/validation';
 import { APP_TYPE_ENUM, IUser } from "../../models/types";
 import { COMMANDS, PAGES, STICKERS } from "../../utils/const";
 import RandomService from '../Random/RandomService';
@@ -9,6 +9,7 @@ import TaskService from "../Task/TaskService";
 import UserService from "../User/UserService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { TEMPERATURE_SIGN } from '../Weather/const';
+import XChangeService from '../XChange/XChangeService';
 import { EVENT_ENUM, ITask } from './../../models/types';
 import { getResetOptions } from './template';
 
@@ -24,6 +25,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   let message = '';
   let params = {};
   let imageUrl = '';
+  let user: IUser | null;
 
   const existedUser = userId ? await UserService.isUserExists(userId) : null;
 
@@ -142,7 +144,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
       case COMMANDS.INFO:
 
         try {
-          const user = await UserService.get({ id: userId }) as IUser;
+          user = await UserService.get({ id: userId }) as IUser;
 
           const createdAt = moment(user.created_at,).tz(user.tz).format('HH:mma M.D.YYYY')
 
@@ -154,6 +156,30 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
         }
 
         await bot.instance.sendMessage(chatId, message);
+        break;
+
+      case COMMANDS.EXCHANGE:
+        try {
+          UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.EXCHANGE_START, created_at: new Date() });
+          message = `${bot.localeService.i18.t('exchange.change')}\n${bot.localeService.i18.t('exchange.format-example')}`;
+        } catch (error) {
+          message = error.message;
+        }
+
+        await bot.instance.sendMessage(
+          chatId,
+          message,
+          {
+            parse_mode: 'HTML',
+            reply_markup: {
+              inline_keyboard: [
+                [{ text: bot.localeService.i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
+              ]
+            }
+          }
+        );
+
+
         break;
 
       case COMMANDS.WEATHER:
@@ -179,7 +205,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
         break;
 
-        case COMMANDS.RANOM_IMAGE:
+      case COMMANDS.RANOM_IMAGE:
 
         try {
 
@@ -187,14 +213,14 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           message = bot.localeService.i18.t('random.get-image');
 
         } catch (error) {
-          
+
           message = error.message;
 
         }
 
-      
+
         await bot.instance.sendMessage(chatId, message, getResetOptions())
-        await bot.instance.sendPhoto(chatId,imageUrl);
+        await bot.instance.sendPhoto(chatId, imageUrl);
 
         break;
 
@@ -299,6 +325,28 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
               }
               break;
 
+            case APP_TYPE_ENUM.EXCHANGE_START:
+
+              try {
+
+                const exchangeValidatedRequest = exhangeRequestValidation(text);
+                const rate = XChangeService.getRate(exchangeValidatedRequest);
+                message = `${bot.localeService.i18.t('exchange.rate', { currency: exchangeValidatedRequest.target, rate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`
+
+              } catch (error) {
+                message = error.message;
+              }
+
+              await bot.instance.sendMessage(chatId, message,
+                {
+                  parse_mode: 'HTML',
+                  reply_markup: {
+                    inline_keyboard: [
+                      [{ text: bot.localeService.i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
+                    ]
+                  }
+                }
+              );
             default:
               break;
           }

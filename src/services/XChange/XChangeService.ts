@@ -1,9 +1,14 @@
 import XChangeClient from "../../dal/XChange/Client";
-import { IOpeneXChangeRatesLatestGet } from "../../dal/XChange/types";
+import { IOpeneXChangeRatesLatestGet, IOpeneXChangeRatesLatestGetRate } from "../../dal/XChange/types";
 
 class XChangeService {
-    get(data: IOpeneXChangeRatesLatestGet) {
-            return XChangeClient.get(data);
+    private async get(data: IOpeneXChangeRatesLatestGet) {
+            return await XChangeClient.get(data);
+    }
+
+    async getRate(data: IOpeneXChangeRatesLatestGetRate) {
+        const result = await this.get({base: data.current})
+        return result.rates[data.target];
     }
 
 }
