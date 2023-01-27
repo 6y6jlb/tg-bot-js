@@ -50,6 +50,12 @@ export const SERVICE_ROUTES = {
   RANDOM_CAT: {
     BASE: 'https://api.thecatapi.com/v1/',
     IMAGE: 'images/search'
+  },
+  OPEN_XHANGE_RATE: {
+    BASE: 'https://openexchangerates.org/api/',
+    LATEST: 'latest.json',
+    CURENCIES: 'currencies.json',
+
   }
 }
 
