@@ -9,10 +9,10 @@ export const COMMANDS = {
   WEATHER: "/weather",
   EXCHANGE: "/exchange",
   TASKS: "/tasks",
-  RANOM_IMAGE: "/random-image",
-  TASKS_STORE: "/tasks-store",
-  TASKS_DELETE: "/tasks-delete",
-  TASKS_MAKE_REGULAR: "/tasks-make-regular",
+  RANOM_IMAGE: "/random_image",
+  TASKS_STORE: "/tasks_store",
+  TASKS_DELETE: "/tasks_delete",
+  TASKS_MAKE_REGULAR: "/tasks_make_regular",
 
 };
 
