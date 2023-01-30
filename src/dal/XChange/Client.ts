@@ -9,7 +9,7 @@ class XChangeClient extends Client {
         const url = new URL(SERVICE_ROUTES.OPEN_XHANGE_RATE.BASE + SERVICE_ROUTES.OPEN_XHANGE_RATE.LATEST);
 
 
-        url.searchParams.append('appid', config.XCHANGE_API_KEY);
+        url.searchParams.append('app_id', config.XCHANGE_API_KEY);
         url.searchParams.append('base', params.base || 'USD');
 
         const response = await fetch(url, {

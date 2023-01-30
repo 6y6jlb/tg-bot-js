@@ -160,7 +160,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
       case COMMANDS.EXCHANGE:
         try {
-          UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.EXCHANGE_START, created_at: new Date() });
+          await UserSettingsService.updateOrCreate({ user_id: userId, app_type: APP_TYPE_ENUM.EXCHANGE_START, created_at: new Date() });
           message = `${bot.localeService.i18.t('exchange.change')}\n${bot.localeService.i18.t('exchange.format-example')}`;
         } catch (error) {
           message = error.message;
@@ -209,7 +209,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
         try {
 
-          imageUrl = await RandomService.getMessage();
+          imageUrl = await RandomService.getImage();
           message = bot.localeService.i18.t('random.get-image');
 
         } catch (error) {
@@ -217,7 +217,6 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
           message = error.message;
 
         }
-
 
         await bot.instance.sendMessage(chatId, message, getResetOptions())
         await bot.instance.sendPhoto(chatId, imageUrl);
@@ -330,8 +329,8 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
               try {
 
                 const exchangeValidatedRequest = exhangeRequestValidation(text);
-                const rate = XChangeService.getRate(exchangeValidatedRequest);
-                message = `${bot.localeService.i18.t('exchange.rate', { currency: exchangeValidatedRequest.target, rate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`
+                const rate = await XChangeService.getRate(exchangeValidatedRequest);
+                message = `${bot.localeService.i18.t('exchange.rate', { current: exchangeValidatedRequest.current ,target: exchangeValidatedRequest.target, rate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`
 
               } catch (error) {
                 message = error.message;

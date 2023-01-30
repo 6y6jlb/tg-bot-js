@@ -6,9 +6,9 @@ class XChangeService {
             return await XChangeClient.get(data);
     }
 
-    async getRate(data: IOpeneXChangeRatesLatestGetRate) {
+    async getRate(data: IOpeneXChangeRatesLatestGetRate):Promise<number> {
         const result = await this.get({base: data.current})
-        return result.rates[data.target];
+        return +(result.rates[data.target.toUpperCase()])?.toFixed(2);
     }
 
 }

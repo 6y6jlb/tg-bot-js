@@ -36,9 +36,9 @@
     "exchange": {
         "change":"Укажите валюту валюту курс которой хотите получить.",
         "reset-with-description": "Вы можете указать еще одну пару в таком же формате или выйти нажав на кнопку внизу.",
-        "format-exemple": "Пример: USD",
+        "format-exemple": "Пример: USD - RUB",
         "currency-list": "Список валют",
-        "rate": "Текущий курс {{currency}}: {{rate}}"
+        "rate": "Текущий курс {{target}}: {{rate}} в {{current}}."
     },
     "actions": {
         "greeting": "Привет",

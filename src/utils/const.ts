@@ -9,7 +9,7 @@ export const COMMANDS = {
   WEATHER: "/weather",
   EXCHANGE: "/exchange",
   TASKS: "/tasks",
-  RANOM_IMAGE: "/ranom-image",
+  RANOM_IMAGE: "/random-image",
   TASKS_STORE: "/tasks-store",
   TASKS_DELETE: "/tasks-delete",
   TASKS_MAKE_REGULAR: "/tasks-make-regular",
