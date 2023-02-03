@@ -8,8 +8,11 @@ class XChangeService {
     private async get(data?: IOpeneXChangeRatesLatestGet) {
         const result = await XChangeClient.get(data);
         fs.writeFile('storage/exchangeRate.json', JSON.stringify(result), function (error) {
-            if (error) console.warn(error.message);
-            console.log('Rate was writed successfully.');
+            if (error) {
+                console.warn(error.message)
+            } else {
+                console.log('Rate was writed successfully.');
+            }
         });
         return result;
     }

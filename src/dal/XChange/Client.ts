@@ -21,8 +21,11 @@ class XChangeClient extends Client {
             },
         });
         await this.throwOnError(response);
+
         const data = await response.json();
 
+        console.log('XRate was requed successfully.');
+        
         return data;
     }
 
