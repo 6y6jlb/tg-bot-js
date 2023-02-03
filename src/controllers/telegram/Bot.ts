@@ -3,6 +3,7 @@ import TelegramBotApi from "node-telegram-bot-api";
 import AdminService from "../../services/Admin/AdminService";
 import { CronScheduler } from "../../services/Cron/CronScheduler";
 import LocaleService from '../../services/Locale/LocaleService';
+import TaskService from "../../services/Task/TaskService";
 import callbackHandler from '../../services/telegramHandlers/CallbackHandler';
 import locationHandler from '../../services/telegramHandlers/LocationHandler';
 import messageHandler from "../../services/telegramHandlers/MessageHandler";
@@ -27,7 +28,14 @@ class Bot {
   }
 
   start() {
-    this.scheduler.start()
+    this.scheduler.start();
+    
+    try {
+      TaskService.resetQueue();
+    } catch (error) {
+      this.adminService.sendMesssageToAdmin(
+        this.instance, { text: error.message });
+    }
 
     this.instance.on("message", async (msg) => {
       messageHandler(this, msg);
@@ -40,6 +48,7 @@ class Bot {
     this.instance.on("callback_query", async (msg) => {
       callbackHandler(this, msg)
     });
+
     const now = moment().format('HH:mma MM.DD.YYYY');
     this.adminService.sendMesssageToAdmin(
       this.instance, { text: this.localeService.i18.t('notifications.common.start', { date: now }) }

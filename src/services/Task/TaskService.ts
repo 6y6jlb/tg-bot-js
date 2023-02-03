@@ -30,6 +30,14 @@ class TaskService {
         }
     }
 
+    async resetQueue() {
+        try {
+            Task.updateMany({ queue: true }, { queue: false });
+        } catch (error) {
+            throw new TaskError(error.message)
+        }
+    }
+
     async store(data: IStoreTaskRequest) {
         try {
             let callAt = this.timeCorrection(data.call_at)
