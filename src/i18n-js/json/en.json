@@ -49,7 +49,7 @@
     "exchange": {
         "change":"Specify the currency the exchange rate of which you want to get.",
         "reset-with-description": "You can specify another pair in the same format or exit by clicking on the button at the bottom.",
-        "format-example": "Example: USD - RUB",
+        "format-example": "Example: USD RUB",
         "currency-list": "List of currencies",
                 "rate": "Current rate {{target}}: {{rate}} in {{current}}."
         },
