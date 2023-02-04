@@ -40,7 +40,7 @@ class XChangeService {
             throw new EXchangeError('Get rate error' + 'current: ' + data.current + 'target: ' + data.target)
         }
 
-        const relation = usdRateCurrent / usdRateTarget;
+        const relation = (usdRateCurrent / usdRateTarget) * data.count;
         const rate = relation < 0.2 ? relation.toFixed(3) : relation.toFixed(2);
         return +rate;
     }

@@ -56,9 +56,9 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
     try {
 
       const parsedData = JSON.parse(msg.web_app_data?.data);
-      await bot.instance.sendMessage(chatId,`${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}`);
+      await bot.instance.sendMessage(chatId, `${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}`);
     } catch (error) {
-      await bot.instance.sendMessage(chatId,bot.localeService.i18.t('notifications.errors.something-went-wrong'));
+      await bot.instance.sendMessage(chatId, bot.localeService.i18.t('notifications.errors.something-went-wrong'));
     }
 
   } else {
@@ -292,9 +292,9 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
               try {
 
-                const exchangeValidatedRequest = exhangeRequestValidation(text);
-                const rate = await XChangeService.getRate(exchangeValidatedRequest);
-                message = `${bot.localeService.i18.t('exchange.rate', { current: exchangeValidatedRequest.current, target: exchangeValidatedRequest.target, rate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`
+                const validExchangeRequest = exhangeRequestValidation(text);
+                const rate = await XChangeService.getRate(validExchangeRequest);
+                message = `${bot.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`
 
               } catch (error) {
                 message = error.message;
