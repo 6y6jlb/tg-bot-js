@@ -24,9 +24,8 @@ class XChangeService {
 
         try {
             const oldRates = await fs.promises.readFile('storage/exchangeRate.json', 'utf-8');
-
-            result = JSON.parse(oldRates.toString())
-            if (result.timestamp && moment.unix(result.timestamp).diff(moment(), 'hours') >= 4) {
+            result = await JSON.parse(oldRates.toString())
+            if (result.timestamp && moment().diff(moment.unix(result.timestamp), 'hours') >= 4) {
                 result = await this.get();
             }
         } catch (error) {
