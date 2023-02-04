@@ -22,6 +22,7 @@ export interface IOpeneXChangeRatesLatestGet {
 }
 
 export interface IOpeneXChangeRatesLatestGetRate {
+    count?: string
     target?: string,
     current?: string,
 }
