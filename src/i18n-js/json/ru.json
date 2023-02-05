@@ -31,14 +31,14 @@
     "weather": {
         "reset-with-description": "Вы можете указать еще один город или выйти из режима запроса погоды нажав на эту кнопку.",
         "get-description": "Для получени погоды введите город на русском или английском языке.",
-        "tg-string": "Город: {{city}},\nТемпература: {{temp}}{{sign}},\nОщущается как: {{feel}},\nВлажность: {{humidity}\n{{description}} и скорость ветра: {{windSpeed}}\nАтмосферное давление: {{pressure}}."
+        "tg-string": "Город: {{city}},\nТемпература: {{temp}}{{sign}},\nОщущается как: {{feel}},\nВлажность: {{humidity}}\n{{description}} и скорость ветра: {{windSpeed}}\nАтмосферное давление: {{pressure}}."
     },
     "exchange": {
         "change":"Укажите валюту валюту курс которой хотите получить.",
         "reset-with-description": "Вы можете указать еще одну пару в таком же формате или выйти нажав на кнопку внизу.",
-        "format-exemple": "Пример: 100 USD RUB",
+        "format-example": "Пример: 100 USD RUB",
         "currency-list": "Список валют",
-        "rate": "Текущий курс {{target}}: {{rate}} в {{current}}."
+        "rate": "Текущий курс {{count}} {{current}}: {{rate}} в {{target}}."
     },
     "actions": {
         "greeting": "Привет",

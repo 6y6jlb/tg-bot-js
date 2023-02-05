@@ -51,7 +51,7 @@
         "reset-with-description": "You can specify another pair in the same format or exit by clicking on the button at the bottom.",
         "format-example": "Example: 100 USD RUB",
         "currency-list": "List of currencies",
-                "rate": "Current rate {{count}} {{target}}: {{rate}} in {{current}}."
+                "rate": "Current rate {{count}} {{current}}: {{rate}} in {{target}}."
         },
     "buttons": {
         "yes":"Yes",
