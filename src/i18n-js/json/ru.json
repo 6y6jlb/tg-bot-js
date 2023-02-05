@@ -38,7 +38,7 @@
         "reset-with-description": "Вы можете указать еще одну пару в таком же формате или выйти нажав на кнопку внизу.",
         "format-example": "Пример: 100 USD RUB",
         "currency-list": "Список валют",
-        "rate": "Текущий курс {{count}} {{current}}: {{rate}} в {{target}}."
+        "rate": "Текущий курс {{count}} {{target}}: {{rate}} в {{current}}."
     },
     "actions": {
         "greeting": "Привет",

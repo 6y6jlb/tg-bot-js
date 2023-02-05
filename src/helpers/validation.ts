@@ -23,7 +23,7 @@ export function taskCreationValidator(message: string) {
 
 export function exhangeRequestValidation(message: string) {
   try {
-    const [first, count, current, target] = exhangeRequest.exec(message);
+    const [first, count, target, current] = exhangeRequest.exec(message);
     return { count: count? +count.trim() : 1, target: target.trim().toUpperCase(), current: current.trim().toUpperCase() }
   } catch (error) {
     throw new EXchangeError(`Message validation error ( ${message} )`);
