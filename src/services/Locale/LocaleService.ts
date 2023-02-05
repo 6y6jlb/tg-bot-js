@@ -1,5 +1,6 @@
 import i18next, { i18n } from "i18next";
-import { default as en, default as ru } from "../../i18n-js/json/en.json";
+import { default as en } from "../../i18n-js/json/en.json";
+import { default as ru } from "../../i18n-js/json/ru.json";
 
 
 class LocaleService {
@@ -34,12 +35,12 @@ class LocaleService {
             case 'ru':
                 this.i18.changeLanguage(langugeCode);
                 break;
-        
+
             default:
                 break;
         }
 
-    
+
         return;
     }
 

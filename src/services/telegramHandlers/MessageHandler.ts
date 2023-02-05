@@ -28,9 +28,10 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
   const existedUser = userId ? await UserService.isUserExists(userId) : null;
 
-  bot.localeService.changeLanguage(language);
+
 
   if (!existedUser) {
+    bot.localeService.changeLanguage(language);
 
     await UserService.store({ id: String(userId), name, language })
 
@@ -53,6 +54,8 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
   } else if (msg.web_app_data) {
 
+    const user = await UserService.get({ id: userId }) as IUser;
+    bot.localeService.changeLanguage(user.language ?? language);
     try {
 
       const parsedData = JSON.parse(msg.web_app_data?.data);
@@ -249,11 +252,7 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
                 }
               }
 
-              await bot.instance.sendMessage(
-                chatId,
-                message,
-                params,
-              );
+              await bot.instance.sendMessage(chatId, message, params);
               break;
 
             case APP_TYPE_ENUM.TASK_DELETE:
