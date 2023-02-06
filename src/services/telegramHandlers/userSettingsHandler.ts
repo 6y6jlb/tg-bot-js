@@ -1,5 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
+import { money } from "../../helpers/common";
 import { exhangeRequestValidation, taskCreationValidator } from "../../helpers/validation";
 import { APP_TYPE_ENUM, EVENT_ENUM, IUserSettings } from "../../models/types";
 import { COMMANDS } from "../../utils/const";
@@ -111,6 +112,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, bot: Bot,
 
                 const validExchangeRequest = exhangeRequestValidation(text);
                 const rate = await XChangeService.getRate(validExchangeRequest);
+                const formattedRate = money(rate);
                 message = `${bot.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`;
 
             } catch (error) {
