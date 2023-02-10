@@ -113,7 +113,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, bot: Bot,
                 const validExchangeRequest = exhangeRequestValidation(text);
                 const rate = await XChangeService.getRate(validExchangeRequest);
                 const formattedRate = money(rate);
-                message = `${bot.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`;
+                message = `${bot.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate: formattedRate })}\n${bot.localeService.i18.t('exchange.reset-with-description')}`;
 
             } catch (error) {
                 message = error.message;

@@ -17,6 +17,11 @@ export interface IOpeneXChangeRatesLatest {
     
 }
 
+export interface IOpeneXChangeRatesCurrecies {
+    [key: string]: string;
+    
+}
+
 export interface IOpeneXChangeRatesLatestGet {
     base?: string,
 }

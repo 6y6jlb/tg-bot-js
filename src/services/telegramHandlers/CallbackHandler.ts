@@ -1,6 +1,7 @@
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
+import { currecies } from "./commands/currecies";
 import { deleteTask } from "./commands/deleteTask";
 import { makeTaskRegular } from "./commands/makeTaskRegular";
 import { restart } from "./commands/restart";
@@ -19,6 +20,10 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
   else if (data === COMMANDS.TASKS_DELETE) {
     await deleteTask(userId, bot, chatId);
   }
+  
+  else if (data === COMMANDS.CURRECIES) {
+    await currecies(bot, chatId);
+  }
 
   else if (data.includes(COMMANDS.TASKS_MAKE_REGULAR)) {
     await makeTaskRegular(data, bot, chatId);
@@ -27,6 +32,7 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
   else if (data.includes(COMMANDS.TASKS_STORE)) {
     await storeTask(data, userId, bot, chatId);
   }
+  
 
   else {
     await bot.instance.sendMessage(chatId, bot.localeService.i18.t('actions.undefined.descriprion'));

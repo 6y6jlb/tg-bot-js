@@ -29,6 +29,8 @@ class WeatherClient extends Client {
         await this.throwOnError(response);
         const data = await response.json();
 
+        console.log('Weather for ' + params.city + 'succesfull request.')
+
         const icon = this.getIcon(data.weather[0].icon)
         return {
             ...data,

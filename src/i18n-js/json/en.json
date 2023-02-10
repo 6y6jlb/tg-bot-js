@@ -50,6 +50,7 @@
         "change":"Specify the currency the exchange rate of which you want to get.",
         "reset-with-description": "You can specify another pair in the same format or exit by clicking on the button at the bottom.",
         "format-example": "Example: 100 USD RUB",
+        "currecies": "Currencies",
         "currency-list": "List of currencies",
                 "rate": "Current rate {{count}} {{target}}: {{rate}} in {{current}}."
         },
@@ -58,6 +59,7 @@
         "no":"No",
         "fill-form": "Fill the form",
         "open-app": "Open app",
+        "currecies": "Currencies",
         "weather": "Weather request",
         "event-reminder": "Event reminder",
         "event-weather": "Event weather",

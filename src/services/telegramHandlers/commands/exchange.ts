@@ -20,6 +20,7 @@ export async function exchange(userId: number, bot: Bot, chatId: number) {
             reply_markup: {
                 inline_keyboard: [
                     [{ text: bot.localeService.i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
+                    [{ text: bot.localeService.i18.t('buttons.currecies'), callback_data: COMMANDS.CURRECIES }],
                 ]
             }
         }

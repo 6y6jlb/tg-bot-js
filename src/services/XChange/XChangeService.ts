@@ -1,7 +1,7 @@
 import fs from 'fs';
 import moment from 'moment';
 import XChangeClient from "../../dal/XChange/Client";
-import { IOpeneXChangeRatesLatest, IOpeneXChangeRatesLatestGet, IOpeneXChangeRatesLatestGetRate } from "../../dal/XChange/types";
+import { IOpeneXChangeRatesCurrecies, IOpeneXChangeRatesLatest, IOpeneXChangeRatesLatestGet, IOpeneXChangeRatesLatestGetRate } from "../../dal/XChange/types";
 import { EXchangeError } from './../../exceptions/Exchange';
 
 class XChangeService {
@@ -43,6 +43,20 @@ class XChangeService {
         const relation = (usdRateCurrent / usdRateTarget) * data.count;
         const rate = relation < 0.2 ? relation.toFixed(3) : relation.toFixed(2);
         return +rate;
+    }
+
+    async getCurrency() {
+        let result: IOpeneXChangeRatesCurrecies;
+        try {
+            const currencies = await fs.promises.readFile('storage/currecies.json', 'utf-8');
+            result = await JSON.parse(currencies.toString())
+            
+        } catch (error) {
+            console.warn(error.message)
+            result = await XChangeClient.currecies();
+        }
+
+        return result;
     }
 
 
