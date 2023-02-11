@@ -1,5 +1,6 @@
 
 /storage/exchangeRate.json
+/storage/currencies.json
 
 /node_modules/
 .idea

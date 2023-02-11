@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import config from "../../utils/config";
 import { SERVICE_ROUTES } from "../../utils/const";
 import Client from "../absctract/Client";
-import { IOpeneXChangeRatesCurrecies, IOpeneXChangeRatesLatest, IOpeneXChangeRatesLatestGet } from './types';
+import { IOpeneXChangeRatesCurrencies, IOpeneXChangeRatesLatest, IOpeneXChangeRatesLatestGet } from './types';
 
 class XChangeClient extends Client {
     async get(params?: IOpeneXChangeRatesLatestGet): Promise<IOpeneXChangeRatesLatest> {
@@ -29,7 +29,7 @@ class XChangeClient extends Client {
         return data;
     }
 
-    async currecies(): Promise<IOpeneXChangeRatesCurrecies> {
+    async currencies(): Promise<IOpeneXChangeRatesCurrencies> {
         const url = new URL(SERVICE_ROUTES.OPEN_XHANGE_RATE.BASE + SERVICE_ROUTES.OPEN_XHANGE_RATE.CURENCIES);
 
         url.searchParams.append('app_id', config.XCHANGE_API_KEY);
@@ -46,7 +46,7 @@ class XChangeClient extends Client {
 
         const data = await response.json();
 
-        console.log('List of currecies successful request.');
+        console.log('List of currencies successful request.');
         
         return data;
     }

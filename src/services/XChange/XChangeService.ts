@@ -1,7 +1,7 @@
 import fs from 'fs';
 import moment from 'moment';
 import XChangeClient from "../../dal/XChange/Client";
-import { IOpeneXChangeRatesCurrecies, IOpeneXChangeRatesLatest, IOpeneXChangeRatesLatestGet, IOpeneXChangeRatesLatestGetRate } from "../../dal/XChange/types";
+import { IOpeneXChangeRatesCurrencies, IOpeneXChangeRatesLatest, IOpeneXChangeRatesLatestGet, IOpeneXChangeRatesLatestGetRate } from "../../dal/XChange/types";
 import { EXchangeError } from './../../exceptions/Exchange';
 
 class XChangeService {
@@ -46,14 +46,22 @@ class XChangeService {
     }
 
     async getCurrency() {
-        let result: IOpeneXChangeRatesCurrecies;
+        let result: IOpeneXChangeRatesCurrencies;
         try {
-            const currencies = await fs.promises.readFile('storage/currecies.json', 'utf-8');
+            const currencies = await fs.promises.readFile('storage/currencies.json', 'utf-8');
             result = await JSON.parse(currencies.toString())
             
         } catch (error) {
             console.warn(error.message)
-            result = await XChangeClient.currecies();
+            result = await XChangeClient.currencies();
+
+            fs.writeFile('storage/currencies.json', JSON.stringify(result), function (error) {
+                if (error) {
+                    console.warn(error.message)
+                } else {
+                    console.log('Currencies was writed successfully.');
+                }
+            });
         }
 
         return result;

@@ -17,7 +17,7 @@ export interface IOpeneXChangeRatesLatest {
     
 }
 
-export interface IOpeneXChangeRatesCurrecies {
+export interface IOpeneXChangeRatesCurrencies {
     [key: string]: string;
     
 }

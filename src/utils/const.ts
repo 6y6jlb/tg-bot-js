@@ -8,7 +8,7 @@ export const COMMANDS = {
   RESTART: "/restart",
   WEATHER: "/weather",
   EXCHANGE: "/exchange",
-  CURRECIES: "/currencies",
+  CURRENCIES: "/currencies",
   TASKS: "/tasks",
   RANOM_IMAGE: "/random_image",
   TASKS_STORE: "/tasks_store",
