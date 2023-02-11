@@ -41,6 +41,9 @@
         "currency-list": "Список валют",
         "rate": "Текущий курс {{count}} {{target}}: {{rate}} в {{current}}."
     },
+    "web_app": {
+        "desctiption": "В приложение"
+    },
     "actions": {
         "greeting": "Привет",
         "info":"Информация по пользователю: {{userId}}\nИмя:{{name}}\nДата создания:{{createdAt}}\nЯзык:{{lang}}\nТаймзона:{{tz}}",

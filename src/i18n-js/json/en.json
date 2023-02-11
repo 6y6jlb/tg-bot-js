@@ -15,7 +15,7 @@
             "false": "Is not a regular task"
         },
         "update": {
-            "make-regular-description":"Do you want to make task regular?",
+            "make-regular-description": "Do you want to make task regular?",
             "success": "Task was saved",
             "error": "Something wend wrong"
         },
@@ -35,7 +35,7 @@
     },
     "actions": {
         "greeting": "Hello",
-        "info":"User info: {{userId}}\nName:{{name}}\nCreated at:{{createdAt}}\nLangugage:{{lang}}\nTimezone:{{tz}}",
+        "info": "User info: {{userId}}\nName:{{name}}\nCreated at:{{createdAt}}\nLangugage:{{lang}}\nTimezone:{{tz}}",
         "tasks": {
             "delete-description": "Enter the number of the task you want to delete!"
         },
@@ -47,16 +47,19 @@
         }
     },
     "exchange": {
-        "change":"Specify the currency the exchange rate of which you want to get.",
+        "change": "Specify the currency the exchange rate of which you want to get.",
         "reset-with-description": "You can specify another pair in the same format or exit by clicking on the button at the bottom.",
         "format-example": "Example: 100 USD RUB",
         "currencies": "Currencies",
         "currency-list": "List of currencies",
-                "rate": "Current rate {{count}} {{target}}: {{rate}} in {{current}}."
-        },
+        "rate": "Current rate {{count}} {{target}}: {{rate}} in {{current}}."
+    },
+    "web_app": {
+        "desctiption": "Go to web app!"
+    },
     "buttons": {
-        "yes":"Yes",
-        "no":"No",
+        "yes": "Yes",
+        "no": "No",
         "fill-form": "Fill the form",
         "open-app": "Open app",
         "currencies": "Currencies",
@@ -84,6 +87,6 @@
         "request": "What do you want?"
     },
     "random": {
-        "get-image" : "Random image"
+        "get-image": "Random image"
     }
 }

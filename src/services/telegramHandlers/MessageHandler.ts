@@ -30,14 +30,6 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
     await bot.instance.sendMessage(
       chatId,
       bot.localeService.i18.t("actions.greeting", { userName: name ?? bot.localeService.i18.t('guest') }),
-      {
-        reply_markup: {
-          one_time_keyboard: true,
-          inline_keyboard: [
-            [{ text: `${bot.localeService.i18.t('buttons.weather')}`, web_app: { url: PAGES.INDEX }, }],
-          ]
-        }
-      }
     );
 
   } else if (msg.web_app_data) {

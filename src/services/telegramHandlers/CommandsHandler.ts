@@ -10,6 +10,7 @@ import { restart } from "./commands/restart";
 import { start } from "./commands/start";
 import { tasks } from "./commands/tasks";
 import { weather } from "./commands/weather";
+import { webApp } from "./commands/webApp";
 import { userSettingsHandler } from "./userSettingsHandler";
 
 export const commadsHandler = async (bot: Bot, msg: TelegramBot.Message) => {
@@ -52,6 +53,11 @@ export const commadsHandler = async (bot: Bot, msg: TelegramBot.Message) => {
         case COMMANDS.RANOM_IMAGE:
 
             await randomImage(bot, chatId);
+            break;
+
+        case COMMANDS.WEB_APP:
+
+            await webApp(bot, chatId);
             break;
 
         default:

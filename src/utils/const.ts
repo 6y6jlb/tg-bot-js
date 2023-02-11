@@ -4,6 +4,7 @@ export const INDEX = '/index.html';
 
 export const COMMANDS = {
   START: "/start",
+  WEB_APP: "/web_app",
   INFO: "/info",
   RESTART: "/restart",
   WEATHER: "/weather",
@@ -15,12 +16,6 @@ export const COMMANDS = {
   TASKS_DELETE: "/tasks_delete",
   TASKS_MAKE_REGULAR: "/tasks_make_regular",
 
-};
-
-export const DESCRIPTIONS = {
-  [COMMANDS.START]: "hello",
-  [COMMANDS.INFO]: "info",
-  [COMMANDS.RESTART]: "restart",
 };
 
 export const PAGES = {
