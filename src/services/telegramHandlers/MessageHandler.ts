@@ -1,7 +1,6 @@
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { IUser } from "../../models/types";
-import { PAGES } from "../../utils/const";
 import UserService from "../User/UserService";
 import { commadsHandler } from './CommandsHandler';
 
@@ -9,18 +8,19 @@ import { commadsHandler } from './CommandsHandler';
 
 const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const chatId = msg.chat.id;
-  const userId = msg.from?.id;
-  const language = msg.from?.language_code || 'en';
+  const userId = msg.from.id;
+  
   const name = msg.from.username || msg.from.first_name;
 
+  const user = await UserService.get({id: userId}) as IUser;
 
-  const existedUser = userId ? await UserService.isUserExists(userId) : null;
+  const language = user?.language ?? msg.from?.language_code ?? 'en';
+
+  bot.localeService.changeLanguage(language);
 
 
-
-  if (!existedUser) {
-    bot.localeService.changeLanguage(language);
-
+  if (!user) {
+    
     await UserService.store({ id: String(userId), name, language })
 
     await bot.adminService.sendMesssageToAdmin(
@@ -34,7 +34,6 @@ const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
 
   } else if (msg.web_app_data) {
 
-    const user = await UserService.get({ id: userId }) as IUser;
     bot.localeService.changeLanguage(user.language ?? language);
     try {
 
