@@ -1,6 +1,7 @@
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
+import { Builder } from "../Notification/Builder";
 import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
 import { makeTaskRegular } from "./commands/makeTaskRegular";
@@ -8,10 +9,13 @@ import { restart } from "./commands/restart";
 import { storeTask } from "./commands/storeTask";
 
 
-const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
+export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
   const data = msg.data;
   const chatId = msg.message?.chat.id;
   const userId = msg.from?.id;
+
+  const notification = new Builder({ bot: bot.instance, msg}).build();
+
 
   if (data === COMMANDS.RESTART) {
     restart(userId, bot, chatId);
@@ -38,11 +42,5 @@ const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
     await bot.instance.sendMessage(chatId, bot.localeService.i18.t('actions.undefined.descriprion'));
   }
 
-
-
 };
-
-
-export default callbackHandler
-
 

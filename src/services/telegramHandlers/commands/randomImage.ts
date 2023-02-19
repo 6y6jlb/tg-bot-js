@@ -1,22 +1,22 @@
-import Bot from "../../../controllers/telegram/Bot";
+import { i18n } from "i18next";
+import { Notification } from "../../Notification/Notification";
 import RandomService from "../../Random/RandomService";
 import { getResetOptions } from "../template";
 
 
-export async function randomImage(bot: Bot, chatId: number) {
-    let imageUrl = '';
+export async function randomImage(notification: Notification, i18: i18n) {
+    let url = '';
     let message = '';
     try {
 
-        imageUrl = await RandomService.getImage();
-        message = bot.localeService.i18.t('random.get-image');
+        url = await RandomService.getImage();
+        message = i18.t('random.get-image');
 
     } catch (error) {
         message = error.message;
 
     }
 
-    await bot.instance.sendMessage(chatId, message, getResetOptions());
-    await bot.instance.sendPhoto(chatId, imageUrl);
-    return { imageUrl, message };
+    await notification.send({ text: message, options: getResetOptions() });
+    await notification.send({ url });
 }

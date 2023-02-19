@@ -1,7 +1,6 @@
-import TelegramBot from "node-telegram-bot-api";
-import Bot from "../../controllers/telegram/Bot";
-import { IUser } from "../../models/types";
+import { i18n } from 'i18next';
 import { COMMANDS } from "../../utils/const";
+import { Notification } from "../Notification/Notification";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { exchange } from "./commands/exchange";
 import { info } from "./commands/info";
@@ -13,62 +12,60 @@ import { weather } from "./commands/weather";
 import { webApp } from "./commands/webApp";
 import { userSettingsHandler } from "./userSettingsHandler";
 
-export const commadsHandler = async (bot: Bot, msg: TelegramBot.Message) => {
-    const text = msg.text;
-    const chatId = msg.chat.id;
-    const userId = msg.from?.id;
-    let user: IUser | null;
+export const commadsHandler = async (notification: Notification, i18: i18n) => {
+    const text = notification.getText();
+    const chatId = notification.getChatId();
 
     switch (text) {
 
         case COMMANDS.START:
 
-            await start(userId, bot, chatId, msg);
+            await start(notification, i18);
             break;
 
         case COMMANDS.TASKS:
 
-            await tasks(bot, userId, chatId);
+            await tasks(notification, i18);
             break;
 
         case COMMANDS.RESTART:
 
-            await restart(userId, bot, chatId);
+            await restart(notification, i18);
             break;
 
         case COMMANDS.INFO:
 
-            await info(user, userId, bot, chatId);
+            await info(notification, i18);
             break;
 
         case COMMANDS.EXCHANGE:
-            await exchange(userId, bot, chatId);
+            await exchange(notification, i18);
             break;
 
         case COMMANDS.WEATHER:
 
-            await weather(userId, bot, chatId);
+            await weather(notification, i18);
             break;
 
         case COMMANDS.RANOM_IMAGE:
 
-            await randomImage(bot, chatId);
+            await randomImage(notification, i18);
             break;
 
         case COMMANDS.WEB_APP:
 
-            await webApp(bot, chatId);
+            await webApp(notification, i18);
             break;
 
         default:
 
-            const userSettings = await UserSettingsService.get({ user_id: userId });
+            const userSettings = await UserSettingsService.get({ user_id: chatId });
 
             if (userSettings) {
-                await userSettingsHandler(userSettings, bot, msg);
-                
+                await userSettingsHandler(userSettings, notification, i18);
+
             } else {
-                await bot.instance.sendMessage(chatId, bot.localeService.i18.t('notifications.errors.cant-understand'));
+                await notification.send({ text: i18.t('notifications.errors.cant-understand') });
             }
             break;
     }

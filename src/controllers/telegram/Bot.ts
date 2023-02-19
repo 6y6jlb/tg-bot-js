@@ -4,27 +4,22 @@ import AdminService from "../../services/Admin/AdminService";
 import { CronScheduler } from "../../services/Cron/CronScheduler";
 import LocaleService from '../../services/Locale/LocaleService';
 import TaskService from "../../services/Task/TaskService";
-import callbackHandler from '../../services/telegramHandlers/CallbackHandler';
-import locationHandler from '../../services/telegramHandlers/LocationHandler';
-import messageHandler from "../../services/telegramHandlers/MessageHandler";
-import WeatherService from "../../services/Weather/WeatherService";
+import { callbackHandler } from '../../services/telegramHandlers/CallbackHandler';
+import { locationHandler } from '../../services/telegramHandlers/LocationHandler';
+import { messageHandler } from "../../services/telegramHandlers/MessageHandler";
 import config from "../../utils/config";
 
 class Bot {
 
   instance: TelegramBotApi;
   localeService: typeof LocaleService;
-  adminService: typeof AdminService;
-  weatherService: typeof WeatherService;
   scheduler: CronScheduler;
 
   constructor() {
 
     this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
-    this.localeService = LocaleService;
-    this.adminService = AdminService;
-    this.weatherService = WeatherService;
     this.scheduler = new CronScheduler(this.instance, this.localeService);
+    this.localeService = LocaleService;
   }
 
   start() {
@@ -33,7 +28,7 @@ class Bot {
     try {
       TaskService.resetQueue();
     } catch (error) {
-      this.adminService.sendMesssageToAdmin(
+      AdminService.sendMesssageToAdmin(
         this.instance, { text: error.message });
     }
 
@@ -50,7 +45,7 @@ class Bot {
     });
 
     const now = moment().format('HH:mma MM.DD.YYYY');
-    this.adminService.sendMesssageToAdmin(
+    AdminService.sendMesssageToAdmin(
       this.instance, { text: this.localeService.i18.t('notifications.common.start', { date: now }) }
     )
     console.info(`Telegram bot started at ${now}`)
