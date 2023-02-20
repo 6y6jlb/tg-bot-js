@@ -4,6 +4,8 @@ import Bot from "../../controllers/telegram/Bot";
 import { IUser } from "../../models/types";
 import AdminService from "../Admin/AdminService";
 import { NotificationFactory } from "../Notification/AbstractFactory";
+import { TypeEnum } from '../Notification/consts';
+import { Message } from '../Notification/Message';
 import UserService from "../User/UserService";
 import { commadsHandler } from './CommandsHandler';
 
@@ -20,7 +22,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
 
   bot.localeService.changeLanguage(language);
 
-  const notification = new NotificationFactory({ bot: bot.instance, msg}).build();
+  const notification = new NotificationFactory(TypeEnum.MESSAGE, { bot: bot.instance, msg}).build()  as Message;
 
 
   if (!user) {

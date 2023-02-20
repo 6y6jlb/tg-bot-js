@@ -21,7 +21,7 @@ export abstract class Notification {
             await this.bot.sendPhoto(chatId, params.url, params.options);
         } else if ('sticker' in params) {
             await this.bot.sendSticker(chatId, params.sticker, params.options);
-        } else if ('message' in params){
+        } else if ('text' in params){
             await this.bot.sendMessage(chatId, params.text, params.options);
         }
     }

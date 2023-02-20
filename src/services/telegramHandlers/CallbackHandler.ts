@@ -2,6 +2,7 @@ import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
 import { NotificationFactory } from "../Notification/AbstractFactory";
+import { Callback } from "../Notification/Callback";
 import { TypeEnum } from "../Notification/consts";
 import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
@@ -15,7 +16,7 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
   const chatId = msg.message?.chat.id;
   const userId = msg.from?.id;
 
-  const callback = new NotificationFactory(TypeEnum.CALLBACK, { bot: bot.instance, msg}).build();
+  const callback = new NotificationFactory(TypeEnum.CALLBACK, { bot: bot.instance, msg}).build() as Callback;
 
 
   if (data === COMMANDS.RESTART) {

@@ -1,30 +1,28 @@
-import Bot from "../../../controllers/telegram/Bot";
+import { i18n } from "i18next";
 import { COMMANDS } from "../../../utils/const";
+import { Notification } from "../../Notification/Abstract";
 import XChangeService from "../../XChange/XChangeService";
 
-export async function currencies(bot: Bot, chatId: number) {
-    let message = bot.localeService.i18.t('exchange.currencies');
+export async function currencies(notification: Notification, i18: i18n) {
+    let message = i18.t('exchange.currencies');
     try {
         const currencies = await XChangeService.getCurrency();
         for (const [key, value] of Object.entries(currencies)) {
             message += `\n${key}: ${value}`
-            
+
         }
     } catch (error) {
         message = error.message;
     }
 
-    await bot.instance.sendMessage(
-        chatId,
-        message,
-        {
+    await notification.send({
+        text: message, options: {
             parse_mode: 'HTML',
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: bot.localeService.i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
+                    [{ text: i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
                 ]
             }
         }
-    );
-    return message;
+    });
 }
