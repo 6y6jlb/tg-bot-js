@@ -2,10 +2,10 @@ import { i18n } from "i18next";
 import Bot from "../../../controllers/telegram/Bot";
 import { APP_TYPE_ENUM } from "../../../models/types";
 import { COMMANDS } from "../../../utils/const";
-import { Notification } from "../../Notification/Notification";
+import { Message } from "../../Notification/Message";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
-export async function exchange(notification: Notification, i18: i18n) {
+export async function exchange(notification: Message, i18: i18n) {
     const chatId = notification.getChatId();
     let message = '';
     try {

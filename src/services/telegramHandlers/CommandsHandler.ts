@@ -1,6 +1,6 @@
 import { i18n } from 'i18next';
 import { COMMANDS } from "../../utils/const";
-import { Notification } from "../Notification/Notification";
+import { Message } from "../Notification/Message";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { exchange } from "./commands/exchange";
 import { info } from "./commands/info";
@@ -12,7 +12,7 @@ import { weather } from "./commands/weather";
 import { webApp } from "./commands/webApp";
 import { userSettingsHandler } from "./userSettingsHandler";
 
-export const commadsHandler = async (notification: Notification, i18: i18n) => {
+export const commadsHandler = async (notification: Message, i18: i18n) => {
     const text = notification.getText();
     const chatId = notification.getChatId();
 

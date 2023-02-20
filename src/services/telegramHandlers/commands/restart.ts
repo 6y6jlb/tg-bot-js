@@ -1,12 +1,12 @@
 import { i18n } from "i18next";
 import Bot from "../../../controllers/telegram/Bot";
 import { APP_TYPE_ENUM } from "../../../models/types";
-import { Notification } from "../../Notification/Notification";
+import { Message } from "../../Notification/Message";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 import { getResetOptions } from "../template";
 
 
-export async function restart(notification: Notification, i18: i18n) {
+export async function restart(notification: Message, i18: i18n) {
     const chatId = notification.getChatId();
     let message = '';
     try {

@@ -3,11 +3,11 @@ import moment from "moment";
 import { EVENT_ENUM, ITask } from "../../../models/types";
 import { COMMANDS } from "../../../utils/const";
 import AdminService from "../../Admin/AdminService";
-import { Notification } from "../../Notification/Notification";
+import { Message } from "../../Notification/Message";
 import TaskService from "../../Task/TaskService";
 
 
-export async function tasks(notification: Notification, i18: i18n) {
+export async function tasks(notification: Message, i18: i18n) {
     const chatId = notification.getChatId();
     const isAdmin = AdminService.checkAdmin(chatId);
     const tasks = await TaskService.get(isAdmin ? {} : { user_id: chatId }) as ITask[];

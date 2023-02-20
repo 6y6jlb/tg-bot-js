@@ -1,11 +1,11 @@
 import { i18n } from 'i18next';
 import { APP_TYPE_ENUM } from "../../../models/types";
 import { STICKERS } from "../../../utils/const";
-import { Notification } from '../../Notification/Notification';
+import { Message } from '../../Notification/Message';
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 
-export async function start(notification: Notification, i18: i18n) {
+export async function start(notification: Message, i18: i18n) {
     const chatId = notification.getChatId();
     const name = notification.getName()
 

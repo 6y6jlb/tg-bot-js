@@ -1,10 +1,10 @@
 import { i18n } from "i18next";
-import { Notification } from "../../Notification/Notification";
+import { Message } from "../../Notification/Message";
 import RandomService from "../../Random/RandomService";
 import { getResetOptions } from "../template";
 
 
-export async function randomImage(notification: Notification, i18: i18n) {
+export async function randomImage(notification: Message, i18: i18n) {
     let url = '';
     let message = '';
     try {

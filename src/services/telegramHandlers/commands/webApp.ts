@@ -1,9 +1,9 @@
 import { i18n } from "i18next";
 import { PAGES } from "../../../utils/const";
-import { Notification } from "../../Notification/Notification";
+import { Message } from "../../Notification/Message";
 
 
-export async function webApp(notification: Notification, i18: i18n) {
+export async function webApp(notification: Message, i18: i18n) {
 
 
   await notification.send({

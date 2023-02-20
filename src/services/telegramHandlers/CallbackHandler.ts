@@ -1,7 +1,7 @@
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
-import { Builder } from "../Notification/Builder";
+import { Builder } from "../Notification/AbstractFactory";
 import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
 import { makeTaskRegular } from "./commands/makeTaskRegular";

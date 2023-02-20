@@ -3,7 +3,7 @@ import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { IUser } from "../../models/types";
 import AdminService from "../Admin/AdminService";
-import { Builder } from "../Notification/Builder";
+import { Builder } from "../Notification/AbstractFactory";
 import UserService from "../User/UserService";
 import { commadsHandler } from './CommandsHandler';
 

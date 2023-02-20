@@ -5,14 +5,14 @@ import { money } from "../../helpers/common";
 import { exhangeRequestValidation, taskCreationValidator } from "../../helpers/validation";
 import { APP_TYPE_ENUM, EVENT_ENUM, IUserSettings } from "../../models/types";
 import { COMMANDS } from "../../utils/const";
-import { Notification } from "../Notification/Notification";
+import { Message } from "../Notification/Message";
 import TaskService from "../Task/TaskService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { TEMPERATURE_SIGN } from "../Weather/const";
 import WeatherService from "../Weather/WeatherService";
 import XChangeService from "../XChange/XChangeService";
 
-export async function userSettingsHandler(userSettings: IUserSettings, notification: Notification, i18: i18n) {
+export async function userSettingsHandler(userSettings: IUserSettings, notification: Message, i18: i18n) {
     const lang = notification.getLanguage();
     const chatId = notification.getChatId();
     const text = notification.getText();

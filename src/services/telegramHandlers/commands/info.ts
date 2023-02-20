@@ -2,11 +2,11 @@ import { i18n } from "i18next";
 import moment from "moment-timezone";
 import Bot from "../../../controllers/telegram/Bot";
 import { IUser } from "../../../models/types";
-import { Notification } from "../../Notification/Notification";
+import { Message } from "../../Notification/Message";
 import UserService from "../../User/UserService";
 
 
-export async function info(notification: Notification, i18: i18n) {
+export async function info(notification: Message, i18: i18n) {
     let message = '';
     const chatId = notification.getChatId();
     try {
