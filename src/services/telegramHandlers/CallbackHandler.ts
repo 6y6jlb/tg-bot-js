@@ -13,20 +13,18 @@ import { storeTask } from "./commands/storeTask";
 
 export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
   const data = msg.data;
-  const chatId = msg.message?.chat.id;
-  const userId = msg.from?.id;
 
-  const callback = new NotificationFactory(TypeEnum.CALLBACK, { bot: bot.instance, msg}).build() as Callback;
+  const callback = new NotificationFactory(TypeEnum.CALLBACK, { bot: bot.instance, msg }).build() as Callback;
 
 
   if (data === COMMANDS.RESTART) {
     restart(callback, bot.localeService.i18);
   }
 
-  else if (data === COMMANDS.TASKS_DELETE) { 
+  else if (data === COMMANDS.TASKS_DELETE) {
     await deleteTask(callback, bot.localeService.i18);
   }
-  
+
   else if (data === COMMANDS.CURRENCIES) {
     await currencies(callback, bot.localeService.i18);
   }
@@ -38,10 +36,10 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
   else if (data.includes(COMMANDS.TASKS_STORE)) {
     await storeTask(callback, bot.localeService.i18);
   }
-  
+
 
   else {
-    await bot.instance.sendMessage(chatId, bot.localeService.i18.t('actions.undefined.descriprion'));
+    await callback.send({ text: bot.localeService.i18.t('actions.undefined.descriprion') });
   }
 
 };
