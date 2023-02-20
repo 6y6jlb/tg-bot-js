@@ -1,19 +1,8 @@
 
-import { Callback } from './Callback';
-import { Message } from './Message';
+import { TypeEnum, EntityType } from './consts';
 import { INotification } from './types';
 
-enum TypeEnum {
-    MESSAGE = 'MESSAGE',
-    CALLBACK = 'CALLBACK',
-}
-
-const EntityType = {
-    [TypeEnum.MESSAGE]: Message,
-    [TypeEnum.CALLBACK]: Callback
-}
-
-export class Builder {
+export class NotificationFactory {
 
     params: INotification;
     type: TypeEnum;

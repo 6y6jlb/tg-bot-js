@@ -1,26 +1,13 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { ICallback, ISend } from './types';
+import { Notification } from './Abstract';
+import { ICallback } from './types';
 
-export class Callback {
+export class Callback extends Notification {
 
-    private msg: TelegramBot.CallbackQuery;
-    private bot: TelegramBot;
+    protected msg: TelegramBot.CallbackQuery;
 
     constructor(parameters: ICallback) {
-        this.msg = parameters.msg
-        this.bot = parameters.bot
-    }
-
-    async send(params: ISend) {
-        const chatId = this.getChatId();
-    
-        if ('url' in params) {
-            await this.bot.sendPhoto(chatId, params.url, params.options);
-        } else if ('sticker' in params) {
-            await this.bot.sendSticker(chatId, params.sticker, params.options);
-        } else if ('message' in params){
-            await this.bot.sendMessage(chatId, params.text, params.options);
-        }
+        super(parameters);
     }
 
     getChatId() {
@@ -29,7 +16,7 @@ export class Callback {
     }
 
     getName() {
-        const name =  this.msg.message?.chat.first_name ??  this.msg.message?.chat.last_name  ?? 'guest';
+        const name = this.msg.message?.chat.first_name ?? this.msg.message?.chat.last_name ?? 'guest';
         return name;
     }
     getLanguage() {

@@ -1,7 +1,8 @@
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
-import { Builder } from "../Notification/AbstractFactory";
+import { NotificationFactory } from "../Notification/AbstractFactory";
+import { TypeEnum } from "../Notification/consts";
 import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
 import { makeTaskRegular } from "./commands/makeTaskRegular";
@@ -14,27 +15,27 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
   const chatId = msg.message?.chat.id;
   const userId = msg.from?.id;
 
-  const notification = new Builder({ bot: bot.instance, msg}).build();
+  const callback = new NotificationFactory(TypeEnum.CALLBACK, { bot: bot.instance, msg}).build();
 
 
   if (data === COMMANDS.RESTART) {
-    restart(userId, bot, chatId);
+    restart(callback, bot.localeService.i18);
   }
 
-  else if (data === COMMANDS.TASKS_DELETE) {
-    await deleteTask(userId, bot, chatId);
+  else if (data === COMMANDS.TASKS_DELETE) { 
+    await deleteTask(callback, bot.localeService.i18);
   }
   
   else if (data === COMMANDS.CURRENCIES) {
-    await currencies(bot, chatId);
+    await currencies(callback, bot.localeService.i18);
   }
 
   else if (data.includes(COMMANDS.TASKS_MAKE_REGULAR)) {
-    await makeTaskRegular(data, bot, chatId);
+    await makeTaskRegular(callback, bot.localeService.i18);
   }
 
   else if (data.includes(COMMANDS.TASKS_STORE)) {
-    await storeTask(data, userId, bot, chatId);
+    await storeTask(callback, bot.localeService.i18);
   }
   
 

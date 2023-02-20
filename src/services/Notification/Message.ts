@@ -1,26 +1,13 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { IMessage, ISend } from './types';
+import { Notification } from './Abstract';
+import { IMessage } from './types';
 
-export class Message {
+export class Message extends Notification {
 
-    private msg: TelegramBot.Message;
-    private bot: TelegramBot;
+    protected msg: TelegramBot.Message;
 
     constructor(parameters: IMessage) {
-        this.msg = parameters.msg
-        this.bot = parameters.bot
-    }
-
-    async send(params: ISend) {
-        const chatId = this.getChatId();
-    
-        if ('url' in params) {
-            await this.bot.sendPhoto(chatId, params.url, params.options);
-        } else if ('sticker' in params) {
-            await this.bot.sendSticker(chatId, params.sticker, params.options);
-        } else if ('message' in params){
-            await this.bot.sendMessage(chatId, params.text, params.options);
-        }
+        super(parameters);
     }
 
     getChatId() {
