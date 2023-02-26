@@ -1,6 +1,4 @@
 import { i18n } from 'i18next';
-import TelegramBot from "node-telegram-bot-api";
-import Bot from "../../controllers/telegram/Bot";
 import { money } from "../../helpers/common";
 import { exhangeRequestValidation, taskCreationValidator } from "../../helpers/validation";
 import { APP_TYPE_ENUM, EVENT_ENUM, IUserSettings } from "../../models/types";
@@ -40,6 +38,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
 
             break;
 
+        case APP_TYPE_ENUM.TASK_STORE_TYPE_EXCHANGE:
         case APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER:
         case APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER:
             let params = {};
@@ -49,7 +48,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                 await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() });
 
                 const { time, options, timezone } = taskCreationValidator(text);
-                const eventType = userSettings.app_type === APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER ? EVENT_ENUM.REMINDER : EVENT_ENUM.WEATHER;
+                const eventType = TaskService.getEventType(userSettings.app_type);
                 const newTask = await TaskService.store({ call_at: time, is_regular: false, options, tz: timezone, user_id: chatId, event_type: eventType });
 
                 message = i18.t('tasks.store.success', { eventType: EVENT_ENUM[eventType].toLocaleLowerCase() }) + '\n' + i18.t('tasks.update.make-regular-description');

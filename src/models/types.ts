@@ -31,7 +31,8 @@ export interface IUserSettings {
 
 export enum EVENT_ENUM {
     WEATHER = 1,
-    REMINDER = 2
+    REMINDER = 2,
+    EXCHANGE = 3,
 }
 
 export enum APP_TYPE_ENUM {
@@ -40,6 +41,7 @@ export enum APP_TYPE_ENUM {
     TASK_STORE_TYPE_DEFAULT = 2,
     TASK_STORE_TYPE_WEATHER = 3,
     TASK_STORE_TYPE_REMINDER = 4,
+    TASK_STORE_TYPE_EXCHANGE = 9,
     TASK_DELETE = 5,
     EXCHANGE_START = 6,
     EXCHANGE_STORE_TYPE_SOURCE_CURRENCY = 7,

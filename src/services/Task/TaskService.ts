@@ -1,3 +1,4 @@
+import { APP_TYPE_ENUM, EVENT_ENUM } from './../../models/types';
 import moment from "moment-timezone";
 import Task from "../../models/Task";
 import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "../../requests/Task/types";
@@ -24,7 +25,7 @@ class TaskService {
 
     async update(data: IUpdateTaskRequest) {
         try {
-            return await Task.findByIdAndUpdate(data._id, data.payload,{ new: true });
+            return await Task.findByIdAndUpdate(data._id, data.payload, { new: true });
         } catch (error) {
             throw new UpdateTaskError(error.message)
         }
@@ -62,6 +63,21 @@ class TaskService {
             newTime = newTime.slice(1)
         }
         return newTime;
+    }
+
+    public getEventType(type: APP_TYPE_ENUM) {
+        switch (type) {
+            case APP_TYPE_ENUM.TASK_STORE_TYPE_EXCHANGE:
+                return EVENT_ENUM.EXCHANGE
+            case APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER:
+                return EVENT_ENUM.WEATHER
+            case APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER:
+                return EVENT_ENUM.REMINDER
+
+
+            default:
+                throw new TaskError('Task type error. Incorrect type: ' + type);
+        }
     }
 
 

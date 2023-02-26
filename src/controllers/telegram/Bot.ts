@@ -16,7 +16,6 @@ class Bot {
   scheduler: CronScheduler;
 
   constructor() {
-
     this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
     this.scheduler = new CronScheduler(this.instance, this.localeService);
     this.localeService = LocaleService;

@@ -1,7 +1,7 @@
-import { EXchangeError } from './../exceptions/Exchange';
-import { TaskError, CreateTaskError } from './../exceptions/Task';
 import { describe, expect, test } from '@jest/globals';
-import { exhangeRequestValidation, isNumeric, taskCreationValidator, taskTimeValidator } from './validation';
+import { EXchangeError } from './../exceptions/Exchange';
+import { CreateTaskError } from './../exceptions/Task';
+import { exhangeRequestValidation, taskCreationValidator, taskTimeValidator } from './validation';
 
 describe('validation', () => {
     test('it validate correct string for task creation vol.1', () => {
