@@ -33,7 +33,7 @@ class TaskService {
 
     async resetQueue() {
         try {
-            Task.updateMany({ queue: true }, { queue: false });
+            await Task.updateMany({ queue: true },  { $set: { queue: false } });
         } catch (error) {
             throw new TaskError(error.message)
         }
