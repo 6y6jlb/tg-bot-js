@@ -1,4 +1,4 @@
-import { EVENT_ENUM } from "../../models/types"
+import { EVENT_ENUM, IOption } from "../../models/types"
 
 export interface IGetTaskRequest {
     _id?: any,
@@ -11,7 +11,7 @@ export interface IStoreTaskRequest {
     last_call?: Date,
     user_id: number,
     event_type: EVENT_ENUM,
-    options: string,
+    options: Array<IOption>,
     call_at: string,
     queue?: boolean,
     tz: string,
@@ -24,7 +24,7 @@ export interface IUpdateTaskRequest {
         last_call?: Date,
         user_id?: number,
         event_type?: EVENT_ENUM,
-        options?: string,
+        options?: object,
         call_at?: string,
         queue?: boolean,
         tz?: string,

@@ -29,7 +29,7 @@ export async function storeTask(notification: Callback, i18: i18n) {
       text: `${i18.t('tasks.description-city')}`
     });
     await notification.send({
-      text: `$ocaleService.i18.t('tasks.description-timezone')}`, options: {
+      text: `${i18.t('tasks.description-timezone')}`, options: {
         parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [

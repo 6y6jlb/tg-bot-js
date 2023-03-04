@@ -4,28 +4,35 @@
     "tasks": {
         "reset-with-delete-task-description": "You can specify another task or exit the task deletion mode by clicking to button bellow.",
         "info-title": "Existed tasks:",
-        "info-line": "\nID: {{taskId}},\nUser: {{userId}},\nEvent: {{event}},\n{{options}},\nWill be call at: {{date}}\n{{regular_desctription}}\n",
+        "info-line": "\n\nID: {{taskId}},\nUser: {{userId}},\nWill be call at: {{date}},\n{{regular_desctription}}\n",
+        "event-line": "\nEvent: {{event}},\nOption: {{options}}",
         "description-time": "Enter the time of the task call in the format 2:22",
         "description-timezone": "About timezone you can read here\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>link to wiki</a>",
         "description-type": "Select the task type.",
         "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
         "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - My message here- asia/tbilisi",
+        "options": {
+            "weather":"Write the city",
+            "reminder":"Write the message",
+            "exchange":"Write the pair of currencies (usd rub)"
+        },
         "reqular": {
             "true": "Is reqular task",
             "false": "Is not a regular task"
         },
         "update": {
             "make-regular-description": "Do you want to make task regular?",
+            "options": "You can choice additional parameter for task",
             "success": "Task was saved",
-            "error": "Something wend wrong"
+            "error": "Something went wrong when updating task"
         },
         "store": {
             "success": "Task with {{eventType}} type  was saved",
-            "error": "Something wend wrong"
+            "error": "Something went wrong when creating task"
         },
         "delete": {
             "success": "Task was deleted",
-            "error": "Something wend wrong"
+            "error": "Something went wrong when deletin task"
         }
     },
     "weather": {
@@ -64,8 +71,10 @@
         "open-app": "Open app",
         "currencies": "Currencies",
         "weather": "Weather request",
-        "event-reminder": "Event reminder",
-        "event-weather": "Event weather",
+        "event-reminder": "Event (reminder)",
+        "event-weather": "Event (weather)",
+        "event-exchange": "Event (exchange)",
+        "event-options": "Additional parameters for task",
         "profile": "Profile",
         "reset": "Reset",
         "tasks-new": "Create new task",

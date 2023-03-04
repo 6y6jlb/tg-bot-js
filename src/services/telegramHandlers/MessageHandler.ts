@@ -43,6 +43,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
       const parsedData = JSON.parse(msg.web_app_data?.data);
       await notification.send({ text: `${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}` });
     } catch (error) {
+      console.warn(error)
       await notification.send({ text: bot.localeService.i18.t('notifications.errors.something-went-wrong') });
     }
 

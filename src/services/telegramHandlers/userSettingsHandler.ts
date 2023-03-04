@@ -1,7 +1,7 @@
 import { i18n } from 'i18next';
 import { money } from "../../helpers/common";
 import { exhangeRequestValidation, taskCreationValidator } from "../../helpers/validation";
-import { APP_TYPE_ENUM, EVENT_ENUM, IUserSettings } from "../../models/types";
+import { APP_TYPE_ENUM, IUserSettings } from "../../models/types";
 import { COMMANDS } from "../../utils/const";
 import { Message } from "../Notification/Message";
 import TaskService from "../Task/TaskService";
@@ -9,6 +9,7 @@ import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { TEMPERATURE_SIGN } from "../Weather/const";
 import WeatherService from "../Weather/WeatherService";
 import XChangeService from "../XChange/XChangeService";
+import { EVENT_OPTIONS, ITask } from './../../models/types';
 
 export async function userSettingsHandler(userSettings: IUserSettings, notification: Message, i18: i18n) {
     const lang = notification.getLanguage();
@@ -42,31 +43,41 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
         case APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER:
         case APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER:
             let params = {};
-
-
+            let currentTask = null;
             try {
-                await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date() });
 
-                const { time, options, timezone } = taskCreationValidator(text);
+                await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {}});
+
+                
                 const eventType = TaskService.getEventType(userSettings.app_type);
-                const newTask = await TaskService.store({ call_at: time, is_regular: false, options, tz: timezone, user_id: chatId, event_type: eventType });
+                const newParams = { event_type: EVENT_OPTIONS[userSettings.app_type], param: text }
 
-                message = i18.t('tasks.store.success', { eventType: EVENT_ENUM[eventType].toLocaleLowerCase() }) + '\n' + i18.t('tasks.update.make-regular-description');
+                if (userSettings.payload?.task_id) {
+
+                    currentTask = await TaskService.get({ _id: userSettings.payload?.task_id }) as ITask;
+                    await TaskService.update({ _id: userSettings.payload?.task_id, payload: { options: [...currentTask.options, newParams] } });
+
+                } else {
+                    const { time, options, timezone } = taskCreationValidator(text);
+                    currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{...newParams, param: options}], tz: timezone, user_id: chatId, event_type: eventType });
+                };
+
+                message = i18.t('tasks.store.success', { eventType: eventType.toLocaleLowerCase() }) + '\n' + i18.t('tasks.update.make-regular-description');
 
                 params = {
                     parse_mode: 'HTML',
                     reply_markup: {
                         inline_keyboard: [
-                            [{ text: i18.t('buttons.yes'), callback_data: `${COMMANDS.TASKS_MAKE_REGULAR}?task_id=${newTask._id}` }],
+                            [{ text: i18.t('buttons.yes'), callback_data: `${COMMANDS.TASKS_MAKE_REGULAR}?task_id=${currentTask._id}` }],
+                            [{ text: i18.t('buttons.event-options'), callback_data: `${COMMANDS.TASKS_CHOICE_OPTIONS}?task_id=${currentTask._id}` }],
                         ]
                     }
                 };
 
             } catch (error) {
+                console.warn(error)
                 message = i18.t('tasks.store.error');
-                params = {
-                    parse_mode: 'HTML'
-                };
+                params = { parse_mode: 'HTML' };
             }
 
             await notification.send({ text: message, options: params });

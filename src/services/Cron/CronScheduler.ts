@@ -21,14 +21,18 @@ export class CronScheduler {
   public makeTask(expression: string, task: ITask) {
     const job = cron.schedule(expression, async () => {
       try {
-        const {message, icon} = await this.getMessage(task.event_type, task.options);
-
-        if(icon) {
-          await this.bot.sendPhoto(task.user_id, icon)
+        for (let i = 0; i < task.options.length; i++) {
+          const option = task.options[i];
+          const {message, icon} = await this.getMessage(option.event_type, option.param);
+          
+          if(icon) {
+            await this.bot.sendPhoto(task.user_id, icon)
+          }
+  
+          await this.bot.sendMessage(task.user_id, message);
+         
         }
-
-        await this.bot.sendMessage(task.user_id, message);
-       
+        
         if (task.is_regular) {
           await TaskService.update({ _id: task._id, payload: { queue: false } })
         } else {

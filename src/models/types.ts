@@ -14,12 +14,11 @@ export interface ITask {
     _id?: Schema.Types.ObjectId,
     last_call?: Date,
     user_id: number,
-    event_type: EVENT_ENUM,
-    options: string,
+    options: Array<IOption>,
     call_at: string,
     queue?: boolean,
     tz: string,
-    is_regular: boolean
+    is_regular: boolean,
 }
 
 export interface IUserSettings {
@@ -27,14 +26,23 @@ export interface IUserSettings {
     created_at: Date,
     user_id: number,
     app_type: APP_TYPE_ENUM,
+    payload?: ISettingPayload
+}
+
+export interface ISettingPayload {
+    task_id?: string
+}
+
+export interface IOption {
+    event_type: EVENT_ENUM,
+    param: string
 }
 
 export enum EVENT_ENUM {
-    WEATHER = 1,
-    REMINDER = 2,
-    EXCHANGE = 3,
+    WEATHER = "WEATHER",
+    REMINDER = "REMINDER",
+    EXCHANGE = "EXCHANGE",
 }
-
 export enum APP_TYPE_ENUM {
     DEFAULT = 0,
     WEATHER_REQUEST = 1,
@@ -47,3 +55,10 @@ export enum APP_TYPE_ENUM {
     EXCHANGE_STORE_TYPE_SOURCE_CURRENCY = 7,
     EXCHANGE_STORE_TYPE_TARGET_CURRENCY = 8,
 }
+
+export const EVENT_OPTIONS = {
+    [APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER]: EVENT_ENUM.WEATHER,
+    [APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER]: EVENT_ENUM.REMINDER,
+    [APP_TYPE_ENUM.TASK_STORE_TYPE_EXCHANGE]: EVENT_ENUM.EXCHANGE,
+}
+

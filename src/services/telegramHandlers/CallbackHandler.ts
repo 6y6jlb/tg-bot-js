@@ -4,10 +4,12 @@ import { COMMANDS } from "../../utils/const";
 import { NotificationFactory } from "../Notification/AbstractFactory";
 import { Callback } from "../Notification/Callback";
 import { TypeEnum } from "../Notification/consts";
+import { choiceOptions } from "./commands/choiceOptions";
 import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
 import { makeTaskRegular } from "./commands/makeTaskRegular";
 import { restart } from "./commands/restart";
+import { setOptions } from "./commands/setOptions";
 import { storeTask } from "./commands/storeTask";
 
 
@@ -31,6 +33,14 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
 
   else if (data.includes(COMMANDS.TASKS_MAKE_REGULAR)) {
     await makeTaskRegular(callback, bot.localeService.i18);
+  }
+
+  else if (data.includes(COMMANDS.TASKS_CHOICE_OPTIONS)) {
+    await choiceOptions(callback, bot.localeService.i18);
+  }
+
+  else if (data.includes(COMMANDS.TASKS_SET_OPTIONS)) {
+    await setOptions(callback, bot.localeService.i18);
   }
 
   else if (data.includes(COMMANDS.TASKS_STORE)) {

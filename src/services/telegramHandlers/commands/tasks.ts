@@ -14,10 +14,20 @@ export async function tasks(notification: Message, i18: i18n) {
     let message = i18.t('tasks.info-title');
 
     for (let task = 0; task < tasks.length; task++) {
+
         const currentTask = tasks[task];
         const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').tz(currentTask.tz).format(TaskService.FORMAT);
-        message += `${i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, event: EVENT_ENUM[currentTask.event_type], options: currentTask.options, date: callAt, regular_desctription: i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
+        message += `${i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, date: callAt, regular_desctription: i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
 
+
+        for (let option = 0; option < currentTask.options.length; option++) {
+            const element = currentTask.options[option];
+            message += `${i18.t('tasks.event-line', { event: EVENT_ENUM[element.event_type], options: element.param, escapeValue: false })}`;
+
+        }
+        
+        
+        
     }
     await notification.send({
         text: message, options: {
