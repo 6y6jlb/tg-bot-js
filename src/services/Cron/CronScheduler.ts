@@ -125,7 +125,7 @@ export class CronScheduler {
           const exchange = await XChangeService.getRate(validExchangeRequest);
           const formattedRate = money(exchange);
 
-          return { message: `${this.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate: formattedRate })}\n${this.localeService.i18.t('exchange.reset-with-description')}`}
+          return { message: `${this.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate: formattedRate })}`}
 
       default:
 
