@@ -1,4 +1,4 @@
-import { APP_TYPE_ENUM, EVENT_ENUM } from './../../models/types';
+import { APP_TYPE_ENUM, EVENT_ENUM } from "../../models/const";
 import moment from "moment-timezone";
 import Task from "../../models/Task";
 import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "../../requests/Task/types";

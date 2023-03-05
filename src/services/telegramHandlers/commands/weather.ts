@@ -1,6 +1,6 @@
 import { i18n } from "i18next";
 import Bot from "../../../controllers/telegram/Bot";
-import { APP_TYPE_ENUM } from "../../../models/types";
+import { APP_TYPE_ENUM } from "../../../models/const";
 import { COMMANDS } from "../../../utils/const";
 import { Message } from "../../Notification/Message";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";

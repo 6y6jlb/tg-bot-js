@@ -1,6 +1,7 @@
 import { i18n } from 'i18next';
 import moment from "moment";
-import { EVENT_ENUM, ITask } from "../../../models/types";
+import { ITask } from "../../../models/types";
+import { EVENT_ENUM } from "../../../models/const";
 import { COMMANDS } from "../../../utils/const";
 import AdminService from "../../Admin/AdminService";
 import { Message } from "../../Notification/Message";

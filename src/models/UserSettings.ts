@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { APP_TYPE_ENUM, IUserSettings } from './types';
+import { IUserSettings } from './types';
+import { APP_TYPE_ENUM } from "./const";
 
 const UserSettings = new mongoose.Schema<IUserSettings>({
     user_id: { type: Number, ref: 'User' },

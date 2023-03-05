@@ -1,4 +1,5 @@
-import { EVENT_ENUM, IOption } from "../../models/types"
+import { IOption } from "../../models/types"
+import { EVENT_ENUM } from "../../models/const"
 
 export interface IGetTaskRequest {
     _id?: any,

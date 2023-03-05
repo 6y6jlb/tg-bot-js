@@ -1,5 +1,5 @@
 import { i18n } from 'i18next';
-import { APP_TYPE_ENUM } from "../../../models/types";
+import { APP_TYPE_ENUM } from "../../../models/const";
 import { STICKERS } from "../../../utils/const";
 import { Message } from '../../Notification/Message';
 import UserSettingsService from "../../UserSetttings/UserSettingsService";

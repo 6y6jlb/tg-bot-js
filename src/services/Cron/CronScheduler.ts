@@ -3,7 +3,8 @@ import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
 import { money } from '../../helpers/common';
 import { exhangeRequestValidation } from '../../helpers/validation';
-import { EVENT_ENUM, ITask } from '../../models/types';
+import { ITask } from '../../models/types';
+import { EVENT_ENUM } from "../../models/const";
 import LocaleService from '../Locale/LocaleService';
 import RandomService from '../Random/RandomService';
 import TaskService from '../Task/TaskService';
@@ -85,7 +86,7 @@ export class CronScheduler {
     try {
 
       console.info(`Schedule started, date - ${moment().format('HH:mma MM.DD.YYYY')}`)
-      const job = cron.schedule('30 * * * * *', () => {
+      const job = cron.schedule('15 * * * * *', () => {
         this.callTasks();
         job.stop()
       });
@@ -119,7 +120,7 @@ export class CronScheduler {
         }
 
         case EVENT_ENUM.EXCHANGE:
-          
+
           const validExchangeRequest = exhangeRequestValidation(param);
           const exchange = await XChangeService.getRate(validExchangeRequest);
           const formattedRate = money(exchange);

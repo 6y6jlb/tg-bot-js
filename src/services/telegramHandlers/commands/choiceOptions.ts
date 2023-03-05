@@ -1,6 +1,6 @@
 import { i18n } from "i18next";
 import { Callback } from "../../Notification/Callback";
-import { EVENT_ENUM } from './../../../models/types';
+import { EVENT_ENUM } from "../../../models/const";
 import { COMMANDS } from './../../../utils/const';
 
 export async function choiceOptions(notification: Callback, i18: i18n) {

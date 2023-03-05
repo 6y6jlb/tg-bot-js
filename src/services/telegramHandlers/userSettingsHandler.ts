@@ -1,7 +1,8 @@
 import { i18n } from 'i18next';
 import { money } from "../../helpers/common";
 import { exhangeRequestValidation, taskCreationValidator } from "../../helpers/validation";
-import { APP_TYPE_ENUM, IUserSettings } from "../../models/types";
+import { IUserSettings } from "../../models/types";
+import { APP_TYPE_ENUM } from "../../models/const";
 import { COMMANDS } from "../../utils/const";
 import { Message } from "../Notification/Message";
 import TaskService from "../Task/TaskService";
@@ -9,7 +10,8 @@ import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { TEMPERATURE_SIGN } from "../Weather/const";
 import WeatherService from "../Weather/WeatherService";
 import XChangeService from "../XChange/XChangeService";
-import { EVENT_OPTIONS, ITask } from './../../models/types';
+import { ITask } from './../../models/types';
+import { EVENT_OPTIONS } from "../../models/const";
 
 export async function userSettingsHandler(userSettings: IUserSettings, notification: Message, i18: i18n) {
     const lang = notification.getLanguage();

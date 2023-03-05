@@ -1,5 +1,5 @@
 import { i18n } from "i18next";
-import { APP_TYPE_ENUM, EVENT_ENUM, EVENT_OPTIONS } from '../../../models/types';
+import { APP_TYPE_ENUM, EVENT_ENUM, EVENT_OPTIONS } from "../../../models/const";
 import { COMMANDS } from '../../../utils/const';
 import { Callback } from "../../Notification/Callback";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
