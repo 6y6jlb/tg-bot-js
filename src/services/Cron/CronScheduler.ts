@@ -1,11 +1,14 @@
 import moment from 'moment';
 import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
+import { money } from '../../helpers/common';
+import { exhangeRequestValidation } from '../../helpers/validation';
 import { EVENT_ENUM, ITask } from '../../models/types';
 import LocaleService from '../Locale/LocaleService';
 import RandomService from '../Random/RandomService';
 import TaskService from '../Task/TaskService';
 import WeatherService from '../Weather/WeatherService';
+import XChangeService from '../XChange/XChangeService';
 import { convertDateToCronExpression } from './../../helpers/cron';
 import { TEMPERATURE_SIGN } from './../Weather/const';
 
@@ -21,6 +24,7 @@ export class CronScheduler {
   public makeTask(expression: string, task: ITask) {
     const job = cron.schedule(expression, async () => {
       try {
+
         for (let i = 0; i < task.options.length; i++) {
           const option = task.options[i];
           const {message, icon} = await this.getMessage(option.event_type, option.param);
@@ -39,14 +43,14 @@ export class CronScheduler {
           await TaskService.delete({ _id: task._id })
         }
 
-        console.info(`Task executed${task.is_regular ? '' : ' and was deleted'} - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
+        console.info(`Task executed${task.is_regular ? '' : ' and was deleted'} - expr: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
       } catch (error) {
         console.warn(error.message)
       } finally {
         job.stop()
       } 
     });
-    console.info(`Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${task.options}`)
+    console.info(`Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
   }
 
   private async getTasks() {
@@ -93,13 +97,13 @@ export class CronScheduler {
     }
   }
 
-  private async getMessage(eventType: EVENT_ENUM, options: string) {
-
+  private async getMessage(eventType: EVENT_ENUM, param: string) {
+    
     switch (eventType) {
 
       case EVENT_ENUM.WEATHER:
 
-        const weather = await WeatherService.get({ city: options })
+        const weather = await WeatherService.get({ city: param })
 
         return {
           icon: weather.icon,
@@ -111,12 +115,20 @@ export class CronScheduler {
       case EVENT_ENUM.REMINDER:
         const icon = await RandomService.getImage()
         return {
-          icon, message: options
+          icon, message: param
         }
+
+        case EVENT_ENUM.EXCHANGE:
+          
+          const validExchangeRequest = exhangeRequestValidation(param);
+          const exchange = await XChangeService.getRate(validExchangeRequest);
+          const formattedRate = money(exchange);
+
+          return { message: `${this.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate: formattedRate })}\n${this.localeService.i18.t('exchange.reset-with-description')}`}
 
       default:
 
-        return { message: options };
+        return { message: param };
     }
   }
 }
