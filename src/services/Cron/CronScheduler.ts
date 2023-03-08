@@ -3,7 +3,7 @@ import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
 import { money } from '../../helpers/common';
 import { exhangeRequestValidation } from '../../helpers/validation';
-import { ITask } from '../../models/types';
+import { ITask, IUser } from '../../models/types';
 import { EVENT_ENUM } from "../../models/const";
 import LocaleService from '../Locale/LocaleService';
 import RandomService from '../Random/RandomService';
@@ -12,6 +12,7 @@ import WeatherService from '../Weather/WeatherService';
 import XChangeService from '../XChange/XChangeService';
 import { convertDateToCronExpression } from './../../helpers/cron';
 import { TEMPERATURE_SIGN } from './../Weather/const';
+import UserService from '../User/UserService';
 
 export class CronScheduler {
   private bot: TelegramBot;
@@ -24,6 +25,10 @@ export class CronScheduler {
 
   public makeTask(expression: string, task: ITask) {
     const job = cron.schedule(expression, async () => {
+      
+      const user = await UserService.get({id: task.user_id}) as IUser
+      if (user.language) this.localeService.changeLanguage(user.language);
+
       try {
 
         for (let i = 0; i < task.options.length; i++) {
@@ -104,7 +109,7 @@ export class CronScheduler {
 
       case EVENT_ENUM.WEATHER:
 
-        const weather = await WeatherService.get({ city: param })
+        const weather = await WeatherService.get({ city: param });
 
         return {
           icon: weather.icon,
