@@ -1,6 +1,8 @@
 
 export const INDEX = '/index.html';
 
+export const DEFAULT_PASSWORD = '123456';
+
 
 export const COMMANDS = {
   START: "/start",

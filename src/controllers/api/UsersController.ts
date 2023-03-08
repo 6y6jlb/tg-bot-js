@@ -4,6 +4,18 @@ import UserService from "../../services/User/UserService";
 
 
 class UsersController {
+
+    async login(req: Request, res: Response) {
+        try {
+            const data = UserApiRequest.get(req);
+            const user = await UserService.login(data);
+            res.json(user)
+        } catch (error) {
+            console.warn(error)
+            res.status(400).json(error.message)
+        }
+    }
+
     async get(req: Request, res: Response) {
         try {
             const data = UserApiRequest.get(req);

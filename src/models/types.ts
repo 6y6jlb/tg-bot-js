@@ -9,6 +9,11 @@ export interface IUser {
     location?: string,
     currency?: string,
     language?: string,
+    hash?: string,
+    salt?: string,
+    setPassword?: (password: string) => void,
+    validatePassword?: (password: string) => boolean,
+    save: () => void,
 }
 
 export interface ITask {

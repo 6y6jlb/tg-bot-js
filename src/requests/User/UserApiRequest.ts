@@ -1,15 +1,15 @@
-import { DeleteUserError } from './../../exceptions/User';
+import { DeleteUserError, UserError } from './../../exceptions/User';
 import { Request } from "express";
 import { UpdateUserError } from "../../exceptions/User";
-import { IDeleteUserRequest, IGetUserRequest, IStoreUserRequest, IUpdateUserRequest } from "./types";
+import { IDeleteUserRequest, IGetUserRequest, ILoginUserRequest, IStoreUserRequest, IUpdateUserRequest } from "./types";
 
 class UserApiRequest {
-    get(request: Request): IGetUserRequest {
-        const { user_id } = request.query
-        if (user_id) {
-            return { id: user_id } as IGetUserRequest;
+    get(request: Request): ILoginUserRequest {
+        const { user_id, password } = request.query
+        if (user_id && password) {
+            return { id: user_id, password } as ILoginUserRequest;
         }
-        return {}
+        throw new UserError('User validation error')
     }
 
     store(request: Request): IStoreUserRequest {

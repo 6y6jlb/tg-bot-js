@@ -1,13 +1,22 @@
+import { IUser } from './../../models/types';
+import { UserError } from "../../exceptions/User";
 import User from "../../models/User";
-import { IGetUserRequest, IUpdateUserRequest, IDeleteUserRequest, IStoreUserRequest } from "../../requests/User/types";
+import { IGetUserRequest, IUpdateUserRequest, IDeleteUserRequest, IStoreUserRequest, ILoginUserRequest } from "../../requests/User/types";
 
 class UsersService {
+    async login(data: ILoginUserRequest) {
+        const user = await this.get({ id: data.id }) as IUser;
+        if (user.validatePassword(data.password)) {
+            return user;
+        }
+        throw new UserError("Wrong Password");
+    }
 
     get(data: IGetUserRequest) {
         if (data.id) {
             return User.findOne(data)
         } else {
-            return User.find({})
+            throw new UserError('No user');
         }
 
     }

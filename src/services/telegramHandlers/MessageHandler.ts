@@ -1,7 +1,7 @@
-import { i18n } from 'i18next';
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { IUser } from "../../models/types";
+import { DEFAULT_PASSWORD } from '../../utils/const';
 import AdminService from "../Admin/AdminService";
 import { NotificationFactory } from "../Notification/AbstractFactory";
 import { TypeEnum } from '../Notification/consts';
@@ -16,7 +16,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
 
   const name = msg.from.username || msg.from.first_name;
 
-  const user = await UserService.get({ id: userId }) as IUser;
+  let user = await UserService.get({ id: userId }) as IUser;
 
   const language = user?.language ?? msg.from?.language_code ?? 'en';
 
@@ -28,7 +28,9 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
   if (!user) {
 
     await UserService.store({ id: String(userId), name, language })
-
+    user =  await UserService.get({id: userId}) as IUser;
+    user.setPassword(DEFAULT_PASSWORD)
+    user.save();
     await AdminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
     )
