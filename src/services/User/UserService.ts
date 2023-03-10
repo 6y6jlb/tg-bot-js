@@ -1,7 +1,9 @@
 import { IUser } from './../../models/types';
 import { UserError } from "../../exceptions/User";
 import User from "../../models/User";
+import crypto from 'crypto';
 import { IGetUserRequest, IUpdateUserRequest, IDeleteUserRequest, IStoreUserRequest, ILoginUserRequest } from "../../requests/User/types";
+import { DEFAULT_PASSWORD } from '../../utils/const';
 
 class UsersService {
     async login(data: ILoginUserRequest) {
@@ -26,7 +28,13 @@ class UsersService {
     }
 
     store(data: IStoreUserRequest) {
-        return User.create(data)
+
+    const salt = crypto.randomBytes(16).toString('hex');
+
+    const hash = crypto.pbkdf2Sync(DEFAULT_PASSWORD, salt,
+        1000, 64, `sha512`).toString(`hex`);
+
+        return User.create({...data, salt, hash})
     }
 
     delete(data: IDeleteUserRequest) {

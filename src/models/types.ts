@@ -11,7 +11,6 @@ export interface IUser {
     language?: string,
     hash?: string,
     salt?: string,
-    setPassword?: (password: string) => void,
     validatePassword?: (password: string) => boolean,
     save: () => void,
 }

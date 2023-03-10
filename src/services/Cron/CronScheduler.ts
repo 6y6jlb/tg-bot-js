@@ -27,7 +27,7 @@ export class CronScheduler {
     const job = cron.schedule(expression, async () => {
       
       const user = await UserService.get({id: task.user_id}) as IUser
-      if (user.language) this.localeService.changeLanguage(user.language);
+      if (user?.language) this.localeService.changeLanguage(user.language);
 
       try {
 

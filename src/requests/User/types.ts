@@ -14,7 +14,6 @@ export interface IStoreUserRequest {
     language?: string,
     currency?: string,
     location?: string,
-    password?: string
     tz?: string,
 }
 

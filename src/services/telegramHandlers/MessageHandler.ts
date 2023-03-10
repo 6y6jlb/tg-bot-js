@@ -1,7 +1,6 @@
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { IUser } from "../../models/types";
-import { DEFAULT_PASSWORD } from '../../utils/const';
 import AdminService from "../Admin/AdminService";
 import { NotificationFactory } from "../Notification/AbstractFactory";
 import { TypeEnum } from '../Notification/consts';
@@ -18,7 +17,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
 
   let user = await UserService.get({ id: userId }) as IUser;
 
-  const language = user?.language ?? msg.from?.language_code ?? 'en';
+  const language = user?.language ?? msg.from.language_code;
 
   bot.localeService.changeLanguage(language);
 
@@ -28,9 +27,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
   if (!user) {
 
     await UserService.store({ id: String(userId), name, language })
-    user =  await UserService.get({id: userId}) as IUser;
-    user.setPassword(DEFAULT_PASSWORD)
-    user.save();
+    
     await AdminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
     )
@@ -39,11 +36,11 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
 
   } else if (msg.web_app_data) {
 
-    bot.localeService.changeLanguage(user.language ?? language);
     try {
 
       const parsedData = JSON.parse(msg.web_app_data?.data);
       await notification.send({ text: `${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}` });
+
     } catch (error) {
       console.warn(error)
       await notification.send({ text: bot.localeService.i18.t('notifications.errors.something-went-wrong') });

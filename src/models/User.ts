@@ -14,16 +14,6 @@ const User = new mongoose.Schema<IUser>({
     salt: String
 })
 
-User.methods.setPassword = function (password: string) {
-
-    // Creating a unique salt for a particular user
-    this.salt = crypto.randomBytes(16).toString('hex');
-
-    // Hashing user's salt and password with 1000 iterations,
-    this.hash = crypto.pbkdf2Sync(password, this.salt,
-        1000, 64, `sha512`).toString(`hex`);
-};
-
 User.methods.validatePassword = function (password: string) {
     const hash = crypto.pbkdf2Sync(password,this.salt, 1000, 64, `sha512`).toString(`hex`);
     return this.hash === hash;
