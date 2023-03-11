@@ -15,7 +15,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
 
   const name = msg.from.username || msg.from.first_name;
 
-  let user = await UserService.get({ id: userId }) as IUser;
+  let user = await UserService.getById(userId) as IUser;
 
   const language = user?.language ?? msg.from.language_code;
 

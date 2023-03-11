@@ -30,3 +30,8 @@ export interface IUpdateUserRequest {
 export interface IDeleteUserRequest {
     id: string|number
 }
+
+export interface IResetUserPasswordRequest {
+    id: string|number
+}
+ 

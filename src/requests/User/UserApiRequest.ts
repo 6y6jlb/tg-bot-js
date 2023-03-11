@@ -1,10 +1,19 @@
 import { DeleteUserError, UserError } from './../../exceptions/User';
 import { Request } from "express";
 import { UpdateUserError } from "../../exceptions/User";
-import { IDeleteUserRequest, IGetUserRequest, ILoginUserRequest, IStoreUserRequest, IUpdateUserRequest } from "./types";
+import { IDeleteUserRequest, IGetUserRequest, ILoginUserRequest, IResetUserPasswordRequest, IStoreUserRequest, IUpdateUserRequest } from "./types";
 
 class UserApiRequest {
-    get(request: Request): ILoginUserRequest {
+
+    getById(request: Request): IGetUserRequest {
+        const { id } = request.query
+        if (id) {
+            return { id } as IGetUserRequest;
+        }
+        throw new UserError('User validation error')
+    }
+
+    login(request: Request): ILoginUserRequest {
         const { user_id, password } = request.query
         if (user_id && password) {
             return { id: user_id, password } as ILoginUserRequest;
@@ -18,19 +27,27 @@ class UserApiRequest {
     }
 
     update(request: Request): IUpdateUserRequest {
-        const { user_id, name, language, currency, location, tz } = request.body
+        const { user_id, name, language, currency, location, tz, password } = request.body
         if (user_id) {
-            return { id: user_id, name, language, currency, location, tz } as IUpdateUserRequest;
+            return { id: user_id, name, language, currency, location, tz, password } as IUpdateUserRequest;
         }
         throw new UpdateUserError('Incorrect data')
     }
 
     delete(request: Request): IDeleteUserRequest {
-        const { user_id } = request.query
-        if (user_id) {
-            return { id: user_id } as IDeleteUserRequest;
+        const { id } = request.query
+        if (id) {
+            return { id } as IDeleteUserRequest;
         }
         throw new DeleteUserError('Incorrect data')
+    }
+
+    resetPassword(request: Request): IResetUserPasswordRequest {
+        const { id } = request.query
+        if (id) {
+            return { id } as IResetUserPasswordRequest;
+        }
+        throw new UserError('Has not user id')
     }
 }
 

@@ -1,47 +1,70 @@
-import { IUser } from './../../models/types';
+import crypto from 'crypto';
 import { UserError } from "../../exceptions/User";
 import User from "../../models/User";
-import crypto from 'crypto';
-import { IGetUserRequest, IUpdateUserRequest, IDeleteUserRequest, IStoreUserRequest, ILoginUserRequest } from "../../requests/User/types";
+import { IDeleteUserRequest, ILoginUserRequest, IResetUserPasswordRequest, IStoreUserRequest, IUpdateUserRequest } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
+import { IUser } from './../../models/types';
 
 class UsersService {
     async login(data: ILoginUserRequest) {
-        const user = await this.get({ id: data.id }) as IUser;
+        const user = await this.getById(data.id) as IUser;
         if (user.validatePassword(data.password)) {
             return user;
         }
         throw new UserError("Wrong Password");
     }
 
-    get(data: IGetUserRequest) {
-        if (data.id) {
-            return User.findOne(data)
+    getById(id: string | number) {
+        if (id) {
+            return User.findById(id)
         } else {
             throw new UserError('No user');
         }
 
     }
 
+    get() {
+        return User.find()
+
+    }
+
+
     update(data: IUpdateUserRequest) {
-        return User.findOneAndUpdate(data);
+
+        if (data.password) {
+
+            data['salt'] = crypto.randomBytes(16).toString('hex');
+
+            data['hash'] = crypto.pbkdf2Sync(data.password, data['salt'], 1000, 64, `sha512`).toString(`hex`);
+
+            delete data.password;
+
+        }
+
+        return User.findOneAndUpdate({id: data.id}, data, {new: true});
     }
 
     store(data: IStoreUserRequest) {
 
-    const salt = crypto.randomBytes(16).toString('hex');
 
-    const hash = crypto.pbkdf2Sync(DEFAULT_PASSWORD, salt,
-        1000, 64, `sha512`).toString(`hex`);
-
-        return User.create({...data, salt, hash})
+        return User.create({ ...data, ...this.getDefaultPassword() })
     }
 
     delete(data: IDeleteUserRequest) {
         return User.findOneAndDelete(data)
     }
-    async isUserExists(userId: number) {
-        return await User.exists({ id: userId })
+
+    resetPassword(data: IResetUserPasswordRequest) {
+        return User.findOneAndUpdate({ ...data, ...this.getDefaultPassword() });
+    }
+
+    getDefaultPassword() {
+
+        const salt = crypto.randomBytes(16).toString('hex');
+
+        const hash = crypto.pbkdf2Sync(DEFAULT_PASSWORD, salt, 1000, 64, `sha512`).toString(`hex`);
+
+        return { salt, hash }
     }
 
 

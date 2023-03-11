@@ -7,7 +7,7 @@ class UsersController {
 
     async login(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.get(req);
+            const data = UserApiRequest.login(req);
             const user = await UserService.login(data);
             res.json(user)
         } catch (error) {
@@ -18,13 +18,27 @@ class UsersController {
 
     async get(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.get(req);
-            res.json(await UserService.get(data))
+
+            res.json(await UserService.get())
         } catch (error) {
             console.log(error)
             res.status(400).json(error.message)
         }
     }
+
+    async getById(req: Request, res: Response) {
+        try {
+            const userId = req.params.userId;;
+
+            if(userId) {
+            res.json(await UserService.getById(userId))
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json(error.message)
+        }
+    }
+
     async update(req: Request, res: Response) {
         try {
             const data = UserApiRequest.update(req);
@@ -48,6 +62,16 @@ class UsersController {
         try {
             const data = UserApiRequest.delete(req);
             res.json(await UserService.delete(data))
+        } catch (error) {
+            console.log(error)
+            res.status(400).json(error.message)
+        }
+    }
+
+    async resetPassord(req: Request, res: Response) {
+        try {
+            const data = UserApiRequest.resetPassword(req);
+            res.json(await UserService.resetPassword(data))
         } catch (error) {
             console.log(error)
             res.status(400).json(error.message)
