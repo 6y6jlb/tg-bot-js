@@ -24,39 +24,45 @@ export class CronScheduler {
   }
 
   public makeTask(expression: string, task: ITask) {
+    const now = moment().format('HH:mma M.D.YYYY');
     const job = cron.schedule(expression, async () => {
       
       const user = await UserService.getById(task.user_id) as IUser
       if (user?.language) this.localeService.changeLanguage(user.language);
-
-      try {
+      
+      
 
         for (let i = 0; i < task.options.length; i++) {
-          const option = task.options[i];
+          try {
+            const option = task.options[i];
           const {message, icon} = await this.getMessage(option.event_type, option.param);
-          
           if(icon) {
             await this.bot.sendPhoto(task.user_id, icon)
           }
-  
           await this.bot.sendMessage(task.user_id, message);
-         
-        }
+          } catch (error) {
+            await this.bot.sendMessage(task.user_id, error.message ?? JSON.stringify(error));
+            console.info(`${now}: Task id:${task._id}, ${error.message ?? JSON.stringify(error)}`)
+          }
+          
         
+        }
+        try {
+        console.info(`${now}: Task was executed, task id:${task._id} expression: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
         if (task.is_regular) {
           await TaskService.update({ _id: task._id, payload: { queue: false } })
         } else {
           await TaskService.delete({ _id: task._id })
+          console.info(`${now}: Task was deleted. Task id:${task._id}`)
         }
 
-        console.info(`Task executed${task.is_regular ? '' : ' and was deleted'} - expr: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
       } catch (error) {
         console.warn(error.message)
       } finally {
         job.stop()
       } 
     });
-    console.info(`Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
+    console.info(`${now}: Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
   }
 
   private async getTasks() {
