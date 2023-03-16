@@ -16,7 +16,7 @@ class UsersService {
 
     getById(id: string | number) {
         if (id) {
-            return User.findById(id)
+            return User.findOne({id})
         } else {
             throw new UserError('No user');
         }
