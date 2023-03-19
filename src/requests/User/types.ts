@@ -19,7 +19,7 @@ export interface IStoreUserRequest {
 
 export interface IUpdateUserRequest {
     id: string|number
-    name: string,
+    name?: string,
     language?: string,
     currency?: string,
     location?: string,

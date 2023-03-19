@@ -1,3 +1,4 @@
+import { CALLBACK_COMMAND } from './../../utils/const';
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
@@ -11,6 +12,7 @@ import { makeTaskRegular } from "./commands/makeTaskRegular";
 import { restart } from "./commands/restart";
 import { setOptions } from "./commands/setOptions";
 import { storeTask } from "./commands/storeTask";
+import { language } from './commands/language';
 
 
 export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
@@ -45,6 +47,10 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
 
   else if (data.includes(COMMANDS.TASKS_STORE)) {
     await storeTask(callback, bot.localeService.i18);
+  }
+
+  else if(data.includes(CALLBACK_COMMAND.LANGUAGE_CHOICE)) {
+    await language(callback, bot.localeService.i18)
   }
 
 

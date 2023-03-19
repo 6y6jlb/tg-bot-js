@@ -7,6 +7,7 @@ export const DEFAULT_PASSWORD = '123456';
 export const COMMANDS = {
   START: "/start",
   WEB_APP: "/web_app",
+  SETTINGS: "/user_settings",
   INFO: "/info",
   RESTART: "/restart",
   WEATHER: "/weather",
@@ -20,6 +21,10 @@ export const COMMANDS = {
   TASKS_CHOICE_OPTIONS: "/tasks_choice_options",
   TASKS_SET_OPTIONS: "/tasks_set_options",
 
+};
+
+export const CALLBACK_COMMAND = {
+  LANGUAGE_CHOICE: "language_choice",
 };
 
 export const PAGES = {

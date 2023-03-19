@@ -12,9 +12,9 @@
         "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
         "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - My message here- asia/tbilisi",
         "options": {
-            "weather":"Write the city",
-            "reminder":"Write the message",
-            "exchange":"Write the pair of currencies (usd rub)"
+            "weather": "Write the city",
+            "reminder": "Write the message",
+            "exchange": "Write the pair of currencies (usd rub)"
         },
         "reqular": {
             "true": "Is reqular task",
@@ -53,6 +53,17 @@
             "description": "I cant understand!"
         }
     },
+    "settings": {
+        "update-title": "Select the setting you want to update.",
+        "update-succesfully": "Updated!",
+        "params": {
+            "language": {
+                "title": "Choice the language",
+                "ru": "Russian",
+                "en": "English"
+            }
+        }
+    },
     "exchange": {
         "change": "Specify the currency the exchange rate of which you want to get.",
         "reset-with-description": "You can specify another pair in the same format or exit by clicking on the button at the bottom.",
@@ -65,6 +76,9 @@
         "desctiption": "Go to web app!"
     },
     "buttons": {
+        "language": "Language",
+        "ru": "Russian",
+        "en": "English",
         "yes": "Yes",
         "no": "No",
         "fill-form": "Fill the form",

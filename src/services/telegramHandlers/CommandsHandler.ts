@@ -6,6 +6,7 @@ import { exchange } from "./commands/exchange";
 import { info } from "./commands/info";
 import { randomImage } from "./commands/randomImage";
 import { restart } from "./commands/restart";
+import { settings } from './commands/setttings';
 import { start } from "./commands/start";
 import { tasks } from "./commands/tasks";
 import { weather } from "./commands/weather";
@@ -21,6 +22,11 @@ export const commadsHandler = async (notification: Message, i18: i18n) => {
         case COMMANDS.START:
 
             await start(notification, i18);
+            break;
+
+        case COMMANDS.SETTINGS:
+
+            await settings(notification, i18);
             break;
 
         case COMMANDS.TASKS:

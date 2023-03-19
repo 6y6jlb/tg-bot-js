@@ -24,16 +24,16 @@ class LocaleService {
 
     }
 
-    public changeLanguage(langugeCode: string) {
+    public changeLanguage(languageCode: string) {
 
-        if (langugeCode === this.getLanguage()) {
+        if (languageCode === this.getLanguage()) {
             return;
         }
 
-        switch (langugeCode) {
+        switch (languageCode) {
             case 'eu':
             case 'ru':
-                this.i18.changeLanguage(langugeCode);
+                this.i18.changeLanguage(languageCode);
                 break;
 
             default:
