@@ -94,7 +94,8 @@
         "tasks-new": "Новая задача",
         "tasks-delete": "Удаление задачи",
         "tasks-type-reminder": "Напоминание",
-        "tasks-type-weather": "Погода"
+        "tasks-type-weather": "Погода",
+        "tasks-type-exchange": "Обменнный курс"
     },
     "notifications": {
         "common": {

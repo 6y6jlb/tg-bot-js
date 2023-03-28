@@ -94,7 +94,8 @@
         "tasks-new": "Create new task",
         "tasks-delete": "Remove task",
         "tasks-type-reminder": "Reminder",
-        "tasks-type-weather": "Weather"
+        "tasks-type-weather": "Weather",
+        "tasks-type-exchange": "Exchange rate"
     },
     "notifications": {
         "common": {

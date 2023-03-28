@@ -17,6 +17,7 @@ export async function storeTask(notification: Callback, i18: i18n) {
           inline_keyboard: [
             [{ text: `${i18.t('buttons.tasks-type-weather')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.WEATHER] }],
             [{ text: `${i18.t('buttons.tasks-type-reminder')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.REMINDER] }],
+            [{ text: `${i18.t('buttons.tasks-type-exchange')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.EXCHANGE] }],
           ]
         }
       }
