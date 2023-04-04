@@ -13,6 +13,7 @@ import { restart } from "./commands/restart";
 import { setOptions } from "./commands/setOptions";
 import { storeTask } from "./commands/storeTask";
 import { language } from './commands/language';
+import { updateTask } from './commands/updateTask';
 
 
 export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
@@ -47,6 +48,10 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
 
   else if (data.includes(COMMANDS.TASKS_STORE)) {
     await storeTask(callback, bot.localeService.i18);
+  }
+
+  else if (data.includes(COMMANDS.TASKS_UPDATE)) {
+    await updateTask(callback, bot.localeService.i18);
   }
 
   else if(data.includes(CALLBACK_COMMAND.LANGUAGE_CHOICE)) {

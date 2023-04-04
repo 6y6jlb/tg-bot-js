@@ -69,7 +69,8 @@
             "description": "Параментры приложения были сброшены!"
         },
         "tasks": {
-            "delete-description": "Чтобы удалить задачу введите ее ID!"
+            "delete-description": "Чтобы удалить задачу введите ее ID!",
+            "update-description": "Чтобы изменить задачу введите ее ID!"
         },
         "undefined": {
             "description": "Я не понимаю команду!"
@@ -93,6 +94,7 @@
         "reset": "Сброс",
         "tasks-new": "Новая задача",
         "tasks-delete": "Удаление задачи",
+        "tasks-update": "Изменение задачи",
         "tasks-type-reminder": "Напоминание",
         "tasks-type-weather": "Погода",
         "tasks-type-exchange": "Обменнный курс"

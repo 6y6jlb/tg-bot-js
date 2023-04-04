@@ -37,6 +37,7 @@ export async function tasks(notification: Message, i18: i18n) {
                 inline_keyboard: [
                     [{ text: i18.t('buttons.tasks-new'), callback_data: COMMANDS.TASKS_STORE }],
                     [{ text: i18.t('buttons.tasks-delete'), callback_data: COMMANDS.TASKS_DELETE }],
+                    [{ text: i18.t('buttons.tasks-update'), callback_data: COMMANDS.TASKS_UPDATE }],
                 ]
             }
         }

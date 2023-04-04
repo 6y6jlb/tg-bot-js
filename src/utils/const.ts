@@ -17,6 +17,7 @@ export const COMMANDS = {
   RANOM_IMAGE: "/random_image",
   TASKS_STORE: "/tasks_store",
   TASKS_DELETE: "/tasks_delete",
+  TASKS_UPDATE: "/tasks_update",
   TASKS_MAKE_REGULAR: "/tasks_make_regular",
   TASKS_CHOICE_OPTIONS: "/tasks_choice_options",
   TASKS_SET_OPTIONS: "/tasks_set_options",

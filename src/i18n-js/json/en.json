@@ -44,7 +44,8 @@
         "greeting": "Hello",
         "info": "User info: {{userId}}\nName:{{name}}\nCreated at:{{createdAt}}\nLangugage:{{lang}}\nTimezone:{{tz}}",
         "tasks": {
-            "delete-description": "Enter the number of the task you want to delete!"
+            "delete-description": "Enter the number of the task you want to delete!",
+            "update-description": "Enter the number of the task you want to update!"
         },
         "reset": {
             "description": "App param does reset!"
@@ -93,6 +94,7 @@
         "reset": "Reset",
         "tasks-new": "Create new task",
         "tasks-delete": "Remove task",
+        "tasks-update": "Update task",
         "tasks-type-reminder": "Reminder",
         "tasks-type-weather": "Weather",
         "tasks-type-exchange": "Exchange rate"
