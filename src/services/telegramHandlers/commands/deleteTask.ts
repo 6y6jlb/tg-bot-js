@@ -18,9 +18,9 @@ export async function deleteTask(notification: Callback, i18: i18n) {
   let message = '';
   
   if (taskId) {
-    
-    message = i18.t('tasks.delete.success');
+
     await TaskService.delete({ _id: taskId });
+    message = i18.t('tasks.delete.success');
     
   } else {
 

@@ -26,7 +26,7 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
     restart(callback, bot.localeService.i18);
   }
 
-  else if (data === COMMANDS.TASKS_DELETE) {
+  else if (data.includes(COMMANDS.TASKS_DELETE)) {
     await deleteTask(callback, bot.localeService.i18);
   }
 
@@ -60,7 +60,7 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
 
 
   else {
-    await callback.send({ text: bot.localeService.i18.t('actions.undefined.descriprion') });
+    await callback.send({ text: bot.localeService.i18.t('actions.undefined.description') });
   }
 
 };
