@@ -9,8 +9,9 @@
         "description-time": "Enter the time of the task call in the format 2:22",
         "description-timezone": "About timezone you can read here\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>link to wiki</a>",
         "description-type": "Select the task type.",
-        "description-city": "Enter the time of the task call, the city name\nand timezone in format:\n02:22 - Batumi - asia/tbilisi",
-        "description-option": "Enter the time of the task call, the message\nand timezone in format:\n02:22 - My message here- asia/tbilisi",
+        "description-weather": "Enter the time of the task call, the city name\nand timezone in format:\n<b>02:22 - Batumi - asia/tbilisi</b>",
+        "description-reminder": "Enter the time of the task call, the message\nand timezone in format:\n<b>02:22 - My message here - asia/tbilisi</b>",
+        "description-exchange": "Enter the time of the task call, the pair of currencies\nand timezone in format:\n<b>02:22 - usd rub - asia/tbilisi</b>",
         "options": {
             "weather": "Write the city",
             "reminder": "Write the message",

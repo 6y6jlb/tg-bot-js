@@ -1,5 +1,5 @@
 import { i18n } from "i18next";
-import { APP_TYPE_ENUM, EVENT_ENUM } from "../../../models/const";
+import { APP_TYPE_ENUM, EVENT_ENUM, EVENT_OPTIONS } from "../../../models/const";
 import { COMMANDS } from "../../../utils/const";
 import { Callback } from "../../Notification/Callback";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
@@ -8,57 +8,36 @@ import UserSettingsService from "../../UserSetttings/UserSettingsService";
 export async function storeTask(notification: Callback, i18: i18n) {
   const chatId = notification.getChatId();
   const data = notification.getData();
-  if (data === COMMANDS.TASKS_STORE) {
+
+  const params = new URLSearchParams(data.split('?')[1]);
+  const taskType = params.has('type') && params.get('type');
+  const buttons = [];
+  let message = '';
+
+  if (taskType) {
+    const appType = Object.keys(EVENT_OPTIONS).find(key => EVENT_OPTIONS[key] === taskType) as any;
+    UserSettingsService.updateOrCreate({ user_id: chatId, app_type: appType, created_at: new Date() });
+    message = i18.t(`tasks.description-${taskType.toLowerCase()}`) + '\n\n' + i18.t('tasks.description-timezone');
+  } else {
+
     UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_DEFAULT, created_at: new Date() });
-    await notification.send({
-      text: `${i18.t('tasks.description-type')}`, options: {
-        parse_mode: 'HTML',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: `${i18.t('buttons.tasks-type-weather')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.WEATHER] }],
-            [{ text: `${i18.t('buttons.tasks-type-reminder')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.REMINDER] }],
-            [{ text: `${i18.t('buttons.tasks-type-exchange')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.EXCHANGE] }],
-          ]
-        }
-      }
-    });
+
+    message = i18.t('tasks.description-type');
+    buttons.push([{ text: `${i18.t('buttons.tasks-type-weather')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.WEATHER] }]);
+    buttons.push([{ text: `${i18.t('buttons.tasks-type-reminder')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.REMINDER] }]);
+    buttons.push([{ text: `${i18.t('buttons.tasks-type-exchange')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.EXCHANGE] }]);
+
   }
 
-  else if (data.includes('?type=' + EVENT_ENUM[EVENT_ENUM.WEATHER])) {
-    UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_WEATHER, created_at: new Date() });
-    await notification.send({
-      text: `${i18.t('tasks.description-city')}`
-    });
-    await notification.send({
-      text: `${i18.t('tasks.description-timezone')}`, options: {
-        parse_mode: 'HTML',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: `${i18.t('buttons.reset')}`, callback_data: COMMANDS.RESTART }],
-          ]
-        }
-      }
-    });
-  }
+  buttons.push([{ text: `${i18.t('buttons.reset')}`, callback_data: COMMANDS.RESTART }]);
 
-  else if (data.includes('?type=' + EVENT_ENUM[EVENT_ENUM.REMINDER])) {
-    UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER, created_at: new Date() });
-    await notification.send({
-      text: `${i18.t('tasks.description-option')}`
-    });
-    await notification.send({
-      text: `${i18.t('tasks.description-timezone')}`, options: {
-        parse_mode: 'HTML',
-        reply_markup: {
-          inline_keyboard: [
-            [{ text: `${i18.t('buttons.reset')}`, callback_data: COMMANDS.RESTART }],
-          ]
-        }
+  await notification.send({
+    text: message, options: {
+      parse_mode: 'HTML',
+      reply_markup: {
+        inline_keyboard: buttons
       }
-    });
-  }
-
-  else {
-    console.log('else', data);
-  }
+    }
+  });
 }
+
