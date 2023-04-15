@@ -2,17 +2,17 @@ import moment from 'moment';
 import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
 import { money } from '../../helpers/common';
-import { exhangeRequestValidation } from '../../helpers/validation';
-import { ITask, IUser } from '../../models/types';
 import { EVENT_ENUM } from "../../models/const";
+import { ITask, IUser } from '../../models/types';
 import LocaleService from '../Locale/LocaleService';
 import RandomService from '../Random/RandomService';
 import TaskService from '../Task/TaskService';
+import UserService from '../User/UserService';
 import WeatherService from '../Weather/WeatherService';
 import XChangeService from '../XChange/XChangeService';
 import { convertDateToCronExpression } from './../../helpers/cron';
 import { TEMPERATURE_SIGN } from './../Weather/const';
-import UserService from '../User/UserService';
+import { exhangeRequestValidation } from '../../helpers/validation';
 
 export class CronScheduler {
   private bot: TelegramBot;
@@ -26,28 +26,28 @@ export class CronScheduler {
   public makeTask(expression: string, task: ITask) {
     const now = moment().format('HH:mma M.D.YYYY');
     const job = cron.schedule(expression, async () => {
-      
+
       const user = await UserService.getById(task.user_id) as IUser
       if (user?.language) this.localeService.changeLanguage(user.language);
-      
-      
 
-        for (let i = 0; i < task.options.length; i++) {
-          try {
-            const option = task.options[i];
-          const {message, icon} = await this.getMessage(option.event_type, option.param);
-          if(icon) {
+
+
+      for (let i = 0; i < task.options.length; i++) {
+        try {
+          const option = task.options[i];
+          const { message, icon } = await this.getMessage(option.event_type, option.param);
+          if (icon) {
             await this.bot.sendPhoto(task.user_id, icon)
           }
           await this.bot.sendMessage(task.user_id, message);
-          } catch (error) {
-            await this.bot.sendMessage(task.user_id, error.message ?? JSON.stringify(error));
-            console.info(`${now}: Task id:${task._id}, ${error.message ?? JSON.stringify(error)}`)
-          }
-          
-        
+        } catch (error) {
+          await this.bot.sendMessage(task.user_id, error.message ?? JSON.stringify(error));
+          console.info(`${now}: Task id:${task._id}, ${error.message ?? JSON.stringify(error)}`)
         }
-        try {
+
+
+      }
+      try {
         console.info(`${now}: Task was executed, task id:${task._id} expression: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
         if (task.is_regular) {
           await TaskService.update({ _id: task._id, payload: { queue: false } })
@@ -60,7 +60,7 @@ export class CronScheduler {
         console.warn(error.message)
       } finally {
         job.stop()
-      } 
+      }
     });
     console.info(`${now}: Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
   }
@@ -110,7 +110,7 @@ export class CronScheduler {
   }
 
   private async getMessage(eventType: EVENT_ENUM, param: string) {
-    
+
     switch (eventType) {
 
       case EVENT_ENUM.WEATHER:
@@ -130,13 +130,13 @@ export class CronScheduler {
           icon, message: param
         }
 
-        case EVENT_ENUM.EXCHANGE:
+      case EVENT_ENUM.EXCHANGE:
 
-          const validExchangeRequest = exhangeRequestValidation(param);
-          const exchange = await XChangeService.getRate(validExchangeRequest);
-          const formattedRate = money(exchange);
+        const validExchangeRequest = exhangeRequestValidation(param);
+        const exchange = await XChangeService.getRate(validExchangeRequest);
+        const formattedRate = money(exchange);
 
-          return { message: `${this.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate: formattedRate })}`}
+        return { message: `${this.localeService.i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate: formattedRate })}` }
 
       default:
 

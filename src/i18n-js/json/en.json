@@ -11,7 +11,7 @@
         "description-type": "Select the task type.",
         "description-weather": "Enter the time of the task call, the city name\nand timezone in format:\n<b>02:22 - Batumi - asia/tbilisi</b>",
         "description-reminder": "Enter the time of the task call, the message\nand timezone in format:\n<b>02:22 - My message here - asia/tbilisi</b>",
-        "description-exchange": "Enter the time of the task call, the pair of currencies\nand timezone in format:\n<b>usd rub - asia/tbilisi</b>",
+        "description-exchange": "Enter the time of the task call, the pair of currencies\nand timezone in format:\n<b>02:22 - usd rub - asia/tbilisi</b>",
         "options": {
             "weather": "Write the city",
             "reminder": "Write the message",

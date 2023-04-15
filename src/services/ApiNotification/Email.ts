@@ -25,7 +25,7 @@ export class Email extends Notification {
                     <span>n${this.message.senderContacts}</span> 
                     </div>
                     
-                <div> Имя/Организация  - 
+                <div> Имя  отправителя - 
                 <br>
                     <span>${this.message.senderName}</span> 
                     </div> 
@@ -34,7 +34,7 @@ export class Email extends Notification {
                     </div>`,
             })
 
-            console.log("Message from: " + name + " sended to: " + config.SMPT_RESPONSE_EMAIL)
+            console.log("Message from: " + this.message.senderName + " sended to: " + config.SMPT_RESPONSE_EMAIL)
         } catch (error) {
             console.warn(error)
         }

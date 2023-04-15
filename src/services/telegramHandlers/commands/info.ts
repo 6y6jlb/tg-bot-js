@@ -11,7 +11,7 @@ export async function info(notification: Message, i18: i18n) {
     try {
         const user = await UserService.getById(chatId) as IUser;
 
-        const createdAt = moment(user.created_at).tz(user.tz).format('HH:mma M.D.YYYY');
+        const createdAt = moment(user.created_at).tz(user.tz ? user.tz : 'UTC').format('HH:mma M.D.YYYY');
 
         message = i18.t('actions.info', { name: user.name, userId: user.id, lang: user.language, tz: user.tz, createdAt });
     } catch (error) {

@@ -1,17 +1,17 @@
 import { i18n } from 'i18next';
 import { money } from "../../helpers/common";
-import { exhangeRequestValidation, taskCreationValidator } from "../../helpers/validation";
+import { exhangeRequestValidation } from "../../helpers/validation";
+import { APP_TYPE_ENUM, EVENT_OPTIONS } from "../../models/const";
 import { IUserSettings } from "../../models/types";
-import { APP_TYPE_ENUM } from "../../models/const";
 import { COMMANDS } from "../../utils/const";
 import { Message } from "../BotNotification/Message";
 import TaskService from "../Task/TaskService";
+import TaskCreateValidator from '../Task/TaskValidationFactory';
 import UserSettingsService from "../UserSetttings/UserSettingsService";
-import { TEMPERATURE_SIGN } from "../Weather/const";
 import WeatherService from "../Weather/WeatherService";
+import { TEMPERATURE_SIGN } from "../Weather/const";
 import XChangeService from "../XChange/XChangeService";
 import { ITask } from './../../models/types';
-import { EVENT_OPTIONS } from "../../models/const";
 
 export async function userSettingsHandler(userSettings: IUserSettings, notification: Message, i18: i18n) {
     const lang = notification.getLanguage();
@@ -48,9 +48,6 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
             let currentTask = null;
             try {
 
-                await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {} });
-
-
                 const eventType = TaskService.getEventType(userSettings.app_type);
                 const newParams = { event_type: EVENT_OPTIONS[userSettings.app_type], param: text }
 
@@ -60,7 +57,8 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                     await TaskService.update({ _id: userSettings.payload?.task_id, payload: { options: [...currentTask.options, newParams] } });
 
                 } else {
-                    const { time, options, timezone } = taskCreationValidator(text);
+                    const taskValidator = new TaskCreateValidator(eventType)
+                    const { options, time, timezone } = taskValidator.validate(text);
                     currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{ ...newParams, param: options }], tz: timezone, user_id: chatId, event_type: eventType });
                 };
 
@@ -75,6 +73,8 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                         ]
                     }
                 };
+
+                await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {} });
 
             } catch (error) {
                 console.warn(error)
