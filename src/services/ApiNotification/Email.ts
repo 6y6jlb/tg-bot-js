@@ -20,17 +20,17 @@ export class Email extends Notification {
 
                 html: `<b>Portfolio request from ${this.message.senderName}</b>
                 <br>
-                <div> Контакты  - 
+                <div> <b>Контакты:</b> 
                 <br>
                     <span>n${this.message.senderContacts}</span> 
                     </div>
                     
-                <div> Имя  отправителя - 
+                <div> <b>Имя  отправителя:</b> 
                 <br>
                     <span>${this.message.senderName}</span> 
                     </div> 
-                <div> текст письма  - 
-                    <p>${this.message.body}</p>> 
+                <div> <b>Текст письма:</b> 
+                    <p>${this.message.body}</p>
                     </div>`,
             })
 
