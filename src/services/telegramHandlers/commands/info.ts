@@ -1,7 +1,7 @@
 import { i18n } from "i18next";
 import moment from "moment-timezone";
 import { IUser } from "../../../models/types";
-import { Message } from "../../Notification/Message";
+import { Message } from "../../BotNotification/Message";
 import UserService from "../../User/UserService";
 
 
@@ -13,12 +13,14 @@ export async function info(notification: Message, i18: i18n) {
 
         const createdAt = moment(user.created_at).tz(user.tz).format('HH:mma M.D.YYYY');
 
-        message = i18.t('actions.info', { name: user.name, userId: user.id, lang: user.language, tz: user.tz, createdAt});
+        message = i18.t('actions.info', { name: user.name, userId: user.id, lang: user.language, tz: user.tz, createdAt });
     } catch (error) {
         message = error.message;
     }
 
-    await notification.send({text: message, options: {
-        parse_mode: 'HTML',
-    }});
+    await notification.send({
+        text: message, options: {
+            parse_mode: 'HTML',
+        }
+    });
 }

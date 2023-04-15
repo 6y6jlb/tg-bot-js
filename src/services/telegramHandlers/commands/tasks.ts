@@ -4,7 +4,7 @@ import { ITask } from "../../../models/types";
 import { EVENT_ENUM } from "../../../models/const";
 import { COMMANDS } from "../../../utils/const";
 import AdminService from "../../Admin/AdminService";
-import { Message } from "../../Notification/Message";
+import { Message } from "../../BotNotification/Message";
 import TaskService from "../../Task/TaskService";
 
 
@@ -26,9 +26,9 @@ export async function tasks(notification: Message, i18: i18n) {
             message += `${i18.t('tasks.event-line', { event: EVENT_ENUM[element.event_type], options: element.param, escapeValue: false })}`;
 
         }
-        
-        
-        
+
+
+
     }
     await notification.send({
         text: message, options: {

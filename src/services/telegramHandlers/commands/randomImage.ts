@@ -1,5 +1,5 @@
 import { i18n } from "i18next";
-import { Message } from "../../Notification/Message";
+import { Message } from "../../BotNotification/Message";
 import RandomService from "../../Random/RandomService";
 import { getResetOptions } from "../template";
 

@@ -3,7 +3,7 @@ import { Message } from './Message';
 
 export enum TypeEnum {
     MESSAGE = 'MESSAGE',
-    CALLBACK = 'CALLBACK'
+    CALLBACK = 'CALLBACK',
 }
 export const EntityType = {
     [TypeEnum.MESSAGE]: Message,

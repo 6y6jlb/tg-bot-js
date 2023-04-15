@@ -4,7 +4,7 @@ import { exhangeRequestValidation, taskCreationValidator } from "../../helpers/v
 import { IUserSettings } from "../../models/types";
 import { APP_TYPE_ENUM } from "../../models/const";
 import { COMMANDS } from "../../utils/const";
-import { Message } from "../Notification/Message";
+import { Message } from "../BotNotification/Message";
 import TaskService from "../Task/TaskService";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { TEMPERATURE_SIGN } from "../Weather/const";
@@ -48,9 +48,9 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
             let currentTask = null;
             try {
 
-                await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {}});
+                await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {} });
 
-                
+
                 const eventType = TaskService.getEventType(userSettings.app_type);
                 const newParams = { event_type: EVENT_OPTIONS[userSettings.app_type], param: text }
 
@@ -61,7 +61,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
 
                 } else {
                     const { time, options, timezone } = taskCreationValidator(text);
-                    currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{...newParams, param: options}], tz: timezone, user_id: chatId, event_type: eventType });
+                    currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{ ...newParams, param: options }], tz: timezone, user_id: chatId, event_type: eventType });
                 };
 
                 message = i18.t('tasks.store.success', { eventType: eventType.toLocaleLowerCase() }) + '\n' + i18.t('tasks.update.make-regular-description');

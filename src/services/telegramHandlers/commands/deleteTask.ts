@@ -1,12 +1,12 @@
 import { i18n } from "i18next";
 import { APP_TYPE_ENUM } from "../../../models/const";
-import { Notification } from "../../Notification/Abstract";
+import { Notification } from "../../BotNotification/Abstract";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 import TaskService from "../../Task/TaskService";
 import AdminService from "../../Admin/AdminService";
 import { COMMANDS } from "../../../utils/const";
 import { ITask } from "../../../models/types";
-import { Callback } from "../../Notification/Callback";
+import { Callback } from "../../BotNotification/Callback";
 
 
 export async function deleteTask(notification: Callback, i18: i18n) {
@@ -16,12 +16,12 @@ export async function deleteTask(notification: Callback, i18: i18n) {
   const taskId = params.has('task_id') && params.get('task_id');
   const buttons = [];
   let message = '';
-  
+
   if (taskId) {
 
     await TaskService.delete({ _id: taskId });
     message = i18.t('tasks.delete.success');
-    
+
   } else {
 
     const isAdmin = AdminService.checkAdmin(chatId);
@@ -31,7 +31,7 @@ export async function deleteTask(notification: Callback, i18: i18n) {
     message = i18.t('actions.tasks.delete-description');
 
   }
- 
+
   buttons.push([{ text: i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }])
 
   await notification.send({

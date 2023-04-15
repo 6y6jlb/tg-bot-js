@@ -1,6 +1,6 @@
 import { i18n } from "i18next";
 import { COMMANDS } from "../../../utils/const";
-import { Notification } from "../../Notification/Abstract";
+import { Notification } from "../../BotNotification/Abstract";
 import XChangeService from "../../XChange/XChangeService";
 
 export async function currencies(notification: Notification, i18: i18n) {

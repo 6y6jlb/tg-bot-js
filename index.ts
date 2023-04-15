@@ -5,6 +5,7 @@ import CONFIG from "./src/utils/config";
 import usersRouter from "./src/routers/users"
 import tasksRouter from "./src/routers/tasks"
 import weatherRouter from "./src/routers/weather"
+import notificationRouter from "./src/routers/notification"
 import mongoose from 'mongoose'
 import Bot from "./src/controllers/telegram/Bot";
 import https from "https"
@@ -28,13 +29,14 @@ async function startApp() {
       .use('/api', usersRouter)
       .use('/api', tasksRouter)
       .use('/api', weatherRouter)
+      .use('/api', notificationRouter)
       .use(express.static(__dirname))
-      ;
+    //   ;
 
-      https.createServer({
-        key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
-        cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
-    }, app)
+    //   https.createServer({
+    //     key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
+    //     cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
+    // }, app)
     .listen(CONFIG.PORT)
       
 

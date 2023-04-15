@@ -1,6 +1,6 @@
 import { i18n } from 'i18next';
 import { COMMANDS } from "../../utils/const";
-import { Message } from "../Notification/Message";
+import { Message } from "../BotNotification/Message";
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import { exchange } from "./commands/exchange";
 import { info } from "./commands/info";

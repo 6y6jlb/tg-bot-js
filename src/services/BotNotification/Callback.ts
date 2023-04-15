@@ -1,12 +1,12 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { Notification } from './Abstract';
-import { ICallback } from './types';
+import { IBotCallback } from './types';
 
 export class Callback extends Notification {
 
     protected msg: TelegramBot.CallbackQuery;
 
-    constructor(parameters: ICallback) {
+    constructor(parameters: IBotCallback) {
         super(parameters);
     }
 

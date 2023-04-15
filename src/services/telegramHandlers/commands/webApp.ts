@@ -1,6 +1,6 @@
 import { i18n } from "i18next";
 import { PAGES } from "../../../utils/const";
-import { Message } from "../../Notification/Message";
+import { Message } from "../../BotNotification/Message";
 
 
 export async function webApp(notification: Message, i18: i18n) {

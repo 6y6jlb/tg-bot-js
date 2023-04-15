@@ -2,9 +2,9 @@ import { CALLBACK_COMMAND } from './../../utils/const';
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
-import { NotificationFactory } from "../Notification/AbstractFactory";
-import { Callback } from "../Notification/Callback";
-import { TypeEnum } from "../Notification/consts";
+import { NotificationFactory } from "../BotNotification/AbstractFactory";
+import { Callback } from "../BotNotification/Callback";
+import { TypeEnum } from "../BotNotification/consts";
 import { choiceOptions } from "./commands/choiceOptions";
 import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
@@ -54,7 +54,7 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
     await updateTask(callback, bot.localeService.i18);
   }
 
-  else if(data.includes(CALLBACK_COMMAND.LANGUAGE_CHOICE)) {
+  else if (data.includes(CALLBACK_COMMAND.LANGUAGE_CHOICE)) {
     await language(callback, bot.localeService.i18)
   }
 

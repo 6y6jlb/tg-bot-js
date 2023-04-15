@@ -1,6 +1,6 @@
 
 import { TypeEnum, EntityType } from './consts';
-import { INotification } from './types';
+import { IBotNotification as INotification } from './types';
 
 export class NotificationFactory {
 

@@ -1,29 +1,29 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { Notification } from './Abstract';
-import { IMessage } from './types';
+import { IBotMessage } from './types';
 
 export class Message extends Notification {
 
     protected msg: TelegramBot.Message;
 
-    constructor(parameters: IMessage) {
+    constructor(parameters: IBotMessage) {
         super(parameters);
     }
 
     getChatId() {
 
-        return  this.msg.chat.id ;
+        return this.msg.chat.id;
     }
 
     getName() {
-        const name =  this.msg.chat.first_name ?? this.msg.chat.last_name ?? 'guest'; 
+        const name = this.msg.chat.first_name ?? this.msg.chat.last_name ?? 'guest';
         return name;
     }
     getLanguage() {
-        return  this.msg.from.language_code;
+        return this.msg.from.language_code;
     }
     getText() {
-        return  this.msg.text;
+        return this.msg.text;
     }
 
 }

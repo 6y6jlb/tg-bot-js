@@ -1,31 +1,31 @@
 import TelegramBot from 'node-telegram-bot-api';
 
-export interface IMessage {
+export interface IBotMessage {
     bot: TelegramBot
     msg: TelegramBot.Message
 }
 
-export interface ICallback {
+export interface IBotCallback {
     bot: TelegramBot
     msg: TelegramBot.CallbackQuery
 }
 
-export type INotification = ICallback | IMessage;
+export type IBotNotification = IBotCallback | IBotMessage;
 
 
-export type ISend = ISendMessage | ISendPhoto | ISendSticker
+export type ISendToBot = ISendBotMessage | ISendBotPhoto | ISendBotSticker
 
-export interface ISendMessage {
+export interface ISendBotMessage {
     text: string
     options?: TelegramBot.SendMessageOptions
 }
 
-export interface ISendSticker {
+export interface ISendBotSticker {
     sticker: string
     options?: TelegramBot.SendStickerOptions
 }
 
-export interface ISendPhoto {
+export interface ISendBotPhoto {
     url: string
     options?: TelegramBot.SendPhotoOptions
 } 

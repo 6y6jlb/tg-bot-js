@@ -1,7 +1,7 @@
 import { i18n } from "i18next";
 import { APP_TYPE_ENUM, EVENT_ENUM, EVENT_OPTIONS } from "../../../models/const";
 import { COMMANDS } from "../../../utils/const";
-import { Callback } from "../../Notification/Callback";
+import { Callback } from "../../BotNotification/Callback";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 
@@ -15,9 +15,12 @@ export async function storeTask(notification: Callback, i18: i18n) {
   let message = '';
 
   if (taskType) {
+
     const appType = Object.keys(EVENT_OPTIONS).find(key => EVENT_OPTIONS[key] === taskType) as any;
     UserSettingsService.updateOrCreate({ user_id: chatId, app_type: appType, created_at: new Date() });
+
     message = i18.t(`tasks.description-${taskType.toLowerCase()}`) + '\n\n' + i18.t('tasks.description-timezone');
+
   } else {
 
     UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_DEFAULT, created_at: new Date() });

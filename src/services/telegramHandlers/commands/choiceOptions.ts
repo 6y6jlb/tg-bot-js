@@ -1,5 +1,5 @@
 import { i18n } from "i18next";
-import { Callback } from "../../Notification/Callback";
+import { Callback } from "../../BotNotification/Callback";
 import { EVENT_ENUM } from "../../../models/const";
 import { COMMANDS } from './../../../utils/const';
 
