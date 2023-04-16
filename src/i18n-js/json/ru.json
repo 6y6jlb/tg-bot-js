@@ -115,5 +115,11 @@
     },
     "random": {
         "get-image": "Случайное изображение"
+    },
+    "feedback": {
+        "portfolio": {
+            "template-tg": "<b>Портфолио обратная связь:</b>\nОтправитель: {{senderName}},\nКонтакты: {{senderContacts}},\nТело:{{body}}",
+            "template-email": "<b>Портфолио обратная связь:</b><br>Отправитель: {{senderName}},<br>Контакты: {{senderContacts}},<br>Тело:{{body}}"
+        }
     }
 }

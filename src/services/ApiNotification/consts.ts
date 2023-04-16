@@ -1,4 +1,5 @@
 import { Email } from './Email';
+import { Telegram } from './Telegram';
 
 export enum TypeEnum {
     EMAIL = 'email',
@@ -6,5 +7,5 @@ export enum TypeEnum {
 }
 export const EntityType = {
     [TypeEnum.EMAIL]: Email,
-    // [TypeEnum.TELEGRAM]: Telegram
+    [TypeEnum.TELEGRAM]: Telegram
 };

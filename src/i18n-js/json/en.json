@@ -115,5 +115,11 @@
     },
     "random": {
         "get-image": "Random image"
+    },
+    "feedback": {
+        "portfolio": {
+            "template-tg": "<b>Feedback from portfolio</b>\nSender: {{senderName}},\nContacts: {{senderContacts}},\nBody:{{body}}",
+            "template-email": "<b>Feedback from portfolio</b><br>Sender: {{senderName}},<br>Contacts: {{senderContacts}},<br>Body:{{body}}"
+        }
     }
 }

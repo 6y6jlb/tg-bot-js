@@ -5,7 +5,7 @@ import { IApiMessage, IApiNotification } from './types';
 
 export class Email extends Notification {
 
-    protected msg: IApiMessage;
+    protected message: IApiMessage;
 
     constructor(parameters: IApiNotification) {
         super(parameters);
@@ -18,20 +18,7 @@ export class Email extends Notification {
                 to: config.SMPT_RESPONSE_EMAIL,
                 subject: this.message.senderContacts,
 
-                html: `<b>Portfolio request from ${this.message.senderName}</b>
-                <br>
-                <div> <b>Контакты:</b> 
-                <br>
-                    <span>n${this.message.senderContacts}</span> 
-                    </div>
-                    
-                <div> <b>Имя  отправителя:</b> 
-                <br>
-                    <span>${this.message.senderName}</span> 
-                    </div> 
-                <div> <b>Текст письма:</b> 
-                    <p>${this.message.body}</p>
-                    </div>`,
+                html: this.localeService.i18.t('feedback.portfolio.template-tg', { senderName: this.message.senderName, senderContacts: this.message.senderContacts, body: this.message.body }),
             })
 
             console.log("Message from: " + this.message.senderName + " sended to: " + config.SMPT_RESPONSE_EMAIL)

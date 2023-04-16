@@ -9,6 +9,8 @@ import { locationHandler } from '../../services/telegramHandlers/LocationHandler
 import { messageHandler } from "../../services/telegramHandlers/MessageHandler";
 import config from "../../utils/config";
 
+
+
 class Bot {
 
   instance: TelegramBotApi;
@@ -19,6 +21,7 @@ class Bot {
     this.localeService = LocaleService;
     this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
     this.scheduler = new CronScheduler(this.instance, this.localeService);
+    global.tgBotInstance = this.instance
   }
 
   start() {
