@@ -2,6 +2,7 @@ import Nodemailer from "nodemailer";
 import config from '../../utils/config';
 import { ApiNotification as Notification } from './Abstract';
 import { IApiMessage, IApiNotification } from './types';
+import { EmailError } from "../../exceptions/Email";
 
 export class Email extends Notification {
 
@@ -24,6 +25,7 @@ export class Email extends Notification {
             console.log("Message from: " + this.message.senderName + " sended to: " + config.SMPT_RESPONSE_EMAIL)
         } catch (error) {
             console.warn(error)
+            throw new EmailError('Emaiol notification error: ' + error.message)
         }
     }
 

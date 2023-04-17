@@ -1,3 +1,4 @@
+import { TelegramError } from '../../exceptions/Telegram';
 import AdminService from '../Admin/AdminService';
 import { ApiNotification as Notification } from './Abstract';
 import { IApiMessage, IApiNotification } from './types';
@@ -24,6 +25,7 @@ export class Telegram extends Notification {
             console.log("Message from: " + this.message.senderName + " sended to admin ")
         } catch (error) {
             console.warn(error)
+            throw new TelegramError('Telegram notification error: ' + error.message)
         }
     }
 

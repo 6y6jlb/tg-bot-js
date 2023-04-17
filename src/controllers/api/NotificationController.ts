@@ -10,7 +10,7 @@ class NotificationController {
         try {
             const data = NotificationApiRequest.send(req);
             const factory = new ApiNotificationFactory(canal, { message: data }).build();
-            factory.send();
+            await factory.send();
 
             res.json({message: 'ok'})
         } catch (error) {
