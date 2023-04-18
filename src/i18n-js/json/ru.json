@@ -9,9 +9,9 @@
         "description-time": "Введите время в формате 02:22",
         "description-timezone": "Почитать про таймзоны можно тут\n<a href='https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'>ССылка на википедию</a>",
         "description-type": "Выберите тип задачи.",
-        "description-weather": "Введите время, название населенного пункта\nи таймзону в формате:\n<b>02:22 - Батуми - asia/tbilisi<b/>",
-        "description-reminder": "Введите время, сообщение\nи таймзону в формате:\n<b>2:22 - Мое сообщенение здесь - asia/tbilisi<b/>",
-        "description-exchange": "Введите время, валютную пару\nи таймзону в формате:\n<b>02:22 - usd rub - asia/tbilisi<b/>",
+        "description-weather": "Введите время, название населенного пункта\nи таймзону в формате:\n<b>02:22 - Батуми - asia/tbilisi</b>",
+        "description-reminder": "Введите время, сообщение\nи таймзону в формате:\n<b>2:22 - Мое сообщенение здесь - asia/tbilisi</b>",
+        "description-exchange": "Введите время, валютную пару\nи таймзону в формате:\n<b>02:22 - usd rub - asia/tbilisi</b>",
         "options": {
             "weather":"Укажите город",
             "reminder":"Укажите сообщение",

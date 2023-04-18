@@ -1,10 +1,9 @@
 import { i18n } from 'i18next';
 import { APP_TYPE_ENUM } from "../../../models/const";
-import { Message } from '../../BotNotification/Message';
-import UserSettingsService from "../../UserSetttings/UserSettingsService";
 import { CALLBACK_COMMAND } from '../../../utils/const';
 import { Callback } from '../../BotNotification/Callback';
 import UserService from '../../User/UserService';
+import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 
 export async function language(notification: Callback, i18: i18n) {

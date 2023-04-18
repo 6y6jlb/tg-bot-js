@@ -1,12 +1,9 @@
 import { i18n } from "i18next";
-import { APP_TYPE_ENUM } from "../../../models/const";
-import { Notification } from "../../BotNotification/Abstract";
-import UserSettingsService from "../../UserSetttings/UserSettingsService";
-import TaskService from "../../Task/TaskService";
-import AdminService from "../../Admin/AdminService";
-import { COMMANDS } from "../../../utils/const";
 import { ITask } from "../../../models/types";
+import { COMMANDS } from "../../../utils/const";
+import AdminService from "../../Admin/AdminService";
 import { Callback } from "../../BotNotification/Callback";
+import TaskService from "../../Task/TaskService";
 
 
 export async function deleteTask(notification: Callback, i18: i18n) {
