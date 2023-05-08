@@ -5,6 +5,7 @@ import CONFIG from "./src/utils/config";
 import usersRouter from "./src/routers/users"
 import tasksRouter from "./src/routers/tasks"
 import weatherRouter from "./src/routers/weather"
+import exchangeRouter from "./src/routers/exchange"
 import notificationRouter from "./src/routers/notification"
 import mongoose from 'mongoose'
 import Bot from "./src/controllers/telegram/Bot";
@@ -30,6 +31,7 @@ async function startApp() {
       .use('/api', tasksRouter)
       .use('/api', weatherRouter)
       .use('/api', notificationRouter)
+      .use('/api', exchangeRouter)
       .use(express.static(__dirname))
       ;
 
