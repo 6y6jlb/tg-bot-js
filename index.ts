@@ -38,6 +38,7 @@ async function startApp() {
       https.createServer({
         key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
         cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/lbas.website/chain.pem'),
     }, app)
     .listen(CONFIG.PORT)
       
