@@ -20,7 +20,7 @@ class TasksController {
             res.json(task)
         } catch (error) {
             console.log(error)
-            res.json(error.message)
+            res.json({ message: error.message })
         }
     }
     async store(req: Request, res: Response) {
@@ -29,7 +29,7 @@ class TasksController {
             res.json(await TaskService.store(data))
         } catch (error) {
             console.log(error)
-            res.json(error.message)
+            res.json({ message: error.message })
         }
     }
     async delete(req: Request, res: Response) {
@@ -38,7 +38,7 @@ class TasksController {
             res.json(await TaskService.delete(data))
         } catch (error) {
             console.log(error)
-            res.json(error.message)
+            res.json({ message: error.message })
         }
     }
 

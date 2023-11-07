@@ -12,7 +12,7 @@ class UsersController {
             res.json(user)
         } catch (error) {
             console.warn(error)
-            res.status(400).json(error.message)
+            res.status(400).json({ message: error.message })
         }
     }
 
@@ -22,7 +22,7 @@ class UsersController {
             res.json(await UserService.get())
         } catch (error) {
             console.log(error)
-            res.status(400).json(error.message)
+            res.status(400).json({ message: error.message })
         }
     }
 
@@ -35,7 +35,7 @@ class UsersController {
             }
         } catch (error) {
             console.log(error)
-            res.status(400).json(error.message)
+            res.status(400).json({ message: error.message })
         }
     }
 
@@ -45,8 +45,7 @@ class UsersController {
             res.json(await UserService.update(data))
         } catch (error: any) {
             console.log(error)
-            res.status(400).json(error.message)
-            res.json(error.message)
+            res.status(400).json({ message: error.message })
         }
     }
     async store(req: Request, res: Response) {
@@ -55,7 +54,7 @@ class UsersController {
             res.json(await UserService.store(data))
         } catch (error) {
             console.log(error)
-            res.status(400).json(error.message)
+            res.status(400).json({ message: error.message })
         }
     }
     async delete(req: Request, res: Response) {
@@ -64,7 +63,7 @@ class UsersController {
             res.json(await UserService.delete(data))
         } catch (error) {
             console.log(error)
-            res.status(400).json(error.message)
+            res.status(400).json({ message: error.message })
         }
     }
 
@@ -74,7 +73,7 @@ class UsersController {
             res.json(await UserService.resetPassword(data))
         } catch (error) {
             console.log(error)
-            res.status(400).json(error.message)
+            res.status(400).json({ message: error.message })
         }
     }
 
