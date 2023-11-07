@@ -1,5 +1,5 @@
 {
-  "name": "tg-bot-js",
+  "name": "tg-bot-with-api",
   "version": "1.0.0",
   "description": "tg bot with app",
   "main": "index.ts",

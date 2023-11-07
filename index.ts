@@ -9,9 +9,6 @@ import exchangeRouter from "./src/routers/exchange"
 import notificationRouter from "./src/routers/notification"
 import mongoose from 'mongoose'
 import Bot from "./src/controllers/telegram/Bot";
-import https from "https"
-import fs from "fs"
-
 
 
 process.on('uncaughtException', function (err) {
@@ -24,7 +21,7 @@ async function startApp() {
     console.info(`Mongo connected`)
 
 
-    const app = express()
+    express()
       .use(cors())
       .use(express.json())
       .use('/api', usersRouter)
@@ -33,14 +30,7 @@ async function startApp() {
       .use('/api', notificationRouter)
       .use('/api', exchangeRouter)
       .use(express.static(__dirname))
-      ;
-
-      https.createServer({
-        key: fs.readFileSync('/etc/letsencrypt/live/lbas.website/privkey.pem'),
-        cert: fs.readFileSync('/etc/letsencrypt/live/lbas.website/cert.pem'),
-        ca: fs.readFileSync('/etc/letsencrypt/live/lbas.website/chain.pem'),
-    }, app)
-    .listen(CONFIG.PORT)
+      .listen(CONFIG.PORT);
       
 
     const bot = new Bot();
