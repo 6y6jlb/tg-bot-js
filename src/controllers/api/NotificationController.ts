@@ -15,7 +15,7 @@ class NotificationController {
             res.json({ message: 'ok' })
         } catch (error) {
             console.log(error)
-            res.json({ message: error.message })
+            res.status(400).json({ message: error.message })
         }
     }
 
