@@ -1,8 +1,8 @@
 
 export interface IApiMessage {
-    senderName: string;
-    senderContacts: string;
-    body: string;
+    contacts: string;
+    name: string;
+    message: string;
 
 }
 

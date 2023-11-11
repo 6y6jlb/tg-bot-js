@@ -118,8 +118,8 @@
     },
     "feedback": {
         "portfolio": {
-            "template-tg": "<b>Портфолио обратная связь:</b>\nОтправитель: {{senderName}},\nКонтакты: {{senderContacts}},\nТело:{{body}}",
-            "template-email": "<b>Портфолио обратная связь:</b><br>Отправитель: {{senderName}},<br>Контакты: {{senderContacts}},<br>Тело:{{body}}"
+            "template-tg": "<b>Портфолио обратная связь:</b>\nОтправитель: {{name}},\nКонтакты: {{contacts}},\nТело:{{message}}",
+            "template-email": "<b>Портфолио обратная связь:</b><br>Отправитель: {{name}},<br>Контакты: {{contacts}},<br>Тело:{{message}}"
         }
     }
 }

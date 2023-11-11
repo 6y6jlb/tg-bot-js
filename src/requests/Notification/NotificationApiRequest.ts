@@ -1,14 +1,15 @@
 import { Request } from "express";
 import { ISendNotificationRequest } from "./types";
 import { NotificationError } from "../../exceptions/Notification";
+import { sendSchema } from "./schema";
+import { IApiMessage } from "../../services/ApiNotification/types";
 
 class NotificationApiRequest {
-    send(request: Request): ISendNotificationRequest {
-        const { senderName, senderContacts, body } = request.body
-        if (!((senderContacts || senderContacts) && body)) {
-            throw new NotificationError('Incorrect request data: ' + JSON.stringify(request.body))
-        }
-        return { senderName, senderContacts, body } as ISendNotificationRequest;
+    async send(request: Request<{}, {}, IApiMessage>): Promise<ISendNotificationRequest> {
+
+        await sendSchema.validateAsync(request.body);
+
+        return { message: request.body.message, name: request.body.name, contacts: request.body.contacts } as ISendNotificationRequest;
     }
 
 }

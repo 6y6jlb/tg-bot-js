@@ -1,14 +1,16 @@
 import { Request } from "express";
 import { IOpeneXChangeRatesLatestGetRate } from "../../dal/XChange/types";
 import { EXchangeError } from '../../exceptions/Exchange';
+import { getSchema } from "./schema";
 
 class ExchangeApiRequest {
-    get(request: Request): IOpeneXChangeRatesLatestGetRate {
+    async get(request: Request): Promise<IOpeneXChangeRatesLatestGetRate> {
+
+        await getSchema.validateAsync(request.query);
+
         const { count, target, current } = request.query
-        if (target && current) {
-            return { count: count || 1, target, current } as IOpeneXChangeRatesLatestGetRate;
-        }
-        throw new EXchangeError('Incorrect data')
+
+        return { count: count || 1, target, current } as IOpeneXChangeRatesLatestGetRate;
     }
 }
 

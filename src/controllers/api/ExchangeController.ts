@@ -5,7 +5,7 @@ import XChangeService from "../../services/XChange/XChangeService";
 class ExchangeController {
     async get(req: Request, res: Response) {
         try {
-            const validParams = ExchangeApiRequest.get(req);
+            const validParams = await ExchangeApiRequest.get(req);
             const data = await XChangeService.getRate(validParams);
             res.json(data)
         } catch (error) {

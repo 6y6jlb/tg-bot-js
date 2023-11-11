@@ -118,8 +118,8 @@
     },
     "feedback": {
         "portfolio": {
-            "template-tg": "<b>Feedback from portfolio</b>\nSender: {{senderName}},\nContacts: {{senderContacts}},\nBody:{{body}}",
-            "template-email": "<b>Feedback from portfolio</b><br>Sender: {{senderName}},<br>Contacts: {{senderContacts}},<br>Body:{{body}}"
+            "template-tg": "<b>Feedback from portfolio</b>\nSender: {{name}},\nContacts: {{contacts}},\nBody:{{message}}",
+            "template-email": "<b>Feedback from portfolio</b><br>Sender: {{name}},<br>Contacts: {{contacts}},<br>Body:{{message}}"
         }
     }
 }

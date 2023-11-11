@@ -15,14 +15,14 @@ export class Email extends Notification {
     async send() {
         try {
             await this.getTransporter().sendMail({
-                from: this.message.senderName,
+                from: this.message.name,
                 to: config.SMPT_RESPONSE_EMAIL,
-                subject: this.message.senderContacts,
+                subject: this.message.contacts,
 
-                html: this.localeService.i18.t('feedback.portfolio.template-tg', { senderName: this.message.senderName, senderContacts: this.message.senderContacts, body: this.message.body }),
+                html: this.localeService.i18.t('feedback.portfolio.template-tg', { name: this.message.name, contacts: this.message.contacts, message: this.message.message }),
             })
 
-            console.log("Message from: " + this.message.senderName + " sended to: " + config.SMPT_RESPONSE_EMAIL)
+            console.log("Message from: " + this.message.name + " sended to: " + config.SMPT_RESPONSE_EMAIL)
         } catch (error) {
             console.warn(error)
             throw new EmailError('Emaiol notification error: ' + error.message)

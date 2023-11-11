@@ -16,13 +16,13 @@ export class Telegram extends Notification {
         try {
             const botInstance = this.getBotInstance();
             await AdminService.sendMesssageToAdmin(botInstance, {
-                text: this.localeService.i18.t('feedback.portfolio.template-tg', { senderName: this.message.senderName, senderContacts: this.message.senderContacts, body: this.message.body }),
+                text: this.localeService.i18.t('feedback.portfolio.template-tg', { name: this.message.name, contacts: this.message.contacts, body: this.message.message }),
                 options: {
                     parse_mode: 'HTML',
                 }
             })
 
-            console.log("Message from: " + this.message.senderName + " sended to admin ")
+            console.log("Message from: " + this.message.name + " sended to admin ")
         } catch (error) {
             console.warn(error)
             throw new TelegramError('Telegram notification error: ' + error.message)

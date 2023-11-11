@@ -8,7 +8,7 @@ class NotificationController {
     async send(req: Request, res: Response) {
         const canal = req.params.canal as TypeEnum;
         try {
-            const data = NotificationApiRequest.send(req);
+            const data = await NotificationApiRequest.send(req);
             const factory = new ApiNotificationFactory(canal, { message: data }).build();
             await factory.send();
 
