@@ -1,6 +1,5 @@
 import { Request } from "express";
 import { ISendNotificationRequest } from "./types";
-import { NotificationError } from "../../exceptions/Notification";
 import { sendSchema } from "./schema";
 import { IApiMessage } from "../../services/ApiNotification/types";
 

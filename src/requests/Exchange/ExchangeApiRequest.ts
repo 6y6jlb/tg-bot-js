@@ -1,6 +1,5 @@
 import { Request } from "express";
 import { IOpeneXChangeRatesLatestGetRate } from "../../dal/XChange/types";
-import { EXchangeError } from '../../exceptions/Exchange';
 import { getSchema } from "./schema";
 
 class ExchangeApiRequest {
