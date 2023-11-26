@@ -1,15 +1,15 @@
-export interface IGetUserRequest {
-    id?: string | number
-}
+export type UserConditionalCredetial =
+    | { email: string; telegram_id?: never }
+    | { telegram_id: string | number; email?: never };
 
-export interface ILoginUserRequest {
-    id: string | number
+export type GetUserRequest = UserConditionalCredetial
+
+export type LoginUserRequest = UserConditionalCredetial & {
     password: string
 }
 
 
-export interface IStoreUserRequest {
-    id?: string | number,
+export type StoreUserRequest = UserConditionalCredetial & {
     name: string,
     locale?: string,
     currency?: string,
@@ -18,8 +18,7 @@ export interface IStoreUserRequest {
     tz?: string,
 }
 
-export interface IUpdateUserRequest {
-    id: string | number
+export type UpdateUserRequest = UserConditionalCredetial & {
     name?: string,
     locale?: string,
     currency?: string,
@@ -28,10 +27,6 @@ export interface IUpdateUserRequest {
     tz?: string,
 }
 
-export interface IDeleteUserRequest {
-    id: string | number
-}
+export type DeleteUserRequest = UserConditionalCredetial
 
-export interface IResetUserPasswordRequest {
-    id: string | number
-}
+export type ResetUserPasswordRequest = UserConditionalCredetial

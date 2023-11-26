@@ -1,25 +1,39 @@
 import crypto from 'crypto';
-import { UserError } from "../../exceptions/User";
+import { GetUserError, UserError } from "../../exceptions/User";
 import User from "../../models/User";
-import { IDeleteUserRequest, ILoginUserRequest, IResetUserPasswordRequest, IStoreUserRequest, IUpdateUserRequest } from "../../requests/User/types";
+import { DeleteUserRequest, LoginUserRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest, UserConditionalCredetial } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
 import { IUser } from './../../models/types';
-import moment from 'moment';
 
 class UsersService {
-    async login(data: ILoginUserRequest) {
-        const user = await this.getById(data.id) as IUser;
+    async login(data: LoginUserRequest) {
+        const user = await this.getById(data.telegram_id || data.email) as IUser;
         if (user.validatePassword(data.password)) {
             return user;
         }
         throw new UserError("Wrong Password");
     }
 
-    getById(id: string | number) {
-        if (id) {
-            return User.findOne({ id })
+    async getById(user_id: string | number) {
+        const idKeys = ['telegram_id', 'email'];
+        let mongo_id = null;
+
+        for (const key of idKeys) {
+            try {
+                const doc = await User.findOne({ [key]: user_id }).exec();
+                if (doc) {
+                    mongo_id = doc._id;
+                    break;
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        if (mongo_id) {
+            return await User.findById(mongo_id)
         } else {
-            throw new UserError('No user');
+            throw new GetUserError('No user with this id');
         }
 
     }
@@ -30,7 +44,7 @@ class UsersService {
     }
 
 
-    update(data: IUpdateUserRequest) {
+    async update(data: UpdateUserRequest) {
 
         if (data.password) {
 
@@ -42,18 +56,18 @@ class UsersService {
 
         }
 
-        return User.findOneAndUpdate({ id: data.id }, data, { new: true });
+        return (await this.getById(data.telegram_id || data.email)).update(data, { new: true })
     }
 
-    async store(data: IStoreUserRequest) {
+    async store(data: StoreUserRequest) {
         return await User.create(this.getUserTemplate(data))
     }
 
-    delete(data: IDeleteUserRequest) {
+    delete(data: DeleteUserRequest) {
         return User.findOneAndDelete(data)
     }
 
-    resetPassword(data: IResetUserPasswordRequest) {
+    resetPassword(data: ResetUserPasswordRequest) {
         return User.findOneAndUpdate({ ...data, ...this.getNewPassword() });
     }
 
@@ -66,8 +80,10 @@ class UsersService {
         return { salt, hash }
     }
 
-    getUserTemplate(data: IStoreUserRequest) {
+    getUserTemplate(data: StoreUserRequest) {
         const user: IUser = {
+            email: data.email,
+            telegram_id: data.telegram_id,
             name: data.name,
             currency: 'USD',
             locale: 'eu',

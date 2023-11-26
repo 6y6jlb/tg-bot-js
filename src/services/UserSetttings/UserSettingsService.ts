@@ -1,7 +1,7 @@
-import { IUserSettings } from './../../models/types';
-import UserSettings from "../../models/UserSettings";
-import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IUpdateUserSettingsRequest } from './../../requests/UserSettings/types';
 import { GetUserSettingsError } from '../../exceptions/UserSettings';
+import UserSettings from "../../models/UserSettings";
+import { IUserSettings } from './../../models/types';
+import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IStoreUserSettingsRequest, IUpdateUserSettingsRequest } from './../../requests/UserSettings/types';
 
 class UsersService {
 
@@ -17,7 +17,7 @@ class UsersService {
         return await UserSettings.findOneAndUpdate(data);;
     }
 
-    async store(data: IGetUserSettingsRequest) {
+    async store(data: IStoreUserSettingsRequest) {
         return await UserSettings.create(data)
     }
 
@@ -33,8 +33,8 @@ class UsersService {
         return await this.store(data);
     }
 
-    async getExisterUserSettings(userId: Number) {
-        return await UserSettings.exists({ user_id: userId })
+    async getExisterUserSettings(user_id: number | string) {
+        return await UserSettings.exists({ user_id })
     }
 
 

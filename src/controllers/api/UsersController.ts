@@ -7,7 +7,6 @@ class UsersController {
 
     async get(req: Request, res: Response) {
         try {
-
             res.json(await UserService.get())
         } catch (error) {
             console.log(error)
@@ -30,7 +29,7 @@ class UsersController {
 
     async update(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.update(req);
+            const data = await UserApiRequest.update(req);
             res.json(await UserService.update(data))
         } catch (error: any) {
             console.log(error)
@@ -40,7 +39,7 @@ class UsersController {
 
     async delete(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.delete(req);
+            const data = await UserApiRequest.delete(req);
             res.json(await UserService.delete(data))
         } catch (error) {
             console.log(error)

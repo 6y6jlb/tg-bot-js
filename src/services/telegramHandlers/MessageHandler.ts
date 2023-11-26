@@ -7,27 +7,30 @@ import { TypeEnum } from '../BotNotification/consts';
 import { Message } from '../BotNotification/Message';
 import UserService from "../User/UserService";
 import { commadsHandler } from './CommandsHandler';
+import { GetUserError } from "../../exceptions/User";
 
 
 
 export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const userId = msg.from.id;
-
   const name = msg.from.username || msg.from.first_name;
+  let user = null as IUser;
 
-  let user = await UserService.getById(userId) as IUser;
+  try {
+    user = await UserService.getById(userId) as IUser;
+  } catch (error) {
+    console.log(error.message)
+  }
 
-  const language = user?.locale ?? msg.from.language_code;
 
+  const language = user?.locale || msg.from.language_code;
   bot.localeService.changeLanguage(language);
-
   const notification = new NotificationFactory(TypeEnum.MESSAGE, { bot: bot.instance, msg }).build() as Message;
 
 
   if (!user) {
 
-    await UserService.store({ id: String(userId), name, locale: language })
-
+    await UserService.store({ telegram_id: String(userId), name, locale: language })
     await AdminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
     )

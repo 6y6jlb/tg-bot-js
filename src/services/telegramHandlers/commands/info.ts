@@ -13,7 +13,7 @@ export async function info(notification: Message, i18: i18n) {
 
         const createdAt = moment(user.created_at).tz(user.tz ? user.tz : 'UTC').format('HH:mma M.D.YYYY');
 
-        message = i18.t('actions.info', { name: user.name, userId: user.id, lang: user.locale, tz: user.tz, createdAt });
+        message = i18.t('actions.info', { name: user.name, userId: user.telegram_id || user.email, lang: user.locale, tz: user.tz, createdAt });
     } catch (error) {
         message = error.message;
     }

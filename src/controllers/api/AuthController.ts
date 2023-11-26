@@ -39,7 +39,7 @@ class AuthController {
 
     async resetPassword(req: Request, res: Response) {
         try {
-            const data = UserApiRequest.resetPassword(req);
+            const data = await UserApiRequest.resetPassword(req);
             res.json(await UserService.resetPassword(data))
         } catch (error) {
             console.log(error)

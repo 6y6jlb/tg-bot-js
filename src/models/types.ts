@@ -2,7 +2,8 @@ import { Schema } from "mongoose"
 import { APP_TYPE_ENUM, EVENT_ENUM } from "./const"
 
 export interface IUser {
-    id?: number,
+    telegram_id?: number | string,
+    email?: string,
     created_at: Date,
     name: string,
     tz?: string,
@@ -18,7 +19,7 @@ export interface IUser {
 export interface ITask {
     _id?: Schema.Types.ObjectId,
     last_call?: Date,
-    user_id: number,
+    user_id: number | string,
     options: Array<IOption>,
     call_at: string,
     queue?: boolean,
@@ -29,7 +30,7 @@ export interface ITask {
 export interface IUserSettings {
     _id?: Schema.Types.ObjectId,
     created_at: Date,
-    user_id: number,
+    user_id: number | string,
     app_type: APP_TYPE_ENUM,
     payload?: ISettingPayload
 }
