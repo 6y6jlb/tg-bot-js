@@ -1,6 +1,7 @@
-import { DeleteUserError, UserError } from './../../exceptions/User';
 import { Request } from "express";
 import { UpdateUserError } from "../../exceptions/User";
+import { DeleteUserError, UserError } from './../../exceptions/User';
+import { loginSchema, registerSchema } from './schema';
 import { IDeleteUserRequest, IGetUserRequest, ILoginUserRequest, IResetUserPasswordRequest, IStoreUserRequest, IUpdateUserRequest } from "./types";
 
 class UserApiRequest {
@@ -13,23 +14,20 @@ class UserApiRequest {
         throw new UserError('User validation error')
     }
 
-    login(request: Request): ILoginUserRequest {
-        const { user_id, password } = request.query
-        if (user_id && password) {
-            return { id: user_id, password } as ILoginUserRequest;
-        }
-        throw new UserError('User validation error')
+    async login(request: Request): Promise<ILoginUserRequest> {
+        await loginSchema.validateAsync(request.body);
+        return { id: request.body.user_id, password: request.body.password }
     }
 
-    store(request: Request): IStoreUserRequest {
-        const { name, language, currency, location, tz } = request.body
-        return { name, language, currency, location, tz } as IStoreUserRequest;
+    async store(request: Request): Promise<IStoreUserRequest> {
+        await registerSchema.validateAsync(request.body);
+        return { name: request.body.name, locale: request.body.locale, currency: request.body.currency, location: request.body.location, tz: request.body.tz };
     }
 
     update(request: Request): IUpdateUserRequest {
-        const { user_id, name, language, currency, location, tz, password } = request.body
+        const { user_id, name, locale, currency, location, tz, password } = request.body
         if (user_id) {
-            return { id: user_id, name, language, currency, location, tz, password } as IUpdateUserRequest;
+            return { id: user_id, name, locale, currency, location, tz, password } as IUpdateUserRequest;
         }
         throw new UpdateUserError('Incorrect data')
     }

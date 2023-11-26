@@ -4,6 +4,7 @@ import User from "../../models/User";
 import { IDeleteUserRequest, ILoginUserRequest, IResetUserPasswordRequest, IStoreUserRequest, IUpdateUserRequest } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
 import { IUser } from './../../models/types';
+import moment from 'moment';
 
 class UsersService {
     async login(data: ILoginUserRequest) {
@@ -16,7 +17,7 @@ class UsersService {
 
     getById(id: string | number) {
         if (id) {
-            return User.findOne({id})
+            return User.findOne({ id })
         } else {
             throw new UserError('No user');
         }
@@ -41,13 +42,11 @@ class UsersService {
 
         }
 
-        return User.findOneAndUpdate({id: data.id}, data, {new: true});
+        return User.findOneAndUpdate({ id: data.id }, data, { new: true });
     }
 
-    store(data: IStoreUserRequest) {
-
-
-        return User.create({ ...data, ...this.getDefaultPassword() })
+    async store(data: IStoreUserRequest) {
+        return await User.create(this.getUserTemplate(data))
     }
 
     delete(data: IDeleteUserRequest) {
@@ -55,16 +54,28 @@ class UsersService {
     }
 
     resetPassword(data: IResetUserPasswordRequest) {
-        return User.findOneAndUpdate({ ...data, ...this.getDefaultPassword() });
+        return User.findOneAndUpdate({ ...data, ...this.getNewPassword() });
     }
 
-    getDefaultPassword() {
+    getNewPassword(password?: string) {
 
         const salt = crypto.randomBytes(16).toString('hex');
 
-        const hash = crypto.pbkdf2Sync(DEFAULT_PASSWORD, salt, 1000, 64, `sha512`).toString(`hex`);
+        const hash = crypto.pbkdf2Sync(password || DEFAULT_PASSWORD, salt, 1000, 64, `sha512`).toString(`hex`);
 
         return { salt, hash }
+    }
+
+    getUserTemplate(data: IStoreUserRequest) {
+        const user: IUser = {
+            name: data.name,
+            currency: 'USD',
+            locale: 'eu',
+            created_at: new Date(),
+            ...this.getNewPassword(data.password)
+        }
+
+        return user;
     }
 
 

@@ -8,11 +8,11 @@ export interface IUser {
     tz?: string,
     location?: string,
     currency?: string,
-    language?: string,
+    locale?: string,
     hash?: string,
     salt?: string,
     validatePassword?: (password: string) => boolean,
-    save: () => void,
+    save?: () => void,
 }
 
 export interface ITask {

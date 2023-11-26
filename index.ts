@@ -5,6 +5,7 @@ import CONFIG from "./src/utils/config";
 import usersRouter from "./src/routers/users"
 import tasksRouter from "./src/routers/tasks"
 import weatherRouter from "./src/routers/weather"
+import authRouter from "./src/routers/auth"
 import exchangeRouter from "./src/routers/exchange"
 import notificationRouter from "./src/routers/notification"
 import mongoose from 'mongoose'
@@ -18,13 +19,14 @@ process.on('uncaughtException', function (err) {
 async function startApp() {
   try {
     await mongoose.set('strictQuery', true)
-        .connect(`mongodb+srv://${CONFIG.MONGO_DB_USER}:${CONFIG.MONGO_DB_PASS}@${CONFIG.MONGO_DB_NAME}.n2dmfie.mongodb.net/?retryWrites=true&w=majority`)
+      .connect(`mongodb+srv://${CONFIG.MONGO_DB_USER}:${CONFIG.MONGO_DB_PASS}@${CONFIG.MONGO_DB_NAME}.n2dmfie.mongodb.net/?retryWrites=true&w=majority`)
     console.info(`Mongo connected`)
 
 
     express()
       .use(cors())
       .use(express.json())
+      .use('/api', authRouter)
       .use('/api', usersRouter)
       .use('/api', tasksRouter)
       .use('/api', weatherRouter)

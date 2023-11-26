@@ -17,7 +17,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
 
   let user = await UserService.getById(userId) as IUser;
 
-  const language = user?.language ?? msg.from.language_code;
+  const language = user?.locale ?? msg.from.language_code;
 
   bot.localeService.changeLanguage(language);
 
@@ -26,7 +26,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
 
   if (!user) {
 
-    await UserService.store({ id: String(userId), name, language })
+    await UserService.store({ id: String(userId), name, locale: language })
 
     await AdminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }

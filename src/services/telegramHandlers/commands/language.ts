@@ -27,7 +27,7 @@ export async function language(notification: Callback, i18: i18n) {
     });
   } else {
 
-    await UserService.update({ id: chatId, language: languageCode });
+    await UserService.update({ id: chatId, locale: languageCode });
     await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.SETTINGS, created_at: new Date(), payload: {} });
     i18.changeLanguage(languageCode);
 

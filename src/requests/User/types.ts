@@ -1,26 +1,27 @@
 export interface IGetUserRequest {
-    id?: string|number
+    id?: string | number
 }
 
 export interface ILoginUserRequest {
-    id: string|number
+    id: string | number
     password: string
 }
 
 
 export interface IStoreUserRequest {
-    id: string|number,
+    id?: string | number,
     name: string,
-    language?: string,
+    locale?: string,
     currency?: string,
+    password?: string,
     location?: string,
     tz?: string,
 }
 
 export interface IUpdateUserRequest {
-    id: string|number
+    id: string | number
     name?: string,
-    language?: string,
+    locale?: string,
     currency?: string,
     location?: string,
     password?: string,
@@ -28,10 +29,9 @@ export interface IUpdateUserRequest {
 }
 
 export interface IDeleteUserRequest {
-    id: string|number
+    id: string | number
 }
 
 export interface IResetUserPasswordRequest {
-    id: string|number
+    id: string | number
 }
- 
