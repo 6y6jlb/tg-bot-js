@@ -68,10 +68,10 @@ class UsersService {
     }
 
     resetPassword(data: ResetUserPasswordRequest) {
-        return User.findOneAndUpdate({ ...data, ...this.getNewPassword() });
+        return User.findOneAndUpdate({ ...data, ...this.getPasswordData() });
     }
 
-    getNewPassword(password?: string) {
+    getPasswordData(password?: string) {
 
         const salt = crypto.randomBytes(16).toString('hex');
 
@@ -81,14 +81,16 @@ class UsersService {
     }
 
     getUserTemplate(data: StoreUserRequest) {
+        const preparedData = { ...data }
+        const passwordData = this.getPasswordData(data.password);
+        delete preparedData.password
+
         const user: IUser = {
-            email: data.email,
-            telegram_id: data.telegram_id,
-            name: data.name,
             currency: 'USD',
-            locale: 'eu',
+            locale: 'en',
             created_at: new Date(),
-            ...this.getNewPassword(data.password)
+            ...preparedData,
+            ...passwordData
         }
 
         return user;
