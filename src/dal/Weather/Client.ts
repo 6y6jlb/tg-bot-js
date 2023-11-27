@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { IGetWeatehrRequest } from "../../requests/Weather/types";
 import config from "../../utils/config";
 import { SERVICE_ROUTES } from "../../utils/const";

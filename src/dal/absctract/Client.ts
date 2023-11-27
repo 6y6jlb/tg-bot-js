@@ -1,4 +1,3 @@
-import {Response} from "node-fetch"
 
 abstract class Client {
     get(params: any) { }

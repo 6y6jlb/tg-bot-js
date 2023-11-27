@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { SERVICE_ROUTES } from "../../utils/const";
 import Client from "../absctract/Client";
 import { IRandomFox } from './types';

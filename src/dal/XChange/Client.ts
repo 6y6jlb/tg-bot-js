@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import config from "../../utils/config";
 import { SERVICE_ROUTES } from "../../utils/const";
 import Client from "../absctract/Client";
