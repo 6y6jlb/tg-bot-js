@@ -4,14 +4,11 @@ import { IBotCallback } from './types';
 
 export class Callback extends Notification {
 
-    protected msg: TelegramBot.CallbackQuery;
-
     constructor(parameters: IBotCallback) {
         super(parameters);
     }
 
     getChatId() {
-
         return this.msg.message?.chat.id;
     }
 

@@ -1,10 +1,7 @@
-import TelegramBot from 'node-telegram-bot-api';
 import { Notification } from './Abstract';
 import { IBotMessage } from './types';
 
 export class Message extends Notification {
-
-    protected msg: TelegramBot.Message;
 
     constructor(parameters: IBotMessage) {
         super(parameters);

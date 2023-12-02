@@ -13,7 +13,7 @@ class NotificationController {
             await factory.send();
 
             res.json({ message: 'ok' })
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }

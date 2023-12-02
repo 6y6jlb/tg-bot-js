@@ -14,16 +14,21 @@ import { setOptions } from "./commands/setOptions";
 import { storeTask } from "./commands/storeTask";
 import { language } from './commands/language';
 import { updateTask } from './commands/updateTask';
+import { IBotCallback } from '../BotNotification/types';
 
 
 export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {
   const data = msg.data;
 
-  const callback = new NotificationFactory(TypeEnum.CALLBACK, { bot: bot.instance, msg }).build() as Callback;
+  if (!data) {
+    throw new Error('Callback handler does not have data')
+  }
+
+  const callback = new NotificationFactory(TypeEnum.CALLBACK, { bot: bot.instance, msg }).build();
 
 
   if (data === COMMANDS.RESTART) {
-    restart(callback, bot.localeService.i18);
+    await restart(callback, bot.localeService.i18);
   }
 
   else if (data.includes(COMMANDS.TASKS_DELETE)) {

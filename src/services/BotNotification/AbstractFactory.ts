@@ -1,20 +1,19 @@
 
 import { TypeEnum, EntityType } from './consts';
-import { IBotNotification as INotification } from './types';
+import { IBotNotification as INotification, TypeToClassMapping } from './types';
 
-export class NotificationFactory {
+export class NotificationFactory<T extends TypeEnum> {
 
     params: INotification;
-    type: TypeEnum;
+    type: T;
 
-    constructor(type: TypeEnum, parameters: INotification) {
+    constructor(type: T, parameters: INotification) {
         this.type = type;
         this.params = parameters;
     }
 
-    build() {
-        // @ts-ignore
-        return new EntityType[this.type](this.params)
+    build(): TypeToClassMapping[T] {
+        return new EntityType[this.type](this.params as any) as TypeToClassMapping[T];
     }
 
 }

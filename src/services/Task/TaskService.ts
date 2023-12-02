@@ -18,7 +18,7 @@ class TaskService {
                 return await Task.find(data)
             }
 
-        } catch (error) {
+        } catch (error: any) {
             throw new TaskError(error.message)
         }
     }
@@ -26,15 +26,15 @@ class TaskService {
     async update(data: IUpdateTaskRequest) {
         try {
             return await Task.findByIdAndUpdate(data._id, data.payload, { new: true });
-        } catch (error) {
+        } catch (error: any) {
             throw new UpdateTaskError(error.message)
         }
     }
 
     async resetQueue() {
         try {
-            await Task.updateMany({ queue: true },  { $set: { queue: false } });
-        } catch (error) {
+            await Task.updateMany({ queue: true }, { $set: { queue: false } });
+        } catch (error: any) {
             throw new TaskError(error.message)
         }
     }
@@ -44,7 +44,7 @@ class TaskService {
             let callAt = this.timeCorrection(data.call_at)
             callAt = moment.tz(callAt, this.FORMAT, data.tz).utc().format(this.FORMAT)
             return await Task.create({ ...data, call_at: callAt })
-        } catch (error) {
+        } catch (error: any) {
             throw new CreateTaskError(error.message)
         }
     }
@@ -52,7 +52,7 @@ class TaskService {
     async delete(data: IDeleteTaskRequest) {
         try {
             return await Task.findByIdAndDelete(data._id)
-        } catch (error) {
+        } catch (error: any) {
             throw new DeleteTaskError(error.message)
         }
     }

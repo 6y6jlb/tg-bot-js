@@ -11,7 +11,7 @@ import UserService from '../User/UserService';
 import WeatherService from '../Weather/WeatherService';
 import XChangeService from '../XChange/XChangeService';
 import { convertDateToCronExpression } from './../../helpers/cron';
-import { TEMPERATURE_SIGN } from './../Weather/const';
+import { OPEN_WEATHER_UNITS, TEMPERATURE_SIGN } from './../Weather/const';
 import { exhangeRequestValidation } from '../../helpers/validation';
 
 export class CronScheduler {
@@ -39,7 +39,7 @@ export class CronScheduler {
             await this.bot.sendPhoto(task.user_id, icon)
           }
           await this.bot.sendMessage(task.user_id, message);
-        } catch (error) {
+        } catch (error: any) {
           await this.bot.sendMessage(task.user_id, error.message ?? JSON.stringify(error));
           console.info(`${now}: Task id:${task._id}, ${error.message ?? JSON.stringify(error)}`)
         }
@@ -55,7 +55,7 @@ export class CronScheduler {
           console.info(`${now}: Task was deleted. Task id:${task._id}`)
         }
 
-      } catch (error) {
+      } catch (error: any) {
         console.warn(error.message)
       } finally {
         job.stop()
@@ -102,8 +102,7 @@ export class CronScheduler {
       });
 
 
-    } catch (error) {
-
+    } catch (error: any) {
       console.warn(error.message)
     }
   }
@@ -119,7 +118,7 @@ export class CronScheduler {
         return {
           icon: weather.icon,
           message: this.localeService.i18.t('weather.tg-string', {
-            city: weather.name, temp: Math.ceil(Number(weather.main.temp)), feel: Math.ceil(Number(weather.main.feels_like)), humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
+            city: weather.name, temp: Math.ceil(Number(weather.main.temp)), feel: Math.ceil(Number(weather.main.feels_like)), humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
           })
         };
 

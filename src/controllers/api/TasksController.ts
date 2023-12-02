@@ -8,7 +8,7 @@ class TasksController {
         try {
             const data = TaskApiRequest.get(req);
             res.json(await TaskService.get(data))
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.json(error.message)
         }
@@ -18,8 +18,8 @@ class TasksController {
             const data = TaskApiRequest.update(req);
             const task = await TaskService.update(data);
             res.json(task)
-        } catch (error) {
-            console.log(error) 
+        } catch (error: any) {
+            console.log(error)
             res.status(400).json({ message: error.message })
         }
     }
@@ -27,7 +27,7 @@ class TasksController {
         try {
             const data = TaskApiRequest.store(req);
             res.json(await TaskService.store(data))
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }
@@ -36,7 +36,7 @@ class TasksController {
         try {
             const data = TaskApiRequest.delete(req);
             res.json(await TaskService.delete(data))
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }

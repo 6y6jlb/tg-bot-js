@@ -8,7 +8,7 @@ class ExchangeController {
             const validParams = await ExchangeApiRequest.get(req);
             const data = await XChangeService.getRate(validParams);
             res.json(data)
-        } catch (error) {
+        } catch (error: any) {
             res.status(error.code || 400).json({ message: error.message })
         }
     }

@@ -8,7 +8,7 @@ class WeatherController {
             const validParams = WeatherApiRequest.get(req);
             const data = await WeatherService.get(validParams);
             res.json(data)
-        } catch (error) {
+        } catch (error: any) {
             res.status(error.code || 400).json({ message: error.message })
         }
     }

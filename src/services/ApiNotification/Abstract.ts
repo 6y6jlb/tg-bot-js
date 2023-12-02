@@ -6,7 +6,7 @@ import LocaleService from '../Locale/LocaleService';
 
 export abstract class ApiNotification {
 
-    protected canal: TypeEnum
+    protected canal: TypeEnum | undefined
     protected message: IApiMessage;
     protected localeService: typeof LocaleService
 

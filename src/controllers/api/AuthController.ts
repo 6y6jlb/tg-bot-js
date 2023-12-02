@@ -10,7 +10,7 @@ class AuthController {
             const data = await UserApiRequest.login(req);
             const user = await UserService.login(data);
             res.json(user)
-        } catch (error) {
+        } catch (error: any) {
             console.warn(error)
             res.status(400).json({ message: error.message })
         }
@@ -20,7 +20,7 @@ class AuthController {
             const data = await UserApiRequest.login(req);
             const user = await UserService.login(data);
             res.json(user)
-        } catch (error) {
+        } catch (error: any) {
             console.warn(error)
             res.status(400).json({ message: error.message })
         }
@@ -30,7 +30,7 @@ class AuthController {
         try {
             const data = await UserApiRequest.store(req);
             res.json(await UserService.store(data))
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }
@@ -41,7 +41,7 @@ class AuthController {
         try {
             const data = await UserApiRequest.resetPassword(req);
             res.json(await UserService.resetPassword(data))
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }

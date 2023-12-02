@@ -9,7 +9,7 @@ class WeatherClient extends Client {
         const url = new URL(SERVICE_ROUTES.OPEN_WEATHER.BASE + SERVICE_ROUTES.OPEN_WEATHER.ENTPOINTS.WEATHER);
 
 
-        url.searchParams.append('appid', config.WEATHER_API_KEY);
+        url.searchParams.append('appid', config.WEATHER_API_KEY as string);
         url.searchParams.append('units', params.units || 'metric');
         url.searchParams.append('lang', params.lang || 'en');
 

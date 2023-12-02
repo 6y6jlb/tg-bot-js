@@ -1,4 +1,7 @@
 import TelegramBot from 'node-telegram-bot-api';
+import { TypeEnum } from './consts';
+import { Message } from './Message';
+import { Callback } from './Callback';
 
 export interface IBotMessage {
     bot: TelegramBot
@@ -28,4 +31,8 @@ export interface ISendBotSticker {
 export interface ISendBotPhoto {
     url: string
     options?: TelegramBot.SendPhotoOptions
-} 
+}
+export interface TypeToClassMapping {
+    [TypeEnum.MESSAGE]: Message;
+    [TypeEnum.CALLBACK]: Callback;
+}

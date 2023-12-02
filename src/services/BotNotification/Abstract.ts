@@ -17,6 +17,10 @@ export abstract class Notification {
     async send(params: ISendToBot) {
         const chatId = this.getChatId();
 
+        if (!chatId) {
+            throw new Error('Notification doesnot have chatId')
+        }
+
         if ('url' in params) {
             await this.bot.sendPhoto(chatId, params.url, params.options);
         } else if ('sticker' in params) {
@@ -26,11 +30,11 @@ export abstract class Notification {
         }
     }
 
-    abstract getChatId(): number
+    abstract getChatId(): number | string | undefined
 
-    abstract getName(): string
+    abstract getName(): string | undefined
 
-    abstract getLanguage(): string
+    abstract getLanguage(): string | undefined
 
     protected build() {
         // @ts-ignore

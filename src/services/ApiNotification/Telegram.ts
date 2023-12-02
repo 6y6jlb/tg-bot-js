@@ -1,11 +1,9 @@
 import { TelegramError } from '../../exceptions/Telegram';
 import AdminService from '../Admin/AdminService';
 import { ApiNotification as Notification } from './Abstract';
-import { IApiMessage, IApiNotification } from './types';
+import { IApiNotification } from './types';
 
 export class Telegram extends Notification {
-
-    protected msg: IApiMessage;
 
     constructor(parameters: IApiNotification) {
         super(parameters);
@@ -23,14 +21,14 @@ export class Telegram extends Notification {
             })
 
             console.log("Message from: " + this.message.name + " sended to admin ")
-        } catch (error) {
+        } catch (error: any) {
             console.warn(error)
             throw new TelegramError('Telegram notification error: ' + error.message)
         }
     }
 
     private getBotInstance() {
-        return global.tgBotInstance
+        return global.tgBotInstance as any
     }
 
 }

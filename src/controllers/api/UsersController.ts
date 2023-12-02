@@ -8,7 +8,7 @@ class UsersController {
     async get(req: Request, res: Response) {
         try {
             res.json(await UserService.get())
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }
@@ -21,7 +21,7 @@ class UsersController {
             if (userId) {
                 res.json(await UserService.getById(userId))
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }
@@ -41,7 +41,7 @@ class UsersController {
         try {
             const data = await UserApiRequest.delete(req);
             res.json(await UserService.delete(data))
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
             res.status(400).json({ message: error.message })
         }

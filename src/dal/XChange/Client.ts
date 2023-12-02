@@ -8,7 +8,7 @@ class XChangeClient extends Client {
         const url = new URL(SERVICE_ROUTES.OPEN_XHANGE_RATE.BASE + SERVICE_ROUTES.OPEN_XHANGE_RATE.LATEST);
 
 
-        url.searchParams.append('app_id', config.XCHANGE_API_KEY);
+        url.searchParams.append('app_id', config.XCHANGE_API_KEY as string);
         url.searchParams.append('base', params?.base || 'USD');
 
         const response = await fetch(url, {
@@ -24,14 +24,14 @@ class XChangeClient extends Client {
         const data = await response.json();
 
         console.log('XRate successful request.');
-        
+
         return data;
     }
 
     async currencies(): Promise<IOpeneXChangeRatesCurrencies> {
         const url = new URL(SERVICE_ROUTES.OPEN_XHANGE_RATE.BASE + SERVICE_ROUTES.OPEN_XHANGE_RATE.CURENCIES);
 
-        url.searchParams.append('app_id', config.XCHANGE_API_KEY);
+        url.searchParams.append('app_id', config.XCHANGE_API_KEY as string);
 
         const response = await fetch(url, {
             method: 'GET',
@@ -46,7 +46,7 @@ class XChangeClient extends Client {
         const data = await response.json();
 
         console.log('List of currencies successful request.');
-        
+
         return data;
     }
 

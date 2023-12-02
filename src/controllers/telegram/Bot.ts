@@ -26,10 +26,10 @@ class Bot {
 
   start() {
     this.scheduler.start();
-    
+
     try {
       TaskService.resetQueue();
-    } catch (error) {
+    } catch (error: any) {
       AdminService.sendMesssageToAdmin(
         this.instance, { text: error.message });
     }

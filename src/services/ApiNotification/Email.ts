@@ -6,8 +6,6 @@ import { EmailError } from "../../exceptions/Email";
 
 export class Email extends Notification {
 
-    protected message: IApiMessage;
-
     constructor(parameters: IApiNotification) {
         super(parameters);
     }
@@ -19,11 +17,11 @@ export class Email extends Notification {
                 to: config.SMPT_RESPONSE_EMAIL,
                 subject: this.message.contacts,
 
-                html: this.localeService.i18.t('feedback.portfolio.template-tg', { name: this.message.name, contacts: this.message.contacts, message: this.message.message }),
+                html: this.localeService.i18.t('feedback.portfolio.template-tg', { name: this.message.name, contacts: this.message.contacts, message: this.message.message }) as any,
             })
 
             console.log("Message from: " + this.message.name + " sended to: " + config.SMPT_RESPONSE_EMAIL)
-        } catch (error) {
+        } catch (error: any) {
             console.warn(error)
             throw new EmailError('Emaiol notification error: ' + error.message)
         }

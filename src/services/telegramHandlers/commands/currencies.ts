@@ -11,7 +11,7 @@ export async function currencies(notification: Notification, i18: i18n) {
             message += `\n${key}: ${value}`
 
         }
-    } catch (error) {
+    } catch (error: any) {
         message = error.message;
     }
 
