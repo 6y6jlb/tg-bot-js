@@ -4,11 +4,21 @@ import { COMMANDS } from "../../../utils/const";
 import AdminService from "../../Admin/AdminService";
 import { Callback } from "../../BotNotification/Callback";
 import TaskService from "../../Task/TaskService";
+import { TaskError } from "../../../exceptions/Task";
 
 
 export async function deleteTask(notification: Callback, i18: i18n) {
   const chatId = notification.getChatId();
   const data = notification.getData();
+
+  if (!data) {
+    throw new TaskError('Task can not be deleted because data is empty')
+  }
+
+  if (!chatId) {
+    throw new TaskError('Task can not be deleted because chatId is empty')
+  }
+
   const params = new URLSearchParams(data.split('?')[1]);
   const taskId = params.has('task_id') && params.get('task_id');
   const buttons = [];

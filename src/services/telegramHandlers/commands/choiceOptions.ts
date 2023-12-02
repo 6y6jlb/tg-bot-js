@@ -6,6 +6,10 @@ import { COMMANDS } from './../../../utils/const';
 export async function choiceOptions(notification: Callback, i18: i18n) {
   const data = notification.getData();
 
+  if (!data) {
+    throw new Error('Task options can not be choised because data is empty')
+  }
+
   const params = new URLSearchParams(data.split('?')[1]);
 
   const taskId = params.has('task_id') && params.get('task_id');

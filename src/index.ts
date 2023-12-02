@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 import cors from "cors";
 import express from "express";
-import CONFIG from "./src/utils/config";
-import usersRouter from "./src/routers/users"
-import tasksRouter from "./src/routers/tasks"
-import weatherRouter from "./src/routers/weather"
-import authRouter from "./src/routers/auth"
-import exchangeRouter from "./src/routers/exchange"
-import notificationRouter from "./src/routers/notification"
+import CONFIG from "./utils/config";
+import usersRouter from "./routers/users"
+import tasksRouter from "./routers/tasks"
+import weatherRouter from "./routers/weather"
+import authRouter from "./routers/auth"
+import exchangeRouter from "./routers/exchange"
+import notificationRouter from "./routers/notification"
 import mongoose from 'mongoose'
-import Bot from "./src/controllers/telegram/Bot";
+import Bot from "./controllers/telegram/Bot";
 
 
 process.on('uncaughtException', function (err) {

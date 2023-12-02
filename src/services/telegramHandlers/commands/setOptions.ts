@@ -3,11 +3,20 @@ import { EVENT_ENUM, EVENT_OPTIONS } from "../../../models/const";
 import { COMMANDS } from '../../../utils/const';
 import { Callback } from "../../BotNotification/Callback";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
+import { TaskError } from "../../../exceptions/Task";
 
 export async function setOptions(notification: Callback, i18: i18n) {
 
   const data = notification.getData();
   const chatId = notification.getChatId();
+
+  if (!data) {
+    throw new TaskError('Task options can not be setted because data is empty')
+  }
+
+  if (!chatId) {
+    throw new TaskError('Task options can not be setted because chatId is empty')
+  }
 
   const params = new URLSearchParams(data.split('?')[1]);
 
@@ -34,7 +43,7 @@ export async function setOptions(notification: Callback, i18: i18n) {
   }
 }
 
-const message = {
+const message: { [key: string]: string } = {
   [EVENT_ENUM.EXCHANGE]: 'tasks.options.exchange',
   [EVENT_ENUM.REMINDER]: 'tasks.options.reminder',
   [EVENT_ENUM.WEATHER]: 'tasks.options.weather',

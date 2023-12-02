@@ -9,7 +9,7 @@ import TaskService from "../Task/TaskService";
 import TaskCreateValidator from '../Task/TaskValidationFactory';
 import UserSettingsService from "../UserSetttings/UserSettingsService";
 import WeatherService from "../Weather/WeatherService";
-import { TEMPERATURE_SIGN } from "../Weather/const";
+import { OPEN_WEATHER_UNITS, TEMPERATURE_SIGN } from "../Weather/const";
 import XChangeService from "../XChange/XChangeService";
 import { ITask } from './../../models/types';
 
@@ -24,10 +24,12 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
         case APP_TYPE_ENUM.WEATHER_REQUEST:
 
             const weather = await WeatherService.get({ city: text, lang });
-            await notification.send({ url: weather.icon });
+
+            if (weather.icon) await notification.send({ url: weather.icon });
+
             await notification.send({
                 text: i18.t('weather.tg-string', {
-                    city: weather.name, temp: Math.ceil(Number(weather.main.temp)), feel: Math.ceil(Number(weather.main.feels_like)), humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
+                    city: weather.name, temp: Math.ceil(Number(weather.main.temp)), feel: Math.ceil(Number(weather.main.feels_like)), humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
                 }) + '\n' +
                     i18.t('weather.reset-with-description'), options: {
                         parse_mode: 'HTML',
@@ -120,7 +122,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                 const formattedRate = money(rate);
                 message = `${i18.t('exchange.rate', { count: validExchangeRequest.count, current: validExchangeRequest.current, target: validExchangeRequest.target, rate: formattedRate })}\n${i18.t('exchange.reset-with-description')}`;
 
-            } catch (error) {
+            } catch (error: any) {
                 message = error.message;
             }
 

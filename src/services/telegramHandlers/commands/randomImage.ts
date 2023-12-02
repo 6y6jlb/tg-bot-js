@@ -12,7 +12,7 @@ export async function randomImage(notification: Message, i18: i18n) {
         url = await RandomService.getImage();
         message = i18.t('random.get-image');
 
-    } catch (error) {
+    } catch (error: any) {
         message = error.message;
 
     }

@@ -11,6 +11,14 @@ export async function language(notification: Callback, i18: i18n) {
   const data = notification.getData();
   const chatId = notification.getChatId();
 
+  if (!data) {
+    throw new Error('Language can not be handled because data is empty')
+  }
+
+  if (!chatId) {
+    throw new Error('Language can not be handled because chatId is empty')
+  }
+
   const languageCode = data.split('?')[1];
 
   if (!languageCode) {

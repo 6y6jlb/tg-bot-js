@@ -28,14 +28,14 @@ class XChangeService {
             if (result.timestamp && moment().diff(moment.unix(result.timestamp), 'hours') >= 4) {
                 result = await this.get();
             }
-        } catch (error) {
+        } catch (error: any) {
             console.warn(error.message)
             result = await this.get();
         }
 
 
-        const usdRateCurrent = result.rates[data.current.toUpperCase()];
-        const usdRateTarget = result.rates[data.target.toUpperCase()];
+        const usdRateCurrent = data.current ? result.rates[data.current.toUpperCase()] : 1;
+        const usdRateTarget = data.target ? result.rates[data.target.toUpperCase()] : 1;
         if (!usdRateCurrent || !usdRateTarget) {
             throw new EXchangeError('Get rate error' + 'current: ' + data.current + 'target: ' + data.target)
         }
@@ -50,12 +50,12 @@ class XChangeService {
         try {
             const currencies = await fs.promises.readFile('storage/currencies.json', 'utf-8');
             result = await JSON.parse(currencies.toString())
-            
-        } catch (error) {
+
+        } catch (error: any) {
             console.warn(error.message)
             result = await XChangeClient.currencies();
 
-            fs.writeFile('storage/currencies.json', JSON.stringify(result), function (error) {
+            fs.writeFile('storage/currencies.json', JSON.stringify(result), function (error: any) {
                 if (error) {
                     console.warn(error.message)
                 } else {

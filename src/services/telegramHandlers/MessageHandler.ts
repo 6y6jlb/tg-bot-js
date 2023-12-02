@@ -3,34 +3,33 @@ import Bot from "../../controllers/telegram/Bot";
 import { IUser } from "../../models/types";
 import AdminService from "../Admin/AdminService";
 import { NotificationFactory } from "../BotNotification/AbstractFactory";
-import { TypeEnum } from '../BotNotification/consts';
 import { Message } from '../BotNotification/Message';
+import { TypeEnum } from '../BotNotification/consts';
 import UserService from "../User/UserService";
 import { commadsHandler } from './CommandsHandler';
-import { GetUserError } from "../../exceptions/User";
 
 
 
 export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
-  const userId = msg.from.id;
-  const name = msg.from.username || msg.from.first_name;
-  let user = null as IUser;
+  const userId = msg?.from?.id;
+  const name = msg?.from?.username || msg?.from?.first_name;
+  let user: IUser | null = null;
 
   try {
-    user = await UserService.getById(userId) as IUser;
-  } catch (error) {
+    user = await UserService.getById(userId);
+  } catch (error: any) {
     console.log(error.message)
   }
 
 
-  const language = user?.locale || msg.from.language_code;
+  const language = user?.locale || msg?.from?.language_code;
   bot.localeService.changeLanguage(language);
   const notification = new NotificationFactory(TypeEnum.MESSAGE, { bot: bot.instance, msg }).build() as Message;
 
 
   if (!user) {
 
-    await UserService.store({ telegram_id: String(userId), name, locale: language })
+    await UserService.store({ telegram_id: String(userId), name: name || 'guest', locale: language })
     await AdminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
     )

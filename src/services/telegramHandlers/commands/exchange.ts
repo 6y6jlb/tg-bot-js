@@ -10,7 +10,7 @@ export async function exchange(notification: Message, i18: i18n) {
     try {
         await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.EXCHANGE_START, created_at: new Date() });
         message = `${i18.t('exchange.change')}\n${i18.t('exchange.format-example')}`;
-    } catch (error) {
+    } catch (error: any) {
         message = error.message;
     }
 

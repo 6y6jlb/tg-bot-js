@@ -9,7 +9,7 @@ class TaskCreateValidator {
         this.type = type;
     }
 
-    validate(message: string) {
+    validate(message?: string) {
         switch (this.type) {
             case EVENT_ENUM.EXCHANGE:
             case EVENT_ENUM.WEATHER:

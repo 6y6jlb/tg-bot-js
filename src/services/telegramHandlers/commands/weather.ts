@@ -1,5 +1,4 @@
 import { i18n } from "i18next";
-import Bot from "../../../controllers/telegram/Bot";
 import { APP_TYPE_ENUM } from "../../../models/const";
 import { COMMANDS } from "../../../utils/const";
 import { Message } from "../../BotNotification/Message";
@@ -12,7 +11,7 @@ export async function weather(notification: Message, i18: i18n) {
     try {
         UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.WEATHER_REQUEST, created_at: new Date() });
         message = i18.t('weather.get-description');
-    } catch (error) {
+    } catch (error: any) {
         message = error.message;
     }
 

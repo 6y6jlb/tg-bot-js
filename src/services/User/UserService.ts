@@ -8,13 +8,13 @@ import { IUser } from './../../models/types';
 class UsersService {
     async login(data: LoginUserRequest) {
         const user = await this.getById(data.telegram_id || data.email) as IUser;
-        if (user.validatePassword(data.password)) {
+        if (user && typeof user.validatePassword === 'function' && user.validatePassword(data.password)) {
             return user;
         }
         throw new UserError("Wrong Password");
     }
 
-    async getById(user_id: string | number) {
+    async getById(user_id?: string | number): Promise<IUser | null> {
         const idKeys = ['telegram_id', 'email'];
         let mongo_id = null;
 
@@ -46,17 +46,24 @@ class UsersService {
 
     async update(data: UpdateUserRequest) {
 
+        const result = { ...data } as any;
         if (data.password) {
 
-            data['salt'] = crypto.randomBytes(16).toString('hex');
+            result['salt'] = crypto.randomBytes(16).toString('hex');
 
-            data['hash'] = crypto.pbkdf2Sync(data.password, data['salt'], 1000, 64, `sha512`).toString(`hex`);
+            result['hash'] = crypto.pbkdf2Sync(result.password, result['salt'], 1000, 64, `sha512`).toString(`hex`);
 
-            delete data.password;
+            delete result.password;
 
         }
 
-        return (await this.getById(data.telegram_id || data.email)).update(data, { new: true })
+        const user = await this.getById(data.telegram_id || data.email)
+
+        if (user && typeof user.update === 'function') {
+            return await user.update(data, { new: true });
+        }
+
+        return null
     }
 
     async store(data: StoreUserRequest) {

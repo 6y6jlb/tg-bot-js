@@ -24,7 +24,7 @@ class LocaleService {
 
     }
 
-    public changeLanguage(languageCode: string) {
+    public changeLanguage(languageCode?: string) {
 
         if (languageCode === this.getLanguage()) {
             return;

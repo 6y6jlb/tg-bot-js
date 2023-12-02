@@ -11,7 +11,7 @@ export async function restart(notification: Notification, i18: i18n) {
     try {
         UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {} });
         message = i18.t('actions.reset.description');
-    } catch (error) {
+    } catch (error: any) {
         message = error.message;
     }
 
