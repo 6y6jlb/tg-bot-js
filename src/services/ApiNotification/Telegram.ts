@@ -28,7 +28,8 @@ export class Telegram extends Notification {
     }
 
     private getBotInstance() {
-        return global.tgBotInstance as any
+        //@ts-ignore
+        return global.tgBotInstance
     }
 
 }
