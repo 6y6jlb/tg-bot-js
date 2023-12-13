@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import WeatherApiRequest from "../../requests/Weather/WeatherApiRequest";
 import WeatherService from "../../services/Weather/WeatherService";
+import ErrorResponse from "../../services/response/ErrorResponse";
 
 class WeatherController {
     async get(req: Request, res: Response) {
@@ -9,7 +10,7 @@ class WeatherController {
             const data = await WeatherService.get(validParams);
             res.json(data)
         } catch (error: any) {
-            res.status(error.code || 400).json({ message: error.message })
+            ErrorResponse.setError(error).setResponse(res).build().json()
         }
     }
 }

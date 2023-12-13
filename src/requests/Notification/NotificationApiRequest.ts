@@ -3,6 +3,7 @@ import { ISendNotificationRequest } from "./types";
 import { sendSchema } from "./schema";
 import { IApiMessage } from "../../services/ApiNotification/types";
 
+
 class NotificationApiRequest {
     async send(request: Request<{}, {}, IApiMessage>): Promise<ISendNotificationRequest> {
 

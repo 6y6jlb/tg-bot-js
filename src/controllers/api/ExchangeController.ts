@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ExchangeApiRequest from "../../requests/Exchange/ExchangeApiRequest";
 import XChangeService from "../../services/XChange/XChangeService";
+import ErrorResponse from "../../services/response/ErrorResponse";
 
 class ExchangeController {
     async get(req: Request, res: Response) {
@@ -9,7 +10,7 @@ class ExchangeController {
             const data = await XChangeService.getRate(validParams);
             res.json(data)
         } catch (error: any) {
-            res.status(error.code || 400).json({ message: error.message })
+            ErrorResponse.setError(error).setResponse(res).build().json()
         }
     }
 }

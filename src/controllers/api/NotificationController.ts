@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import NotificationApiRequest from "../../requests/Notification/NotificationApiRequest";
 import { ApiNotificationFactory } from "../../services/ApiNotification/AbstractFactory";
 import { TypeEnum } from "../../services/ApiNotification/consts";
+import ErrorResponse from "../../services/response/ErrorResponse";
+
 
 
 class NotificationController {
@@ -14,8 +16,7 @@ class NotificationController {
 
             res.json({ message: 'ok' })
         } catch (error: any) {
-            console.log(error)
-            res.status(400).json({ message: error.message })
+            ErrorResponse.setError(error).setResponse(res).build().json()
         }
     }
 

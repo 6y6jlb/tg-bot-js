@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UserApiRequest from "../../requests/User/UserApiRequest";
 import UserService from "../../services/User/UserService";
+import ErrorResponse from "../../services/response/ErrorResponse";
 
 
 class AuthController {
@@ -11,18 +12,17 @@ class AuthController {
             const user = await UserService.login(data);
             res.json(user)
         } catch (error: any) {
-            console.warn(error)
-            res.status(400).json({ message: error.message })
+            ErrorResponse.setError(error).setResponse(res).build().json()
         }
     }
+
     async logout(req: Request, res: Response) {
         try {
             const data = await UserApiRequest.login(req);
             const user = await UserService.login(data);
             res.json(user)
         } catch (error: any) {
-            console.warn(error)
-            res.status(400).json({ message: error.message })
+            ErrorResponse.setError(error).setResponse(res).build().json()
         }
     }
 
@@ -31,8 +31,7 @@ class AuthController {
             const data = await UserApiRequest.store(req);
             res.json(await UserService.store(data))
         } catch (error: any) {
-            console.log(error)
-            res.status(400).json({ message: error.message })
+            ErrorResponse.setError(error).setResponse(res).build().json()
         }
 
     }
@@ -42,8 +41,7 @@ class AuthController {
             const data = await UserApiRequest.resetPassword(req);
             res.json(await UserService.resetPassword(data))
         } catch (error: any) {
-            console.log(error)
-            res.status(400).json({ message: error.message })
+            ErrorResponse.setError(error).setResponse(res).build().json()
         }
     }
 
