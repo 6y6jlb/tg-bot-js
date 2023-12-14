@@ -6,12 +6,14 @@ import { ValidationError } from 'joi';
 class ErrorResponse {
     private error: any;
     private response: Response<any, Record<string, any>> | null;
-    private payload: {};
+    private payload: any;
 
     constructor() {
         this.error = null;
         this.response = null;
-        this.payload = {}
+        this.payload = {
+            status: 400
+        }
     }
 
     public setResponse(response: Response<any, Record<string, any>>) {
@@ -26,8 +28,8 @@ class ErrorResponse {
 
     public json() {
         if (this.response !== null) {
-            console.warn('Error response ' + this.payload)
-            this.response.json(this.payload)
+            console.warn('Error response: payload - ' + JSON.stringify(this.payload))
+            this.response.status(this.payload.status || 400).json(this.payload)
         } else {
             throw new Error('No valid response')
         }
