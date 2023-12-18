@@ -19,7 +19,7 @@ class Bot {
 
   constructor() {
     this.localeService = LocaleService;
-    this.instance = new TelegramBotApi(config.TOKEN, { polling: true });
+    this.instance = new TelegramBotApi(config.TG_TOKEN, { polling: true });
     this.scheduler = new CronScheduler(this.instance, this.localeService);
     //@ts-ignore
     global.tgBotInstance = this.instance

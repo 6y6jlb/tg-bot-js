@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const TOKEN = process.env.TG_BOT_API_KEY || "===";
+const TG_TOKEN = process.env.TG_BOT_API_KEY || "===";
 const ENV = process.env.NODE_ENV || "===";
 const PORT = process.env.PORT || 5000;
 const TIMEZONE = process.env.TIMEZONE;
@@ -25,9 +25,11 @@ const SMPT_RESPONSE_EMAIL = process.env.SMPT_RESPONSE_EMAIL;
 const SMPT_PASSWORD = process.env.SMPT_PASSWORD;
 const SMPT_LOGIN = process.env.SMPT_LOGIN;
 
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || '';
+
 
 export default {
-  TOKEN,
+  TG_TOKEN,
   ADMINS,
   PORT,
   TIMEZONE,
@@ -39,5 +41,6 @@ export default {
   XCHANGE_API_KEY,
   SMPT_RESPONSE_EMAIL,
   SMPT_PASSWORD,
-  SMPT_LOGIN
+  SMPT_LOGIN,
+  JWT_SECRET_KEY
 };
