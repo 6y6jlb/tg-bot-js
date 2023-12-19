@@ -4,13 +4,12 @@ import AuthMiddleware from "../middleware/AuthMiddleware";
 
 const router = Router();
 
-router.use(AuthMiddleware.verifyAccessToken)
 
-router.get('/users/:userId', UsersController.getById);
-router.get('/users', UsersController.get);
+router.get('/users/:userId', AuthMiddleware.verifyAccessToken, UsersController.getById);
+router.get('/users', AuthMiddleware.verifyAccessToken, UsersController.get);
 
-router.put('/users', UsersController.update);
-router.delete('/users', UsersController.delete);
+router.put('/users', AuthMiddleware.verifyAccessToken, UsersController.update);
+router.delete('/users', AuthMiddleware.verifyAccessToken, UsersController.delete);
 
 
 export default router;
