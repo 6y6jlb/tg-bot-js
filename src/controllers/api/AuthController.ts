@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import UserApiRequest from "../../requests/User/UserApiRequest";
 import UserService from "../../services/User/UserService";
 import ErrorResponse from "../../services/response/ErrorResponse";
-import jwt from "jsonwebtoken";
 import config from "../../utils/config";
 
 
@@ -12,7 +12,8 @@ class AuthController {
         try {
             const data = await UserApiRequest.login(req);
             const user = await UserService.login(data);
-            const acessToken = jwt.sign({ ...user }, config.JWT_SECRET_KEY, { expiresIn: '1m' })
+            //@ts-ignore
+            const acessToken = jwt.sign({ ...user._doc }, config.JWT_SECRET_KEY, { expiresIn: '1m' })
             res.json({ access_token: acessToken })
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()

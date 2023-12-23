@@ -14,6 +14,7 @@ export interface IUser {
     salt?: string,
     validatePassword?: (password: string) => boolean,
     update?: (data: { [key: string]: any }, params: any) => any,
+    toJson?: () => JSON,
     save?: () => void,
 }
 

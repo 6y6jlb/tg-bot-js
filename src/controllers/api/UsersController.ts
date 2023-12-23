@@ -2,13 +2,26 @@ import { Request, Response } from "express";
 import UserApiRequest from "../../requests/User/UserApiRequest";
 import UserService from "../../services/User/UserService";
 import ErrorResponse from "../../services/response/ErrorResponse";
+import AdminService from "../../services/Admin/AdminService";
+import { IUser } from "../../models/types";
 
 
 class UsersController {
 
     async get(req: Request, res: Response) {
         try {
-            res.json(await UserService.get())
+            //@ts-ignore
+            const user: IUser = req.user;
+            if (!user.telegram_id) {
+                console.log(user.telegram_id)
+                console.log(user)
+                throw new Error('Invalid user')
+            }
+            else if (AdminService.checkAdmin(Number(user.telegram_id))) {
+                res.json(await UserService.get())
+            } else {
+                res.json(await UserService.getById(Number(user.telegram_id)))
+            }
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()
         }

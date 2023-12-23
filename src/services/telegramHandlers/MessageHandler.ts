@@ -13,7 +13,7 @@ import { commadsHandler } from './CommandsHandler';
 export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
   const userId = msg?.from?.id;
   const name = msg?.from?.username || msg?.from?.first_name;
-  let user: IUser | null = null;
+  let user: IUser | null | undefined = null;
 
   try {
     user = await UserService.getById(userId);

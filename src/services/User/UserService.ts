@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { GetUserError, UserError } from "../../exceptions/User";
 import User from "../../models/User";
-import { DeleteUserRequest, LoginUserRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest, UserConditionalCredetial } from "../../requests/User/types";
+import { DeleteUserRequest, LoginUserRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
 import { IUser } from './../../models/types';
 
@@ -11,29 +11,22 @@ class UsersService {
         if (user && typeof user.validatePassword === 'function' && user.validatePassword(data.password)) {
             return user;
         }
-        throw new UserError("Wrong Password");
+        throw new UserError("Wrong user credetials");
     }
 
-    async getById(user_id?: string | number): Promise<IUser | null> {
+    async getById(user_id?: string | number): Promise<IUser | undefined> {
         const idKeys = ['telegram_id', 'email'];
-        let mongo_id = null;
 
         for (const key of idKeys) {
             try {
                 const doc = await User.findOne({ [key]: user_id }).exec();
                 if (doc) {
-                    mongo_id = doc._id;
-                    break;
+                    return doc as IUser;
                 }
             } catch (err) {
-                console.log(err);
+                console.log(err)
+                throw new GetUserError('No user with this id');
             }
-        }
-
-        if (mongo_id) {
-            return await User.findById(mongo_id)
-        } else {
-            throw new GetUserError('No user with this id');
         }
 
     }
