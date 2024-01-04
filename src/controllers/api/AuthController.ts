@@ -13,7 +13,7 @@ class AuthController {
             const data = await UserApiRequest.login(req);
             const user = await UserService.login(data);
             //@ts-ignore
-            const acessToken = jwt.sign({ ...user._doc }, config.JWT_SECRET_KEY, { expiresIn: '1m' })
+            const acessToken = jwt.sign({ ...user._doc ?? {} }, config.JWT_SECRET_KEY, { expiresIn: '1m' })
             res.json({ access_token: acessToken })
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()

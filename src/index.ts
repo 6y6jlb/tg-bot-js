@@ -6,6 +6,7 @@ import usersRouter from "./routers/users"
 import tasksRouter from "./routers/tasks"
 import weatherRouter from "./routers/weather"
 import authRouter from "./routers/auth"
+import meRouter from "./routers/me"
 import exchangeRouter from "./routers/exchange"
 import notificationRouter from "./routers/notification"
 import mongoose from 'mongoose'
@@ -27,6 +28,7 @@ async function startApp() {
       .use(cors())
       .use(express.json())
       .use('/api', authRouter)
+      .use('/api', meRouter)
       .use('/api', usersRouter)
       .use('/api', tasksRouter)
       .use('/api', weatherRouter)
