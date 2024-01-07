@@ -30,3 +30,5 @@ export type UpdateUserRequest = UserConditionalCredetial & {
 export type DeleteUserRequest = UserConditionalCredetial
 
 export type ResetUserPasswordRequest = UserConditionalCredetial
+
+export type LogoutUserPasswordRequest = UserConditionalCredetial

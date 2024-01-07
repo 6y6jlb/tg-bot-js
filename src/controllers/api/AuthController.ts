@@ -13,7 +13,7 @@ class AuthController {
             const data = await UserApiRequest.login(req);
             const user = await UserService.login(data);
             //@ts-ignore
-            const acessToken = jwt.sign({ ...user._doc ?? {} }, config.JWT_SECRET_KEY, { expiresIn: '1m' })
+            const acessToken = jwt.sign({ ...user._doc ?? {} }, config.JWT_SECRET_KEY, { expiresIn: '15m' })
             res.json({ access_token: acessToken })
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()
@@ -22,8 +22,8 @@ class AuthController {
 
     async logout(req: Request, res: Response) {
         try {
-            const data = await UserApiRequest.login(req);
-            const user = await UserService.login(data);
+            const data = await UserApiRequest.logout(req);
+            const user = await UserService.logout(data);
             res.json(user)
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()

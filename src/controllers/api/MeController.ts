@@ -8,14 +8,15 @@ class MeController {
 
     async get(req: Request, res: Response) {
         try {
-
+            console.log(req)
             //@ts-ignore
             const user: IUser = req.user;
-            if (!(user.telegram_id && user.email)) {
+            if (user.telegram_id || user.email) {
+                res.json(await UserService.getById(Number(user.telegram_id)))
+
+            } else {
                 throw new Error('Invalid user')
             }
-
-            res.json(await UserService.getById(Number(user.telegram_id)))
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()
         }

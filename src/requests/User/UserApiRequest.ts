@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { UpdateUserSchema, deleteUserSchema, getUserSchema, loginUserSchema, resetUserPasswordSchema, storeUserSchema } from './schema';
+import { UpdateUserSchema, deleteUserSchema, getUserSchema, loginUserSchema, logoutUserPasswordSchema, resetUserPasswordSchema, storeUserSchema } from './schema';
 import { DeleteUserRequest, GetUserRequest, LoginUserRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "./types";
 
 class UserApiRequest {
@@ -22,6 +22,10 @@ class UserApiRequest {
 
     async resetPassword(request: Request): Promise<ResetUserPasswordRequest> {
         return await resetUserPasswordSchema.validateAsync(request.query);
+    }
+
+    async logout(request: Request): Promise<ResetUserPasswordRequest> {
+        return await logoutUserPasswordSchema.validateAsync(request.query);
     }
 }
 

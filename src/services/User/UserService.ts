@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { GetUserError, UserError } from "../../exceptions/User";
 import User from "../../models/User";
-import { DeleteUserRequest, LoginUserRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "../../requests/User/types";
+import { DeleteUserRequest, LoginUserRequest, LogoutUserPasswordRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
 import { IUser } from './../../models/types';
 
@@ -69,6 +69,11 @@ class UsersService {
 
     resetPassword(data: ResetUserPasswordRequest) {
         return User.findOneAndUpdate({ ...data, ...this.getPasswordData() });
+    }
+
+    logout(data: LogoutUserPasswordRequest) {
+        const user = User.findOne(data)
+        // to-do
     }
 
     getPasswordData(password?: string) {

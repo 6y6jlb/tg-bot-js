@@ -41,6 +41,11 @@ export const resetUserPasswordSchema = Joi.object({
 }).or('email', 'telegram_id');
 
 
+export const logoutUserPasswordSchema = Joi.object({
+    email: Joi.string().email(),
+    telegram_id: Joi.string(),
+}).or('email', 'telegram_id');
+
 
 export const deleteUserSchema = Joi.object({
     email: Joi.string().email(),
