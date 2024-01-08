@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { ITask } from './types';
 
 const Task = new mongoose.Schema<ITask>({
-    user_id: { type: Number || String, required: true },
+    user_id: { type: Schema.Types.ObjectId, required: true },
     last_call: { type: Date, required: false },
     options: { type: [], required: true, default: [] },
     call_at: { type: String, required: true },

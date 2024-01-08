@@ -8,7 +8,6 @@ class MeController {
 
     async get(req: Request, res: Response) {
         try {
-            console.log(req)
             //@ts-ignore
             const user: IUser = req.user;
             if (user.telegram_id || user.email) {

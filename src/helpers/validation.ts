@@ -1,4 +1,4 @@
-import { CreateTaskError } from "../exceptions/Task";
+import { TaskError } from "../exceptions/Task";
 import { EXchangeError } from './../exceptions/Exchange';
 import { commonCreationRequest, exhangeRateRequest, taskTime } from "./regex";
 
@@ -13,15 +13,15 @@ export function taskTimeValidator(timeString: string) {
 
 export function commonTaskCreationValidator(message?: string) {
   try {
-    if (!message) throw new CreateTaskError(`Message validation error ( message is undefined )`);
+    if (!message) throw new TaskError(`Message validation error ( message is undefined )`);
     const execResult = commonCreationRequest.exec(message);
     if (!execResult) {
-      throw new CreateTaskError('No match found');
+      throw new TaskError('No match found');
     }
     const [trashOne, time, trashTwo, trashThree, options, trashFour, timezone] = execResult;
     return { time: time.trim(), options: options.trim(), timezone: timezone.trim() }
   } catch (error) {
-    throw new CreateTaskError(`Message validation error ( ${message} )`);
+    throw new TaskError(`Message validation error ( ${message} )`);
   }
 
 }

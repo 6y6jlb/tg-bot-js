@@ -1,8 +1,8 @@
-import { APP_TYPE_ENUM, EVENT_ENUM } from "../../models/const";
 import moment from "moment-timezone";
 import Task from "../../models/Task";
+import { APP_TYPE_ENUM, EVENT_ENUM } from "../../models/const";
 import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "../../requests/Task/types";
-import { CreateTaskError, DeleteTaskError, TaskError, UpdateTaskError } from './../../exceptions/Task';
+import { TaskError } from './../../exceptions/Task';
 
 class TaskService {
     FORMAT: string;
@@ -25,9 +25,13 @@ class TaskService {
 
     async update(data: IUpdateTaskRequest) {
         try {
-            return await Task.findByIdAndUpdate(data._id, data.payload, { new: true });
+            const query = data.user_id
+                ? { user_id: data.user_id, _id: data._id }
+                : { _id: data._id };
+
+            return await Task.findOneAndUpdate(query, data.payload, { new: true });
         } catch (error: any) {
-            throw new UpdateTaskError(error.message)
+            throw new TaskError(error.message);
         }
     }
 
@@ -45,15 +49,19 @@ class TaskService {
             callAt = moment.tz(callAt, this.FORMAT, data.tz).utc().format(this.FORMAT)
             return await Task.create({ ...data, call_at: callAt })
         } catch (error: any) {
-            throw new CreateTaskError(error.message)
+            throw new TaskError(error.message)
         }
     }
 
     async delete(data: IDeleteTaskRequest) {
         try {
-            return await Task.findByIdAndDelete(data._id)
+            const query = data.user_id
+                ? { user_id: data.user_id, _id: data._id }
+                : { _id: data._id };
+
+            return await Task.findOneAndDelete(query);
         } catch (error: any) {
-            throw new DeleteTaskError(error.message)
+            throw new TaskError(error.message)
         }
     }
 

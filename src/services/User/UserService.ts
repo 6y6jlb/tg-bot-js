@@ -14,8 +14,8 @@ class UsersService {
         throw new UserError("Wrong user credetials");
     }
 
-    async getById(user_id?: string | number): Promise<IUser | undefined> {
-        const idKeys = ['telegram_id', 'email'];
+    async getById(user_id?: any): Promise<IUser | undefined> {
+        const idKeys = ['telegram_id', 'email', '_id'];
 
         for (const key of idKeys) {
             try {

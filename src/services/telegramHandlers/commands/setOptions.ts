@@ -25,6 +25,7 @@ export async function setOptions(notification: Callback, i18: i18n) {
   if (taskId && type) {
     const key = Object.keys(EVENT_OPTIONS).find(key => EVENT_OPTIONS[key] === type);
 
+    //@ts-ignore
     await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: Number(key), created_at: new Date(), payload: { task_id: taskId } });
 
     await notification.send({

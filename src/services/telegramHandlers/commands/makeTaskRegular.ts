@@ -13,6 +13,7 @@ export async function makeTaskRegular(notification: Callback, i18: i18n) {
   const params = new URLSearchParams(data.split('?')[1]);
   const taskId = params.has('task_id') && params.get('task_id');
   if (taskId) {
+    //@ts-ignore
     await TaskService.update({ _id: taskId, payload: { is_regular: true } });
     await notification.send({ text: `${i18.t('tasks.update.success')}` });
   } else {

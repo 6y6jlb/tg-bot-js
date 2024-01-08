@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { EXchangeError } from './../exceptions/Exchange';
-import { CreateTaskError } from './../exceptions/Task';
+import { TaskError } from './../exceptions/Task';
 import { exhangeRequestValidation, commonTaskCreationValidator, taskTimeValidator } from './validation';
 
 describe('validation', () => {
@@ -17,12 +17,12 @@ describe('validation', () => {
     });
 
     test('it fail validate task creation vol.1', () => {
-        expect(() => commonTaskCreationValidator('20:00- Moscow')).toThrow(CreateTaskError);
+        expect(() => commonTaskCreationValidator('20:00- Moscow')).toThrow(TaskError);
         expect(() => commonTaskCreationValidator('20:00- Moscow')).toThrow('Message validation error ( 20:00- Moscow )');
     });
 
     test('it fail validate task creation vol.2', () => {
-        expect(() => commonTaskCreationValidator('20:00 Moscow - Europe/Moscow')).toThrow(CreateTaskError);
+        expect(() => commonTaskCreationValidator('20:00 Moscow - Europe/Moscow')).toThrow(TaskError);
         expect(() => commonTaskCreationValidator('20:00 Moscow - Europe/Moscow')).toThrow('Message validation error ( 20:00 Moscow - Europe/Moscow )');
     });
 

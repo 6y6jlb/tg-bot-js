@@ -53,10 +53,11 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                 const eventType = TaskService.getEventType(userSettings.app_type);
                 const newParams = { event_type: EVENT_OPTIONS[userSettings.app_type], param: text }
 
-                if (userSettings.payload?.task_id) {
+                const taskId = userSettings.payload?.task_id;
+                if (taskId) {
 
-                    currentTask = await TaskService.get({ _id: userSettings.payload?.task_id }) as ITask;
-                    await TaskService.update({ _id: userSettings.payload?.task_id, payload: { options: [...currentTask.options, newParams] } });
+                    currentTask = await TaskService.get({ _id: taskId }) as ITask;
+                    await TaskService.update({ _id: taskId, payload: { options: [...currentTask.options, newParams] } });
 
                 } else {
                     const taskValidator = new TaskCreateValidator(eventType)

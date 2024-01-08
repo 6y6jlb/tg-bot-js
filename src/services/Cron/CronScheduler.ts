@@ -13,6 +13,8 @@ import XChangeService from '../XChange/XChangeService';
 import { convertDateToCronExpression } from './../../helpers/cron';
 import { OPEN_WEATHER_UNITS, TEMPERATURE_SIGN } from './../Weather/const';
 import { exhangeRequestValidation } from '../../helpers/validation';
+import { UserError } from '../../exceptions/User';
+import { TaskError } from '../../exceptions/Task';
 
 export class CronScheduler {
   private bot: TelegramBot;
@@ -29,6 +31,10 @@ export class CronScheduler {
 
       const user = await UserService.getById(task.user_id) as IUser
 
+      if (!user.telegram_id) {
+        throw new UserError(`$user ${user._id} does not have telegram id`)
+      }
+
       if (user?.locale) this.localeService.changeLanguage(user.locale);
 
       for (let i = 0; i < task.options.length; i++) {
@@ -36,11 +42,11 @@ export class CronScheduler {
           const option = task.options[i];
           const { message, icon } = await this.getMessage(option.event_type, option.param);
           if (icon) {
-            await this.bot.sendPhoto(task.user_id, icon)
+            await this.bot.sendPhoto(user.telegram_id, icon)
           }
-          await this.bot.sendMessage(task.user_id, message);
+          await this.bot.sendMessage(user.telegram_id, message);
         } catch (error: any) {
-          await this.bot.sendMessage(task.user_id, error.message ?? JSON.stringify(error));
+          await this.bot.sendMessage(user.telegram_id, error.message ?? JSON.stringify(error));
           console.info(`${now}: Task id:${task._id}, ${error.message ?? JSON.stringify(error)}`)
         }
 
@@ -48,6 +54,11 @@ export class CronScheduler {
       }
       try {
         console.info(`${now}: Task was executed, task id:${task._id} expression: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
+
+        if (!task._id) {
+          throw new TaskError('Task has not id')
+        }
+
         if (task.is_regular) {
           await TaskService.update({ _id: task._id, payload: { queue: false } })
         } else {
@@ -86,6 +97,10 @@ export class CronScheduler {
       const expression = convertDateToCronExpression(callAt)
 
       this.makeTask(expression, currentTask);
+
+      if (!currentTask._id) {
+        throw new TaskError('Task has not id')
+      }
 
       TaskService.update({ _id: currentTask._id, payload: { queue: true } })
     }
