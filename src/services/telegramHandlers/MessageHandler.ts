@@ -21,14 +21,12 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
     console.log(error.message)
   }
 
-
   const language = user?.locale || msg?.from?.language_code;
   bot.localeService.changeLanguage(language);
   const notification = new NotificationFactory(TypeEnum.MESSAGE, { bot: bot.instance, msg }).build() as Message;
 
 
   if (!user) {
-
     await UserService.store({ telegram_id: String(userId), name: name || 'guest', locale: language })
     await AdminService.sendMesssageToAdmin(
       bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
@@ -49,7 +47,6 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
     }
 
   } else {
-
     commadsHandler(notification, bot.localeService.i18)
   }
 };

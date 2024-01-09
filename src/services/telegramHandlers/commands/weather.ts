@@ -6,10 +6,10 @@ import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 
 export async function weather(notification: Message, i18: i18n) {
-    const chatId = notification.getChatId();
+    const user = await notification.getUser();
     let message = '';
     try {
-        UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.WEATHER_REQUEST, created_at: new Date() });
+        UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.WEATHER_REQUEST, created_at: new Date() });
         message = i18.t('weather.get-description');
     } catch (error: any) {
         message = error.message;

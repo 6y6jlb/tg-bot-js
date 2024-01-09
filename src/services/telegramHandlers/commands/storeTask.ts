@@ -7,10 +7,7 @@ import { TaskError } from "../../../exceptions/Task";
 
 
 export async function storeTask(notification: Callback, i18: i18n) {
-  const chatId = notification.getChatId();
-  if (!chatId) {
-    throw new TaskError('Task can not be stored because chatId is empty')
-  }
+  const user = await notification.getUser();
 
   const data = notification.getData();
   if (!data) {
@@ -25,13 +22,13 @@ export async function storeTask(notification: Callback, i18: i18n) {
   if (taskType) {
 
     const appType = Object.keys(EVENT_OPTIONS).find(key => EVENT_OPTIONS[key] === taskType) as any;
-    UserSettingsService.updateOrCreate({ user_id: chatId, app_type: appType, created_at: new Date() });
+    UserSettingsService.updateOrCreate({ user_id: user._id, app_type: appType, created_at: new Date() });
 
     message = i18.t(`tasks.description-${taskType.toLowerCase()}`) + '\n\n' + i18.t('tasks.description-timezone');
 
   } else {
 
-    UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_DEFAULT, created_at: new Date() });
+    UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.TASK_STORE_TYPE_DEFAULT, created_at: new Date() });
 
     message = i18.t('tasks.description-type');
     buttons.push([{ text: `${i18.t('buttons.tasks-type-weather')}`, callback_data: COMMANDS.TASKS_STORE + '?type=' + EVENT_ENUM[EVENT_ENUM.WEATHER] }]);

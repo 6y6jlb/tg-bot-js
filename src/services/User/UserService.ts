@@ -96,7 +96,7 @@ class UsersService {
             created_at: new Date(),
             ...preparedData,
             ...passwordData
-        }
+        } as IUser
 
         return user;
     }

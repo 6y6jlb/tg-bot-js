@@ -1,3 +1,4 @@
+import { Schema } from 'mongoose';
 import { GetUserSettingsError } from '../../exceptions/UserSettings';
 import UserSettings from "../../models/UserSettings";
 import { IUserSettings } from './../../models/types';
@@ -33,7 +34,7 @@ class UsersService {
         return await this.store(data);
     }
 
-    async getExisterUserSettings(user_id: number | string) {
+    async getExisterUserSettings(user_id: Schema.Types.ObjectId) {
         return await UserSettings.exists({ user_id })
     }
 

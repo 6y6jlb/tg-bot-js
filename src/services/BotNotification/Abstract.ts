@@ -2,6 +2,7 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { EntityType } from './consts';
 import { IBotNotification, ISendToBot } from './types';
+import { IUser } from '../../models/types';
 
 export abstract class Notification {
 
@@ -31,6 +32,8 @@ export abstract class Notification {
     }
 
     abstract getChatId(): number | string | undefined
+
+    abstract getUser(): Promise<IUser>
 
     abstract getName(): string | undefined
 

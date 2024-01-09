@@ -60,7 +60,7 @@ export class CronScheduler {
         }
 
         if (task.is_regular) {
-          await TaskService.update({ _id: task._id, payload: { queue: false } })
+          await TaskService.update({ _id: task._id, queue: false })
         } else {
           await TaskService.delete({ _id: task._id })
           console.info(`${now}: Task was deleted. Task id:${task._id}`)
@@ -102,7 +102,7 @@ export class CronScheduler {
         throw new TaskError('Task has not id')
       }
 
-      TaskService.update({ _id: currentTask._id, payload: { queue: true } })
+      TaskService.update({ _id: currentTask._id, queue: true })
     }
   }
 

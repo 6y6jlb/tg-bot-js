@@ -8,14 +8,10 @@ import { TaskError } from "../../../exceptions/Task";
 export async function setOptions(notification: Callback, i18: i18n) {
 
   const data = notification.getData();
-  const chatId = notification.getChatId();
+  const user = await notification.getUser();
 
   if (!data) {
     throw new TaskError('Task options can not be setted because data is empty')
-  }
-
-  if (!chatId) {
-    throw new TaskError('Task options can not be setted because chatId is empty')
   }
 
   const params = new URLSearchParams(data.split('?')[1]);
@@ -26,7 +22,7 @@ export async function setOptions(notification: Callback, i18: i18n) {
     const key = Object.keys(EVENT_OPTIONS).find(key => EVENT_OPTIONS[key] === type);
 
     //@ts-ignore
-    await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: Number(key), created_at: new Date(), payload: { task_id: taskId } });
+    await UserSettingsService.updateOrCreate({ user_id: user._id, app_type: Number(key), created_at: new Date(), payload: { task_id: taskId } });
 
     await notification.send({
       text: i18.t(message[type]), options: {

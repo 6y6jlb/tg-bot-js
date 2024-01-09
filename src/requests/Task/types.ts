@@ -23,16 +23,13 @@ export interface IStoreTaskRequest {
 export interface IUpdateTaskRequest {
     _id: Schema.Types.ObjectId,
     user_id?: Schema.Types.ObjectId,
-    payload: {
-        last_call?: Date,
-        user_id?: number,
-        event_type?: EVENT_ENUM,
-        options?: object,
-        call_at?: string,
-        queue?: boolean,
-        tz?: string,
-        is_regular?: boolean
-    }
+    last_call?: Date,
+    event_type?: EVENT_ENUM,
+    options?: object,
+    call_at?: string,
+    queue?: boolean,
+    tz?: string,
+    is_regular?: boolean
 }
 
 export interface IDeleteTaskRequest {

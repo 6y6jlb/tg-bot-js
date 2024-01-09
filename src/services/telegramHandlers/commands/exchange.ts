@@ -5,10 +5,11 @@ import { Message } from "../../BotNotification/Message";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 export async function exchange(notification: Message, i18: i18n) {
-    const chatId = notification.getChatId();
+    const user = await notification.getUser();
     let message = '';
+
     try {
-        await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.EXCHANGE_START, created_at: new Date() });
+        await UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.EXCHANGE_START, created_at: new Date() });
         message = `${i18.t('exchange.change')}\n${i18.t('exchange.format-example')}`;
     } catch (error: any) {
         message = error.message;

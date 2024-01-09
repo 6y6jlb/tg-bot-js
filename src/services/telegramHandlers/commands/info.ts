@@ -7,9 +7,8 @@ import UserService from "../../User/UserService";
 
 export async function info(notification: Message, i18: i18n) {
     let message = '';
-    const chatId = notification.getChatId();
     try {
-        const user = await UserService.getById(chatId) as IUser;
+        const user = await notification.getUser();
 
         const createdAt = moment(user.created_at).tz(user.tz ? user.tz : 'UTC').format('HH:mma M.D.YYYY');
 

@@ -1,20 +1,18 @@
-import { CALLBACK_COMMAND } from './../../utils/const';
 import TelegramBotApi from "node-telegram-bot-api";
 import Bot from "../../controllers/telegram/Bot";
 import { COMMANDS } from "../../utils/const";
 import { NotificationFactory } from "../BotNotification/AbstractFactory";
-import { Callback } from "../BotNotification/Callback";
 import { TypeEnum } from "../BotNotification/consts";
+import { CALLBACK_COMMAND } from './../../utils/const';
 import { choiceOptions } from "./commands/choiceOptions";
 import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
+import { language } from './commands/language';
 import { makeTaskRegular } from "./commands/makeTaskRegular";
 import { restart } from "./commands/restart";
 import { setOptions } from "./commands/setOptions";
 import { storeTask } from "./commands/storeTask";
-import { language } from './commands/language';
 import { updateTask } from './commands/updateTask';
-import { IBotCallback } from '../BotNotification/types';
 
 
 export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuery) => {

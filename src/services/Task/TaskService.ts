@@ -29,7 +29,7 @@ class TaskService {
                 ? { user_id: data.user_id, _id: data._id }
                 : { _id: data._id };
 
-            return await Task.findOneAndUpdate(query, data.payload, { new: true });
+            return await Task.findOneAndUpdate(query, data, { new: true });
         } catch (error: any) {
             throw new TaskError(error.message);
         }

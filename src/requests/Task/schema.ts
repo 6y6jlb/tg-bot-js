@@ -16,7 +16,10 @@ export const storeSchema = Joi.object({
 
 export const updateSchema = Joi.object({
     task_id: Joi.string().required(),
-    payload: Joi.array(),
+    tz: Joi.string().min(3).max(50),
+    call_at: Joi.string().required(),
+    is_reqular: Joi.boolean(),
+    options: Joi.array(),
 })
 
 

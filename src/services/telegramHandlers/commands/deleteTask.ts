@@ -8,15 +8,11 @@ import { TaskError } from "../../../exceptions/Task";
 
 
 export async function deleteTask(notification: Callback, i18: i18n) {
-  const chatId = notification.getChatId();
+  const user = await notification.getUser();
   const data = notification.getData();
 
   if (!data) {
     throw new TaskError('Task can not be deleted because data is empty')
-  }
-
-  if (!chatId) {
-    throw new TaskError('Task can not be deleted because chatId is empty')
   }
 
   const params = new URLSearchParams(data.split('?')[1]);
@@ -31,8 +27,8 @@ export async function deleteTask(notification: Callback, i18: i18n) {
 
   } else {
 
-    const isAdmin = AdminService.checkAdmin(chatId);
-    const tasks = await TaskService.get(isAdmin ? {} : { user_id: chatId }) as ITask[];
+    const isAdmin = user.telegram_id && AdminService.checkAdmin(user.telegram_id);
+    const tasks = await TaskService.get(isAdmin ? {} : { user_id: user._id }) as ITask[];
 
     tasks.forEach(task => buttons.push([{ text: task._id, callback_data: `${COMMANDS.TASKS_DELETE}?task_id=${task._id}` }]))
     message = i18.t('actions.tasks.delete-description');

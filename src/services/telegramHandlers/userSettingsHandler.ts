@@ -15,7 +15,7 @@ import { ITask } from './../../models/types';
 
 export async function userSettingsHandler(userSettings: IUserSettings, notification: Message, i18: i18n) {
     const lang = notification.getLanguage();
-    const chatId = notification.getChatId();
+    const user = await notification.getUser();
     const text = notification.getText();
     let message = '';
 
@@ -57,12 +57,12 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                 if (taskId) {
 
                     currentTask = await TaskService.get({ _id: taskId }) as ITask;
-                    await TaskService.update({ _id: taskId, payload: { options: [...currentTask.options, newParams] } });
+                    await TaskService.update({ _id: taskId, options: [...currentTask.options, newParams] });
 
                 } else {
                     const taskValidator = new TaskCreateValidator(eventType)
                     const { options, time, timezone } = taskValidator.validate(text);
-                    currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{ ...newParams, param: options }], tz: timezone, user_id: chatId, event_type: eventType });
+                    currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{ ...newParams, param: options }], tz: timezone, user_id: userSettings.user_id, event_type: eventType });
                 };
 
                 message = i18.t('tasks.store.success', { eventType: eventType.toLocaleLowerCase() }) + '\n' + i18.t('tasks.update.make-regular-description');
@@ -77,7 +77,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                     }
                 };
 
-                await UserSettingsService.updateOrCreate({ user_id: chatId, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {} });
+                await UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {} });
 
             } catch (error) {
                 console.warn(error)

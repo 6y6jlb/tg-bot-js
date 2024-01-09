@@ -15,32 +15,27 @@ import { userSettingsHandler } from "./userSettingsHandler";
 
 export const commadsHandler = async (notification: Message, i18: i18n) => {
     const text = notification.getText();
-    const chatId = notification.getChatId();
+    const user = await notification.getUser();
 
     switch (text) {
 
         case COMMANDS.START:
-
             await start(notification, i18);
             break;
 
         case COMMANDS.SETTINGS:
-
             await settings(notification, i18);
             break;
 
         case COMMANDS.TASKS:
-
             await tasks(notification, i18);
             break;
 
         case COMMANDS.RESTART:
-
             await restart(notification, i18);
             break;
 
         case COMMANDS.INFO:
-
             await info(notification, i18);
             break;
 
@@ -49,23 +44,19 @@ export const commadsHandler = async (notification: Message, i18: i18n) => {
             break;
 
         case COMMANDS.WEATHER:
-
             await weather(notification, i18);
             break;
 
         case COMMANDS.RANOM_IMAGE:
-
             await randomImage(notification, i18);
             break;
 
         case COMMANDS.WEB_APP:
-
             await webApp(notification, i18);
             break;
 
         default:
-
-            const userSettings = await UserSettingsService.get({ user_id: chatId });
+            const userSettings = await UserSettingsService.get({ user_id: user?._id });
 
             if (userSettings) {
                 await userSettingsHandler(userSettings, notification, i18);
