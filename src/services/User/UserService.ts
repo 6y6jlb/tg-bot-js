@@ -9,25 +9,24 @@ import { USER_ID_ENUM } from '../../models/const';
 class UsersService {
     async login(data: LoginUserRequest) {
 
-        const key = data.telegram_id || data.email;
-        const idType = data.telegram_id ? USER_ID_ENUM.TELEGRAM_ID : USER_ID_ENUM.EMAIL;
+        const { userId, idType } = this.getIdAndTypeFromData(data);
 
-        const user = await this.getById(key, idType) as IUser;
+        const user = await this.getById(userId, idType) as IUser;
         if (user && typeof user.validatePassword === 'function' && user.validatePassword(data.password)) {
             return user;
         }
         throw new UserError("Wrong user credetials");
     }
 
-    async getById(user_id: any, idType = USER_ID_ENUM.MONGO_ID): Promise<IUser | undefined> {
+    async getById(userId: any, idType = USER_ID_ENUM.MONGO_ID): Promise<IUser | undefined> {
         try {
-            const doc = await User.findOne({ [idType]: user_id }).exec();
+            const doc = await User.findOne({ [idType]: userId }).exec();
             if (doc) {
                 return doc as IUser;
             }
         } catch (err) {
             console.log(err)
-            throw new GetUserError('No user with this id: ' + user_id);
+            throw new GetUserError(`No user with ${idType}: ${userId}`);
         }
 
     }
@@ -50,14 +49,38 @@ class UsersService {
             delete result.password;
 
         }
+        const { userId, idType } = this.getIdAndTypeFromData(data);
 
-        const user = await this.getById(data.telegram_id || data.email)
+
+        const user = await this.getById(userId, idType)
 
         if (user && typeof user.update === 'function') {
             return await user.update(data, { new: true });
         }
 
         return null
+    }
+
+    private getIdAndTypeFromData(data: { [key: string]: any }) {
+        let userId = null;
+        let idType = null;
+
+        if (data.telegram_id) {
+            userId = data.telegram_id;
+            idType = USER_ID_ENUM.TELEGRAM_ID;
+        } else if (data.telegram_id) {
+            userId = data.email;
+            idType = USER_ID_ENUM.EMAIL;
+        } else if (data.id || data._id) {
+            userId = data.email;
+            idType = USER_ID_ENUM.EMAIL;
+        }
+
+        if (userId && idType) {
+            return { userId, idType }
+        }
+
+        throw new UserError('User with this data does not exist!')
     }
 
     async store(data: StoreUserRequest) {

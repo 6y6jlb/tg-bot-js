@@ -4,6 +4,7 @@ import UserApiRequest from "../../requests/User/UserApiRequest";
 import AdminService from "../../services/Admin/AdminService";
 import UserService from "../../services/User/UserService";
 import ErrorResponse from "../../services/response/ErrorResponse";
+import { USER_ID_ENUM } from "../../models/const";
 
 
 class UsersController {
@@ -16,7 +17,7 @@ class UsersController {
                 if (AdminService.checkAdmin(Number(user.telegram_id))) {
                     res.json(await UserService.get())
                 } else {
-                    res.json(await UserService.getById(Number(user.telegram_id)))
+                    res.json(await UserService.getById(user.telegram_id, USER_ID_ENUM.TELEGRAM_ID))
                 }
 
             } else {
@@ -27,17 +28,6 @@ class UsersController {
         }
     }
 
-    async getById(req: Request, res: Response) {
-        try {
-            const userId = req.params.userId;;
-
-            if (userId) {
-                res.json(await UserService.getById(userId))
-            }
-        } catch (error: any) {
-            ErrorResponse.setError(error).setResponse(res).build().json()
-        }
-    }
 
     async update(req: Request, res: Response) {
         try {

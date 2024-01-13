@@ -7,6 +7,7 @@ import { Message } from '../BotNotification/Message';
 import { TypeEnum } from '../BotNotification/consts';
 import UserService from "../User/UserService";
 import { commadsHandler } from './CommandsHandler';
+import { USER_ID_ENUM } from "../../models/const";
 
 
 
@@ -16,7 +17,7 @@ export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => 
   let user: IUser | null | undefined = null;
 
   try {
-    user = await UserService.getById(userId);
+    user = await UserService.getById(userId, USER_ID_ENUM.TELEGRAM_ID);
   } catch (error: any) {
     console.log(error.message)
   }

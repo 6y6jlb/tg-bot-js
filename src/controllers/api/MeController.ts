@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { IUser } from "../../models/types";
 import UserService from "../../services/User/UserService";
 import ErrorResponse from "../../services/response/ErrorResponse";
+import { USER_ID_ENUM } from "../../models/const";
 
 
 class MeController {
@@ -11,7 +12,7 @@ class MeController {
             //@ts-ignore
             const user: IUser = req.user;
             if (user.telegram_id || user.email) {
-                res.json(await UserService.getById(Number(user.telegram_id)))
+                res.json(await UserService.getById(user.telegram_id, USER_ID_ENUM.TELEGRAM_ID))
 
             } else {
                 throw new Error('Invalid user')

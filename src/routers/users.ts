@@ -5,7 +5,6 @@ import AuthMiddleware from "../middleware/AuthMiddleware";
 const router = Router();
 
 
-router.get('/users/:userId', AuthMiddleware.verifyAccessToken, UsersController.getById);
 router.get('/users', AuthMiddleware.verifyAccessToken, UsersController.get);
 
 router.put('/users', AuthMiddleware.verifyAccessToken, UsersController.update);

@@ -1,4 +1,5 @@
 import { UserError } from '../../exceptions/User';
+import { USER_ID_ENUM } from '../../models/const';
 import { IUser } from '../../models/types';
 import UserService from '../User/UserService';
 import { Notification } from './Abstract';
@@ -26,7 +27,7 @@ export class Message extends Notification {
     }
 
     async getUser(): Promise<IUser> {
-        const user = await UserService.getById(this.getChatId());
+        const user = await UserService.getById(this.getChatId(), USER_ID_ENUM.TELEGRAM_ID);
         if (!user) {
             throw new UserError('User should exist')
         }

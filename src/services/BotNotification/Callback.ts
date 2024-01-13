@@ -4,6 +4,7 @@ import { IBotCallback } from './types';
 import UserService from '../User/UserService';
 import { IUser } from '../../models/types';
 import { UserError } from '../../exceptions/User';
+import { USER_ID_ENUM } from '../../models/const';
 
 export class Callback extends Notification {
 
@@ -27,7 +28,7 @@ export class Callback extends Notification {
     }
 
     async getUser(): Promise<IUser> {
-        const user = await UserService.getById(this.getChatId());
+        const user = await UserService.getById(this.getChatId(), USER_ID_ENUM.TELEGRAM_ID);
         if (!user) {
             throw new UserError('User should exist')
         }
