@@ -2,7 +2,7 @@ import moment from 'moment';
 import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
 import { money } from '../../helpers/common';
-import { EVENT_ENUM } from "../../models/const";
+import { EVENT_ENUM, USER_ID_ENUM } from "../../models/const";
 import { ITask, IUser } from '../../models/types';
 import LocaleService from '../Locale/LocaleService';
 import RandomService from '../Random/RandomService';
@@ -15,6 +15,7 @@ import { OPEN_WEATHER_UNITS, TEMPERATURE_SIGN } from './../Weather/const';
 import { exhangeRequestValidation } from '../../helpers/validation';
 import { UserError } from '../../exceptions/User';
 import { TaskError } from '../../exceptions/Task';
+import User from '../../models/User';
 
 export class CronScheduler {
   private bot: TelegramBot;
@@ -25,11 +26,11 @@ export class CronScheduler {
     this.localeService = localeService;
   }
 
-  public makeTask(expression: string, task: ITask) {
+  public async makeTask(expression: string, task: ITask) {
     const now = moment().format('HH:mma M.D.YYYY');
-    const job = cron.schedule(expression, async () => {
+    const user = await UserService.getById(task.user_id, USER_ID_ENUM.MONGO_ID) as IUser;
 
-      const user = await UserService.getById(task.user_id) as IUser
+    const job = cron.schedule(expression, async () => {
 
       if (!user.telegram_id) {
         throw new UserError(`$user ${user._id} does not have telegram id`)
@@ -49,7 +50,6 @@ export class CronScheduler {
           await this.bot.sendMessage(user.telegram_id, error.message ?? JSON.stringify(error));
           console.info(`${now}: Task id:${task._id}, ${error.message ?? JSON.stringify(error)}`)
         }
-
 
       }
       try {
@@ -72,7 +72,7 @@ export class CronScheduler {
         job.stop()
       }
     });
-    console.info(`${now}: Task added - expr: ${expression}, user_id: ${task.user_id}, options: ${JSON.stringify(task.options)}`)
+    console.info(`${now}: Task added - expression at: ${expression}, user_id: ${task.user_id}, telegram_id: ${user.telegram_id}, options: ${JSON.stringify(task.options)}`)
   }
 
   private async getTasks() {

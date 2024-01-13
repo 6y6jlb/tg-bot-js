@@ -4,29 +4,30 @@ import User from "../../models/User";
 import { DeleteUserRequest, LoginUserRequest, LogoutUserPasswordRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
 import { IUser } from './../../models/types';
+import { USER_ID_ENUM } from '../../models/const';
 
 class UsersService {
     async login(data: LoginUserRequest) {
-        const user = await this.getById(data.telegram_id || data.email) as IUser;
+
+        const key = data.telegram_id || data.email;
+        const idType = data.telegram_id ? USER_ID_ENUM.TELEGRAM_ID : USER_ID_ENUM.EMAIL;
+
+        const user = await this.getById(key, idType) as IUser;
         if (user && typeof user.validatePassword === 'function' && user.validatePassword(data.password)) {
             return user;
         }
         throw new UserError("Wrong user credetials");
     }
 
-    async getById(user_id?: any): Promise<IUser | undefined> {
-        const idKeys = ['telegram_id', 'email', '_id'];
-
-        for (const key of idKeys) {
-            try {
-                const doc = await User.findOne({ [key]: user_id }).exec();
-                if (doc) {
-                    return doc as IUser;
-                }
-            } catch (err) {
-                console.log(err)
-                throw new GetUserError('No user with this id');
+    async getById(user_id: any, idType = USER_ID_ENUM.MONGO_ID): Promise<IUser | undefined> {
+        try {
+            const doc = await User.findOne({ [idType]: user_id }).exec();
+            if (doc) {
+                return doc as IUser;
             }
+        } catch (err) {
+            console.log(err)
+            throw new GetUserError('No user with this id: ' + user_id);
         }
 
     }

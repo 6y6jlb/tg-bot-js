@@ -24,3 +24,9 @@ export const EVENT_OPTIONS: { [key: string]: EVENT_ENUM } = {
     [APP_TYPE_ENUM.TASK_STORE_TYPE_REMINDER]: EVENT_ENUM.REMINDER,
     [APP_TYPE_ENUM.TASK_STORE_TYPE_EXCHANGE]: EVENT_ENUM.EXCHANGE
 };
+
+export enum USER_ID_ENUM {
+    TELEGRAM_ID = 'telegram_id',
+    EMAIL = 'email',
+    MONGO_ID = '_id'
+}
