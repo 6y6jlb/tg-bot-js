@@ -1,7 +1,7 @@
 import { i18n } from 'i18next';
 import { money } from "../../helpers/common";
 import { exhangeRequestValidation } from "../../helpers/validation";
-import { APP_TYPE_ENUM, EVENT_OPTIONS } from "../../models/const";
+import { APP_TYPE_ENUM } from "../../models/const";
 import { IUserSettings } from "../../models/types";
 import { COMMANDS } from "../../utils/const";
 import { Message } from "../BotNotification/Message";
@@ -51,18 +51,18 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
             try {
 
                 const eventType = TaskService.getEventType(userSettings.app_type);
-                const newParams = { event_type: EVENT_OPTIONS[userSettings.app_type], param: text }
+                const currentOptions = { event_type: eventType, param: text }
 
                 const taskId = userSettings.payload?.task_id;
                 if (taskId) {
 
                     currentTask = await TaskService.get({ _id: taskId }) as ITask;
-                    await TaskService.update({ _id: taskId, options: [...currentTask.options, newParams] });
+                    await TaskService.update({ _id: taskId, options: [...currentTask.options, currentOptions] });
 
                 } else {
                     const taskValidator = new TaskCreateValidator(eventType)
                     const { options, time, timezone } = taskValidator.validate(text);
-                    currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{ ...newParams, param: options }], tz: timezone, user_id: userSettings.user_id, event_type: eventType });
+                    currentTask = await TaskService.store({ call_at: time, is_regular: false, options: [{ ...currentOptions, param: options, event_type: eventType }], tz: timezone, user_id: userSettings.user_id });
                 };
 
                 message = i18.t('tasks.store.success', { eventType: eventType.toLocaleLowerCase() }) + '\n' + i18.t('tasks.update.make-regular-description');
@@ -72,7 +72,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                     reply_markup: {
                         inline_keyboard: [
                             [{ text: i18.t('buttons.yes'), callback_data: `${COMMANDS.TASKS_MAKE_REGULAR}?task_id=${currentTask._id}` }],
-                            [{ text: i18.t('buttons.event-options'), callback_data: `${COMMANDS.TASKS_CHOICE_OPTIONS}?task_id=${currentTask._id}` }],
+                            [{ text: i18.t('buttons.event-options'), callback_data: `${COMMANDS.TASKS_SELECT_OPTIONS}?task_id=${currentTask._id}` }],
                         ]
                     }
                 };

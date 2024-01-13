@@ -12,7 +12,6 @@ export interface IGetTaskRequest {
 export interface IStoreTaskRequest {
     last_call?: Date,
     user_id: Schema.Types.ObjectId,
-    event_type: EVENT_ENUM,
     options: Array<IOption>,
     call_at: string,
     queue?: boolean,
@@ -24,8 +23,7 @@ export interface IUpdateTaskRequest {
     _id: Schema.Types.ObjectId,
     user_id?: Schema.Types.ObjectId,
     last_call?: Date,
-    event_type?: EVENT_ENUM,
-    options?: object,
+    options?: Array<IOption>,
     call_at?: string,
     queue?: boolean,
     tz?: string,

@@ -46,7 +46,8 @@
         "info": "User info: {{userId}}\nName:{{name}}\nCreated at:{{createdAt}}\nLangugage:{{lang}}\nTimezone:{{tz}}",
         "tasks": {
             "delete-description": "Enter the task id you want to delete!",
-            "update-description": "Enter the task id you want to update!"
+            "update-description": "Enter the task id you want to update!",
+            "remove-option-description": "To delete a subtask, select the appropriate item"
         },
         "reset": {
             "description": "App param does reset!"
@@ -91,6 +92,7 @@
         "event-weather": "Event (weather)",
         "event-exchange": "Event (exchange)",
         "event-options": "Additional parameters for task",
+        "remove-option": "Remove subtask",
         "profile": "Profile",
         "reset": "Reset",
         "tasks-new": "Create new task",

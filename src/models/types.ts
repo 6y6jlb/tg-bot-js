@@ -1,4 +1,4 @@
-import { Schema } from "mongoose"
+import mongoose, { Schema } from "mongoose"
 import { APP_TYPE_ENUM, EVENT_ENUM } from "./const"
 
 export interface IUser {

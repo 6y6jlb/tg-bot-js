@@ -13,14 +13,16 @@ export const COMMANDS = {
   WEATHER: "/weather",
   EXCHANGE: "/exchange",
   CURRENCIES: "/currencies",
-  TASKS: "/tasks",
   RANOM_IMAGE: "/random_image",
-  TASKS_STORE: "/tasks_store",
-  TASKS_DELETE: "/tasks_delete",
-  TASKS_UPDATE: "/tasks_update",
-  TASKS_MAKE_REGULAR: "/tasks_make_regular",
-  TASKS_CHOICE_OPTIONS: "/tasks_choice_options",
-  TASKS_SET_OPTIONS: "/tasks_set_options",
+  TASKS: "/tasks",
+  TASKS_STORE: "/t_store",
+  TASKS_DELETE: "/t_delete",
+  TASKS_UPDATE: "/t_update",
+  TASKS_MAKE_REGULAR: "/t_mk_regular",
+  TASKS_SELECT_OPTIONS: "/t_opt_sel",
+  TASKS_SET_OPTIONS: "/t_opt_set",
+  TASKS_REMOVE_OPTIONS: "/t_rm_opt",
+  TASKS_REMOVE_OPTIONS_SELECT: "/t_rm_opt_sel",
 
 };
 
@@ -44,15 +46,15 @@ export const SERVICE_ROUTES = {
     BASE: 'https://random.dog/',
     IMAGE: 'woof.json'
   },
-  OPEN_WEATHER : {
+  OPEN_WEATHER: {
     BASE: 'https://api.openweathermap.org/data/2.5/',
     ENTPOINTS: {
-      WEATHER:'weather'
+      WEATHER: 'weather'
     }
   },
-  RANDOM_FOX : {
+  RANDOM_FOX: {
     BASE: 'https://randomfox.ca/',
-    IMAGE:'floof'
+    IMAGE: 'floof'
   },
   RANDOM_CAT: {
     BASE: 'https://api.thecatapi.com/v1/',

@@ -11,7 +11,6 @@ export const storeSchema = Joi.object({
     call_at: Joi.string().required(),
     is_reqular: Joi.bool(),
     options: Joi.array(),
-    event_type: Joi.string().required()
 });
 
 export const updateSchema = Joi.object({

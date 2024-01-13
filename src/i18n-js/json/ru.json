@@ -13,9 +13,9 @@
         "description-reminder": "Введите время, сообщение\nи таймзону в формате:\n<b>2:22 - Мое сообщенение здесь - asia/tbilisi</b>",
         "description-exchange": "Введите время, валютную пару\nи таймзону в формате:\n<b>02:22 - usd rub - asia/tbilisi</b>",
         "options": {
-            "weather":"Укажите город",
-            "reminder":"Укажите сообщение",
-            "exchange":"Укажите валютную пару в формате (usd rub)"
+            "weather": "Укажите город",
+            "reminder": "Укажите сообщение",
+            "exchange": "Укажите валютную пару в формате (usd rub)"
         },
         "reqular": {
             "true": "Регулярная задача",
@@ -52,7 +52,7 @@
     "web_app": {
         "desctiption": "В приложение"
     },
-     "settings": {
+    "settings": {
         "update-title": "Выберите настройку которую хотите обновить.",
         "update-succesfully": "Обновленно!",
         "params": {
@@ -71,7 +71,8 @@
         },
         "tasks": {
             "delete-description": "Чтобы удалить задачу выберите ее ID!",
-            "update-description": "Чтобы изменить задачу выберите ее ID!"
+            "update-description": "Чтобы изменить задачу выберите ее ID!",
+            "remove-option-description": "Чтобы удалить подздаачу выберите нужный пункт"
         },
         "undefined": {
             "description": "Я не понимаю команду!"
@@ -91,6 +92,7 @@
         "event-weather": "Событие(погода)",
         "event-exchange": "Событие(обмен)",
         "event-options": "Дополнительные параметры к задаче",
+        "remove-option": "Удаление подзадачи",
         "profile": "Профайл",
         "reset": "Сброс",
         "tasks-new": "Новая задача",

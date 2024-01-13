@@ -22,6 +22,7 @@ export async function choiceOptions(notification: Callback, i18: i18n) {
             [{ text: i18.t('buttons.event-weather'), callback_data: `${COMMANDS.TASKS_SET_OPTIONS}?id=${taskId}&type=${EVENT_ENUM.WEATHER}` }],
             [{ text: i18.t('buttons.event-exchange'), callback_data: `${COMMANDS.TASKS_SET_OPTIONS}?id=${taskId}&type=${EVENT_ENUM.EXCHANGE}` }],
             [{ text: i18.t('buttons.event-reminder'), callback_data: `${COMMANDS.TASKS_SET_OPTIONS}?id=${taskId}&type=${EVENT_ENUM.REMINDER}` }],
+            [{ text: i18.t('buttons.remove-option'), callback_data: `${COMMANDS.TASKS_REMOVE_OPTIONS}?id=${taskId}` }],
             [{ text: i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
           ]
         }

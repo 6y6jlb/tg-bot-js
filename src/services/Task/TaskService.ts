@@ -3,6 +3,7 @@ import Task from "../../models/Task";
 import { APP_TYPE_ENUM, EVENT_ENUM } from "../../models/const";
 import { IDeleteTaskRequest, IGetTaskRequest, IStoreTaskRequest, IUpdateTaskRequest } from "../../requests/Task/types";
 import { TaskError } from './../../exceptions/Task';
+import { ITask } from "../../models/types";
 
 class TaskService {
     FORMAT: string;
@@ -10,7 +11,7 @@ class TaskService {
         this.FORMAT = 'H:mm';
     }
 
-    async get(data: IGetTaskRequest) {
+    async get(data: IGetTaskRequest): Promise<ITask | ITask[] | null> {
         try {
             if (data._id) {
                 return await Task.findOne(data)

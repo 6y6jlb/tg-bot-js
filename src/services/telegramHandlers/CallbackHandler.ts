@@ -9,6 +9,8 @@ import { currencies } from "./commands/currencies";
 import { deleteTask } from "./commands/deleteTask";
 import { language } from './commands/language';
 import { makeTaskRegular } from "./commands/makeTaskRegular";
+import { removeOption } from "./commands/removeOption";
+import { removeOptionSelect } from "./commands/removeOptionSelect";
 import { restart } from "./commands/restart";
 import { setOptions } from "./commands/setOptions";
 import { storeTask } from "./commands/storeTask";
@@ -41,12 +43,20 @@ export const callbackHandler = async (bot: Bot, msg: TelegramBotApi.CallbackQuer
     await makeTaskRegular(callback, bot.localeService.i18);
   }
 
-  else if (data.includes(COMMANDS.TASKS_CHOICE_OPTIONS)) {
+  else if (data.includes(COMMANDS.TASKS_SELECT_OPTIONS)) {
     await choiceOptions(callback, bot.localeService.i18);
   }
 
   else if (data.includes(COMMANDS.TASKS_SET_OPTIONS)) {
     await setOptions(callback, bot.localeService.i18);
+  }
+
+  else if (data.includes(COMMANDS.TASKS_REMOVE_OPTIONS_SELECT)) {
+    await removeOptionSelect(callback, bot.localeService.i18);
+  }
+
+  else if (data.includes(COMMANDS.TASKS_REMOVE_OPTIONS)) {
+    await removeOption(callback, bot.localeService.i18);
   }
 
   else if (data.includes(COMMANDS.TASKS_STORE)) {

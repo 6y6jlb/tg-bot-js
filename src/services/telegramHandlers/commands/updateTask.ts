@@ -19,7 +19,7 @@ export async function updateTask(notification: Callback | Notification, i18: i18
     const tasks = await TaskService.get(isAdmin ? {} : { user_id: user._id }) as ITask[];
 
     const buttons = [] as TelegramBot.InlineKeyboardButton[][];
-    tasks.forEach(task => buttons.push([{ text: String(task._id), callback_data: `${COMMANDS.TASKS_CHOICE_OPTIONS}?task_id=${task._id}` }]))
+    tasks.forEach(task => buttons.push([{ text: String(task._id), callback_data: `${COMMANDS.TASKS_SELECT_OPTIONS}?task_id=${task._id}` }]))
 
     await notification.send({
         text: i18.t('actions.tasks.update-description'), options: {

@@ -92,7 +92,7 @@ export class CronScheduler {
     const tasks = await this.getTasks() as ITask[];
 
     for (let i = 0; i < tasks.length; i++) {
-      const currentTask = tasks[i];
+      const currentTask = tasks[i] as ITask;
       const callAt = moment(currentTask.call_at, 'H:mm').toDate()
       const expression = convertDateToCronExpression(callAt)
 
