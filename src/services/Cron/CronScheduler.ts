@@ -1,7 +1,10 @@
 import moment from 'moment';
 import * as cron from 'node-cron';
 import TelegramBot from 'node-telegram-bot-api';
+import { TaskError } from '../../exceptions/Task';
+import { UserError } from '../../exceptions/User';
 import { money } from '../../helpers/common';
+import { exhangeRequestValidation } from '../../helpers/validation';
 import { EVENT_ENUM, USER_ID_ENUM } from "../../models/const";
 import { ITask, IUser } from '../../models/types';
 import LocaleService from '../Locale/LocaleService';
@@ -12,10 +15,6 @@ import WeatherService from '../Weather/WeatherService';
 import XChangeService from '../XChange/XChangeService';
 import { convertDateToCronExpression } from './../../helpers/cron';
 import { OPEN_WEATHER_UNITS, TEMPERATURE_SIGN } from './../Weather/const';
-import { exhangeRequestValidation } from '../../helpers/validation';
-import { UserError } from '../../exceptions/User';
-import { TaskError } from '../../exceptions/Task';
-import User from '../../models/User';
 
 export class CronScheduler {
   private bot: TelegramBot;
@@ -133,7 +132,15 @@ export class CronScheduler {
         return {
           icon: weather.icon,
           message: this.localeService.i18.t('weather.tg-string', {
-            city: weather.name, temp: Math.ceil(Number(weather.main.temp)), feel: Math.ceil(Number(weather.main.feels_like)), humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
+            city: weather.name,
+            temp: Math.ceil(Number(weather.main.temp)),
+            feel: Math.ceil(Number(weather.main.feels_like)),
+            humidity: weather.main.humidity,
+            sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS],
+            windSpeed: weather.wind.speed,
+            description: weather.weather[0].description,
+            pressure: weather.main.pressure,
+            escapeValue: false
           })
         };
 

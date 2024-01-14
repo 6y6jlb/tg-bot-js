@@ -1,6 +1,7 @@
+import { pressureConnverter } from "../../helpers/common";
 import { IGetWeatehrRequest } from "../../requests/Weather/types";
 import config from "../../utils/config";
-import { SERVICE_ROUTES } from "../../utils/const";
+import { PRESSURE_UNIT, SERVICE_ROUTES } from "../../utils/const";
 import Client from "../absctract/Client";
 import { IOpenWeatherResponse } from './types';
 
@@ -33,6 +34,7 @@ class WeatherClient extends Client {
         const icon = this.getIcon(data.weather[0].icon)
         return {
             ...data,
+            main: { ...data.main, pressure: pressureConnverter(Number(data.main.pressure), PRESSURE_UNIT.mmHg), },
             icon,
             units: params.units || 'metric',
             lang: params.lang || 'ru'

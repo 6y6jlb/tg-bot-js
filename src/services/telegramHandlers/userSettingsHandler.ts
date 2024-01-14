@@ -24,12 +24,19 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
         case APP_TYPE_ENUM.WEATHER_REQUEST:
 
             const weather = await WeatherService.get({ city: text, lang });
-
             if (weather.icon) await notification.send({ url: weather.icon });
 
             await notification.send({
                 text: i18.t('weather.tg-string', {
-                    city: weather.name, temp: Math.ceil(Number(weather.main.temp)), feel: Math.ceil(Number(weather.main.feels_like)), humidity: weather.main.humidity, sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS], windSpeed: weather.wind.speed, description: weather.weather[0].description, pressure: weather.main.pressure, escapeValue: false
+                    city: weather.name,
+                    temp: Math.ceil(Number(weather.main.temp)),
+                    feel: Math.ceil(Number(weather.main.feels_like)),
+                    humidity: weather.main.humidity,
+                    sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS],
+                    windSpeed: weather.wind.speed,
+                    description: weather.weather[0].description,
+                    pressure: weather.main.pressure,
+                    escapeValue: false
                 }) + '\n' +
                     i18.t('weather.reset-with-description'), options: {
                         parse_mode: 'HTML',

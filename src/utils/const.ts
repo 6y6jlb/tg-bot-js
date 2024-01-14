@@ -68,5 +68,32 @@ export const SERVICE_ROUTES = {
   }
 }
 
+const RATIO_hPa_mmHg = 0.750063755419211
+const RATIO_mmHg_hPa = 1.33322
+
+export enum PRESSURE_UNIT {
+  hPa = 'hPa',
+  mmHg = 'mmHg'
+}
+
+export const getPressureRationByUnit = (unit: PRESSURE_UNIT) => {
+  let ratio = 0;
+
+  switch (unit) {
+    case PRESSURE_UNIT.hPa:
+      ratio = RATIO_mmHg_hPa
+      break;
+
+    case PRESSURE_UNIT.mmHg:
+      ratio = RATIO_hPa_mmHg
+      break;
+
+    default:
+      throw new Error(`Wrong unit: ${unit}`)
+  }
+
+  return ratio;
+}
+
 
 
