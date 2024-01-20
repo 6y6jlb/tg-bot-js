@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { UpdateUserSchema, deleteUserSchema, getUserSchema, loginUserSchema, logoutUserPasswordSchema, resetUserPasswordSchema, storeUserSchema } from './schema';
-import { DeleteUserRequest, GetUserRequest, LoginUserRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "./types";
+import { UpdateUserSchema, deleteUserSchema, loginUserSchema, logoutUserPasswordSchema, resetUserPasswordSchema, storeUserSchema } from './schema';
+import { DeleteUserRequest, LoginUserRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "./types";
 
 class UserApiRequest {
 

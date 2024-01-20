@@ -1,4 +1,5 @@
-import { PRESSURE_UNIT, getPressureRationByUnit } from "../utils/const";
+import { PRESSURE_UNIT } from "../utils/const";
+import { getPressureRationByUnit } from "../utils/helpers";
 
 export const money = (value: number): string => {
     const locale = 'ru-RU';

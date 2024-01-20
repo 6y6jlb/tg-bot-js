@@ -5,12 +5,13 @@ import { DeleteUserRequest, LoginUserRequest, LogoutUserPasswordRequest, ResetUs
 import { DEFAULT_PASSWORD } from '../../utils/const';
 import { IUser } from './../../models/types';
 import { USER_ID_ENUM } from '../../models/const';
+import { isValidObjectId } from 'mongoose';
 
 class UsersService {
     async login(data: LoginUserRequest) {
 
         const { userId, idType } = this.getIdAndTypeFromData(data);
-
+        console.log(idType)
         const user = await this.getById(userId, idType) as IUser;
         if (user && typeof user.validatePassword === 'function' && user.validatePassword(data.password)) {
             return user;
@@ -64,16 +65,16 @@ class UsersService {
     private getIdAndTypeFromData(data: { [key: string]: any }) {
         let userId = null;
         let idType = null;
-
+        console.log(data)
         if (data.telegram_id) {
             userId = data.telegram_id;
             idType = USER_ID_ENUM.TELEGRAM_ID;
-        } else if (data.telegram_id) {
+        } else if (data.email) {
             userId = data.email;
             idType = USER_ID_ENUM.EMAIL;
         } else if (data.id || data._id) {
-            userId = data.email;
-            idType = USER_ID_ENUM.EMAIL;
+            userId = data.id || data._id;
+            idType = USER_ID_ENUM.MONGO_ID;
         }
 
         if (userId && idType) {
@@ -123,6 +124,22 @@ class UsersService {
         } as IUser
 
         return user;
+    }
+
+    private getUserIdTypeFromString(input: string): USER_ID_ENUM | null {
+        if (/^\d+$/.test(input)) {
+            return USER_ID_ENUM.TELEGRAM_ID;
+        }
+
+        if (isValidObjectId(input)) {
+            return USER_ID_ENUM.MONGO_ID;
+        }
+
+        if (/^\S+@\S+\.\S+$/.test(input)) {
+            return USER_ID_ENUM.EMAIL;
+        }
+
+        return null;
     }
 
 
