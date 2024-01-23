@@ -32,7 +32,8 @@ class UsersController {
     async update(req: Request, res: Response) {
         try {
             const data = await UserApiRequest.update(req);
-            res.json(await UserService.update(data))
+            await UserService.update(data)
+            res.json(200)
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()
         }

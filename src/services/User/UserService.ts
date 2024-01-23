@@ -56,26 +56,27 @@ class UsersService {
         const user = await this.getById(userId, idType)
 
         if (user && typeof user.update === 'function') {
-            return await user.update(data, { new: true });
+            return await user.update(data);
         }
 
-        return null
+        throw new UserError('Invalid user')
     }
 
     private getIdAndTypeFromData(data: { [key: string]: any }) {
         let userId = null;
         let idType = null;
-        console.log(data)
-        if (data.telegram_id) {
+
+        if (data.id || data._id) {
+            userId = data.id || data._id;
+            idType = USER_ID_ENUM.MONGO_ID;
+        } else if (data.telegram_id) {
             userId = data.telegram_id;
             idType = USER_ID_ENUM.TELEGRAM_ID;
         } else if (data.email) {
             userId = data.email;
             idType = USER_ID_ENUM.EMAIL;
-        } else if (data.id || data._id) {
-            userId = data.id || data._id;
-            idType = USER_ID_ENUM.MONGO_ID;
         }
+
 
         if (userId && idType) {
             return { userId, idType }

@@ -1,3 +1,5 @@
+import { Schema } from "mongoose";
+
 export type UserConditionalCredetial =
     | { email: string; telegram_id?: never }
     | { telegram_id: string | number; email?: never };
@@ -8,6 +10,9 @@ export type LoginUserRequest = UserConditionalCredetial & {
     password: string
 }
 
+export type HasObjectIdType = {
+    _id?: Schema.Types.ObjectId
+}
 
 export type StoreUserRequest = UserConditionalCredetial & {
     name: string,
@@ -18,7 +23,7 @@ export type StoreUserRequest = UserConditionalCredetial & {
     tz?: string,
 }
 
-export type UpdateUserRequest = UserConditionalCredetial & {
+export type UpdateUserRequest = HasObjectIdType & UserConditionalCredetial & {
     name?: string,
     locale?: string,
     currency?: string,
@@ -32,3 +37,4 @@ export type DeleteUserRequest = UserConditionalCredetial
 export type ResetUserPasswordRequest = UserConditionalCredetial
 
 export type LogoutUserPasswordRequest = UserConditionalCredetial
+
