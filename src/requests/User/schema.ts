@@ -28,7 +28,7 @@ export const UpdateUserSchema = Joi.object({
     telegram_id: Joi.string(),
     name: Joi.string(),
     currency: Joi.string(),
-    location: Joi.string(),
+    locale: Joi.string(),
     tz: Joi.string(),
     password: Joi.string().min(3).max(30).required(),
 })

@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
+import { UserError } from "../../exceptions/User";
+import { USER_ID_ENUM } from "../../models/const";
 import { IUser } from "../../models/types";
+import MeApiRequest from "../../requests/Me/MeApiRequest";
 import UserService from "../../services/User/UserService";
 import ErrorResponse from "../../services/response/ErrorResponse";
-import { USER_ID_ENUM } from "../../models/const";
-import UserApiRequest from "../../requests/User/UserApiRequest";
-import MeApiRequest from "../../requests/Me/MeApiRequest";
-import { UserError } from "../../exceptions/User";
 
 
 class MeController {
