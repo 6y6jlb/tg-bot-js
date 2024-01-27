@@ -23,7 +23,7 @@ class AdminService {
     }
 
     public checkAdmin(user_id: number | string) {
-        return this.adminList.includes(String(user_id));
+        return user_id && this.adminList.includes(String(user_id));
     }
 }
 

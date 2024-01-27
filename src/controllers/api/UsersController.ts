@@ -5,6 +5,7 @@ import AdminService from "../../services/Admin/AdminService";
 import UserService from "../../services/User/UserService";
 import ErrorResponse from "../../services/response/ErrorResponse";
 import { USER_ID_ENUM } from "../../models/const";
+import { UserError } from "../../exceptions/User";
 
 
 class UsersController {
@@ -31,9 +32,16 @@ class UsersController {
 
     async update(req: Request, res: Response) {
         try {
-            const data = await UserApiRequest.update(req);
-            await UserService.update(data)
-            res.json(200)
+            //@ts-ignore
+            const user: IUser = req.user;
+            if (user._id || AdminService.checkAdmin(Number(user.telegram_id))) {
+                const data = await UserApiRequest.update(req);
+                await UserService.update({ ...data, _id: user._id })
+                res.json().status(200)
+
+            } else {
+                throw new UserError('Invalid user')
+            }
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()
         }
@@ -41,8 +49,15 @@ class UsersController {
 
     async delete(req: Request, res: Response) {
         try {
-            const data = await UserApiRequest.delete(req);
-            res.json(await UserService.delete(data))
+            //@ts-ignore
+            const user: IUser = req.user;
+            if (user._id || AdminService.checkAdmin(Number(user.telegram_id))) {
+                const data = await UserApiRequest.delete(req);
+                res.json(await UserService.delete(data))
+            } else {
+                throw new UserError('Invalid user')
+            }
+
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()
         }
