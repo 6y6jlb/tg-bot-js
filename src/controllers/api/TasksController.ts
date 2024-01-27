@@ -35,7 +35,7 @@ class TasksController {
                 if (AdminService.checkAdmin(Number(user.telegram_id))) {
                     res.json(await TaskService.update(data))
                 } else {
-                    res.json(await TaskService.update({ user_id: user._id, ...data }))
+                    res.json(await TaskService.update({ ...data, user_id: user._id }))
                 }
 
             } else {
@@ -48,8 +48,20 @@ class TasksController {
     }
     async store(req: Request, res: Response) {
         try {
-            const data = await TaskApiRequest.store(req);
-            res.json(await TaskService.store(data))
+            //@ts-ignore
+            const user: IUser = req.user;
+            if (user._id) {
+                const data = await TaskApiRequest.store(req);
+                if (AdminService.checkAdmin(Number(user.telegram_id))) {
+                    res.json(await TaskService.store(data))
+                } else {
+                    res.json(await TaskService.store({ ...data, user_id: user._id }))
+                }
+
+            } else {
+                throw new TaskError('Invalid user')
+            }
+
         } catch (error: any) {
             ErrorResponse.setError(error).setResponse(res).build().json()
         }
