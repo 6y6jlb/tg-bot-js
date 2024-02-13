@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import { EVENT_ENUM } from '../../models/const';
 
 
 export const getSchema = Joi.object({
@@ -11,7 +10,7 @@ export const storeSchema = Joi.object({
     tz: Joi.string().min(3).max(50),
     call_at: Joi.string().required(),
     is_regular: Joi.boolean(),
-    options: Joi.array().items(Joi.object({
+    options: Joi.array().min(1).required().items(Joi.object({
         event_type: Joi.string(),
         param: Joi.string()
     })),
@@ -22,7 +21,7 @@ export const updateSchema = Joi.object({
     tz: Joi.string().min(3).max(50),
     call_at: Joi.string().required(),
     is_regular: Joi.boolean(),
-    options: Joi.array().items(Joi.object({
+    options: Joi.array().min(1).required().items(Joi.object({
         event_type: Joi.string(),
         param: Joi.string()
     })),

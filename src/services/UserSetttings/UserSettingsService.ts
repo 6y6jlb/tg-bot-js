@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
-import { GetUserSettingsError } from '../../exceptions/UserSettings';
 import UserSettings from "../../models/UserSettings";
 import { IUserSettings } from './../../models/types';
 import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IStoreUserSettingsRequest, IUpdateUserSettingsRequest } from './../../requests/UserSettings/types';
+import { UserSettingsError } from '../../exceptions/UserSettings';
 
 class UsersService {
 
@@ -10,7 +10,7 @@ class UsersService {
         if (data._id || data.user_id) {
             return await UserSettings.findOne(data) as IUserSettings
         }
-        throw new GetUserSettingsError('Incorrect data: ' + JSON.stringify(data))
+        throw new UserSettingsError('Incorrect data: ' + JSON.stringify(data))
 
     }
 

@@ -36,5 +36,5 @@ export type DeleteUserRequest = UserConditionalCredetial
 
 export type ResetUserPasswordRequest = UserConditionalCredetial
 
-export type LogoutUserPasswordRequest = UserConditionalCredetial
+export type LogoutUserPasswordRequest = HasObjectIdType
 

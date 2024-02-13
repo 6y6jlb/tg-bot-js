@@ -1,4 +1,4 @@
-import { DeleteUserError, UpdateUserError } from '../../exceptions/User';
+import { UserSettingsError } from '../../exceptions/UserSettings';
 import { IDeleteUserSettingsRequest, IGetUserSettingsRequest, IStoreUserSettingsRequest, IUpdateUserSettingsRequest } from "./types";
 
 class UserTgRequest {
@@ -20,7 +20,7 @@ class UserTgRequest {
         if (id || user_id) {
             return { _id: id, user_id, app_type } as IUpdateUserSettingsRequest;
         }
-        throw new UpdateUserError('Incorrect data')
+        throw new UserSettingsError('Incorrect data for update')
     }
 
     delete(request: any): IDeleteUserSettingsRequest {
@@ -28,7 +28,7 @@ class UserTgRequest {
         if (user_id) {
             return { id: user_id } as IDeleteUserSettingsRequest;
         }
-        throw new DeleteUserError('Incorrect data')
+        throw new UserSettingsError('Incorrect data for deletion')
     }
 }
 

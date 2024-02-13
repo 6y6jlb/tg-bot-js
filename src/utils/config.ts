@@ -26,6 +26,7 @@ const SMPT_PASSWORD = process.env.SMPT_PASSWORD;
 const SMPT_LOGIN = process.env.SMPT_LOGIN;
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || '';
+const JWT_SECRET_REFRESH_KEY = process.env.JWT_SECRET_REFRESH_KEY || '';
 
 
 export default {
@@ -42,5 +43,6 @@ export default {
   SMPT_RESPONSE_EMAIL,
   SMPT_PASSWORD,
   SMPT_LOGIN,
-  JWT_SECRET_KEY
+  JWT_SECRET_KEY,
+  JWT_SECRET_REFRESH_KEY
 };

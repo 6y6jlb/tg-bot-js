@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import { APP_TYPE_ENUM, EVENT_ENUM } from "./const"
+import { APP_TYPE_ENUM, EVENT_ENUM, TOKEN_TYPE } from "./const"
 
 export interface IUser {
     _id: Schema.Types.ObjectId,
@@ -45,5 +45,11 @@ export interface ISettingPayload {
 export interface IOption {
     event_type: EVENT_ENUM,
     param: string
+}
+
+export interface IToken {
+    _id?: Schema.Types.ObjectId,
+    user_id: Schema.Types.ObjectId,
+    token_type: TOKEN_TYPE,
 }
 

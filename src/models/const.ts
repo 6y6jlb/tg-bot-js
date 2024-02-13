@@ -30,3 +30,8 @@ export enum USER_ID_ENUM {
     EMAIL = 'email',
     MONGO_ID = '_id'
 }
+
+
+export enum TOKEN_TYPE {
+    REFRESH = 'refresh'
+}

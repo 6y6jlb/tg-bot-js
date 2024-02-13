@@ -1,17 +1,18 @@
 import crypto from 'crypto';
-import { GetUserError, UserError } from "../../exceptions/User";
+import { isValidObjectId } from 'mongoose';
+import { UserError } from "../../exceptions/User";
 import User from "../../models/User";
+import { TOKEN_TYPE, USER_ID_ENUM } from '../../models/const';
 import { DeleteUserRequest, LoginUserRequest, LogoutUserPasswordRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
 import { IUser } from './../../models/types';
-import { USER_ID_ENUM } from '../../models/const';
-import { isValidObjectId } from 'mongoose';
+import Token from '../../models/Token';
+import TokenService from '../Token/TokenService';
 
 class UsersService {
     async login(data: LoginUserRequest) {
 
         const { userId, idType } = this.getIdAndTypeFromData(data);
-        console.log(idType)
         const user = await this.getById(userId, idType) as IUser;
         if (user && typeof user.validatePassword === 'function' && user.validatePassword(data.password)) {
             return user;
@@ -26,13 +27,12 @@ class UsersService {
                 return doc as IUser;
             }
         } catch (err) {
-            console.log(err)
-            throw new GetUserError(`No user with ${idType}: ${userId}`);
+            throw new UserError(`No user with ${idType}: ${userId}`);
         }
 
     }
 
-    get() {
+    async get() {
         return User.find()
 
     }
@@ -97,9 +97,11 @@ class UsersService {
         return User.findOneAndUpdate({ ...data, ...this.getPasswordData() });
     }
 
-    logout(data: LogoutUserPasswordRequest) {
-        const user = User.findOne(data)
-        // to-do
+    async logout(data: LogoutUserPasswordRequest) {
+        if (!data._id) {
+            throw new UserError('Request should contain user')
+        }
+        await TokenService.delete({ token_type: TOKEN_TYPE.REFRESH, user_id: data._id })
     }
 
     getPasswordData(password?: string) {
