@@ -1,7 +1,7 @@
 import { i18n } from 'i18next';
 import moment from "moment";
-import { ITask } from "../../../models/types";
 import { EVENT_ENUM } from "../../../models/const";
+import { ITask } from "../../../models/types";
 import { COMMANDS } from "../../../utils/const";
 import AdminService from "../../Admin/AdminService";
 import { Message } from "../../BotNotification/Message";
@@ -9,6 +9,8 @@ import TaskService from "../../Task/TaskService";
 
 
 export async function tasks(notification: Message, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
     const user = await notification.getUser();
     const isAdmin = user.telegram_id && AdminService.checkAdmin(user.telegram_id);
     const tasks = await TaskService.get(isAdmin ? {} : { user_id: user._id }) as ITask[];
@@ -20,17 +22,13 @@ export async function tasks(notification: Message, i18: i18n) {
         const callAt = moment.tz(TaskService.timeCorrection(currentTask.call_at), TaskService.FORMAT, 'UTC').tz(currentTask.tz).format(TaskService.FORMAT);
         message += `${i18.t('tasks.info-line', { taskId: currentTask._id, userId: currentTask.user_id, date: callAt, regular_desctription: i18.t(`tasks.reqular.${String(currentTask.is_regular)}`), escapeValue: false })}`;
 
-
         for (let option = 0; option < currentTask.options.length; option++) {
             const element = currentTask.options[option];
             message += `${i18.t('tasks.event-line', { event: EVENT_ENUM[element.event_type], options: element.param, escapeValue: false })}`;
 
         }
-
-
-
     }
-    await notification.send({
+    await notificator.send(chatId, {
         text: message, options: {
             parse_mode: 'HTML',
             reply_markup: {

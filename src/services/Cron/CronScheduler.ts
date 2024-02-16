@@ -1,12 +1,12 @@
 import moment from 'moment';
 import * as cron from 'node-cron';
-import TelegramBot from 'node-telegram-bot-api';
 import { TaskError } from '../../exceptions/Task';
 import { UserError } from '../../exceptions/User';
 import { money } from '../../helpers/common';
 import { exhangeRequestValidation } from '../../helpers/validation';
 import { EVENT_ENUM, USER_ID_ENUM } from "../../models/const";
 import { ITask, IUser } from '../../models/types';
+import { TelegramNotificator } from '../BotNotification/TelegramNotificator';
 import LocaleService from '../Locale/LocaleService';
 import RandomService from '../Random/RandomService';
 import TaskService from '../Task/TaskService';
@@ -17,11 +17,11 @@ import { convertDateToCronExpression } from './../../helpers/cron';
 import { OPEN_WEATHER_UNITS, TEMPERATURE_SIGN } from './../Weather/const';
 
 export class CronScheduler {
-  private bot: TelegramBot;
+  private notificator: TelegramNotificator;
   private localeService: typeof LocaleService;
 
-  constructor(bot: TelegramBot, localeService: typeof LocaleService) {
-    this.bot = bot;
+  constructor(notificator: TelegramNotificator, localeService: typeof LocaleService) {
+    this.notificator = notificator;
     this.localeService = localeService;
   }
 
@@ -36,17 +36,18 @@ export class CronScheduler {
       }
 
       if (user?.locale) this.localeService.changeLanguage(user.locale);
+      const chatId = String(user.telegram_id)
 
       for (let i = 0; i < task.options.length; i++) {
         try {
           const option = task.options[i];
           const { message, icon } = await this.getMessage(option.event_type, option.param);
           if (icon) {
-            await this.bot.sendPhoto(user.telegram_id, icon)
+            await this.notificator.send(chatId, { url: icon })
           }
-          await this.bot.sendMessage(user.telegram_id, message);
+          await this.notificator.send(chatId, { text: message });
         } catch (error: any) {
-          await this.bot.sendMessage(user.telegram_id, error.message ?? JSON.stringify(error));
+          await this.notificator.send(chatId, { text: error.message ?? JSON.stringify(error) });
           console.info(`${now}: Task id:${task._id}, ${error.message ?? JSON.stringify(error)}`)
         }
 

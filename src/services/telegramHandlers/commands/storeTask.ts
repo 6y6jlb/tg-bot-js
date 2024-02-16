@@ -1,12 +1,14 @@
 import { i18n } from "i18next";
+import { TaskError } from "../../../exceptions/Task";
 import { APP_TYPE_ENUM, EVENT_ENUM, EVENT_OPTIONS } from "../../../models/const";
 import { COMMANDS } from "../../../utils/const";
 import { Callback } from "../../BotNotification/Callback";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
-import { TaskError } from "../../../exceptions/Task";
 
 
 export async function storeTask(notification: Callback, i18: i18n) {
+  const chatId = String(notification.getChatId());
+  const notificator = notification.getNotificator()
   const user = await notification.getUser();
 
   const data = notification.getData();
@@ -39,7 +41,7 @@ export async function storeTask(notification: Callback, i18: i18n) {
 
   buttons.push([{ text: `${i18.t('buttons.reset')}`, callback_data: COMMANDS.RESTART }]);
 
-  await notification.send({
+  await notificator.send(chatId, {
     text: message, options: {
       parse_mode: 'HTML',
       reply_markup: {

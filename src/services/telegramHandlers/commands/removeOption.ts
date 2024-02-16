@@ -9,6 +9,8 @@ import TaskService from "../../Task/TaskService";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 export async function removeOption(notification: Callback, i18: i18n) {
+  const chatId = String(notification.getChatId());
+  const notificator = notification.getNotificator()
   const data = notification.getData();
   const user = await notification.getUser();
 
@@ -32,7 +34,7 @@ export async function removeOption(notification: Callback, i18: i18n) {
 
     task.options.forEach((option, index) => buttons.push([{ text: `DEL - ${option.event_type}: (${option.param})`, callback_data: `${COMMANDS.TASKS_REMOVE_OPTIONS_SELECT}?id=${taskId}&index=${index}` }]))
 
-    await notification.send({
+    await notificator.send(chatId, {
       text: i18.t('actions.tasks.remove-option-description'), options: {
         parse_mode: 'HTML',
         reply_markup: {
@@ -43,7 +45,7 @@ export async function removeOption(notification: Callback, i18: i18n) {
     });
   } else {
     console.warn('Removing subtask error: data - ' + data)
-    await notification.send({ text: `${i18.t('tasks.update.error')}` });
+    await notificator.send(chatId, { text: `${i18.t('tasks.update.error')}` });
   }
 }
 

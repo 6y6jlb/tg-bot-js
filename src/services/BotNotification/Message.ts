@@ -2,10 +2,11 @@ import { UserError } from '../../exceptions/User';
 import { USER_ID_ENUM } from '../../models/const';
 import { IUser } from '../../models/types';
 import UserService from '../User/UserService';
-import { Notification } from './Abstract';
+import { AbstractNotification } from './AbstractNotification';
+import { TelegramNotificator } from './TelegramNotificator';
 import { IBotMessage } from './types';
 
-export class Message extends Notification {
+export class Message extends AbstractNotification {
 
     constructor(parameters: IBotMessage) {
         super(parameters);
@@ -24,6 +25,14 @@ export class Message extends Notification {
     }
     getText() {
         return this.msg.text;
+    }
+
+    getNotificator(): TelegramNotificator {
+        return this.notificator;
+    }
+
+    getMsg(): any {
+        return this.msg
     }
 
     async getUser(): Promise<IUser> {

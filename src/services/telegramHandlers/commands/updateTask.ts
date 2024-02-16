@@ -1,17 +1,18 @@
 import { i18n } from "i18next";
-import { APP_TYPE_ENUM } from "../../../models/const";
-import { Callback } from "../../BotNotification/Callback";
-import UserSettingsService from "../../UserSetttings/UserSettingsService";
-import { Notification } from "../../BotNotification/Abstract";
-import TaskService from "../../Task/TaskService";
-import { ITask } from "../../../models/types";
-import AdminService from "../../Admin/AdminService";
-import { COMMANDS } from "../../../utils/const";
 import TelegramBot from "node-telegram-bot-api";
-import { TaskError } from "../../../exceptions/Task";
+import { APP_TYPE_ENUM } from "../../../models/const";
+import { ITask } from "../../../models/types";
+import { COMMANDS } from "../../../utils/const";
+import AdminService from "../../Admin/AdminService";
+import { AbstractNotification } from "../../BotNotification/AbstractNotification";
+import { Callback } from "../../BotNotification/Callback";
+import TaskService from "../../Task/TaskService";
+import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 
-export async function updateTask(notification: Callback | Notification, i18: i18n) {
+export async function updateTask(notification: Callback | AbstractNotification, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
     const user = await notification.getUser();
     const isAdmin = user.telegram_id && AdminService.checkAdmin(user.telegram_id);
     UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.TASK_UPDATE, created_at: new Date() });
@@ -21,7 +22,7 @@ export async function updateTask(notification: Callback | Notification, i18: i18
     const buttons = [] as TelegramBot.InlineKeyboardButton[][];
     tasks.forEach(task => buttons.push([{ text: String(task._id), callback_data: `${COMMANDS.TASKS_SELECT_OPTIONS}?task_id=${task._id}` }]))
 
-    await notification.send({
+    await notificator.send(chatId, {
         text: i18.t('actions.tasks.update-description'), options: {
             parse_mode: 'HTML',
             reply_markup: {

@@ -6,11 +6,13 @@ import { CALLBACK_COMMAND } from './../../../utils/const';
 
 
 export async function settings(notification: Message, i18: i18n) {
+  const chatId = String(notification.getChatId());
+  const notificator = notification.getNotificator()
   const user = await notification.getUser();
 
   UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.SETTINGS, created_at: new Date(), payload: {} });
 
-  await notification.send({
+  await notificator.send(chatId, {
     text: i18.t('settings.update-title'), options: {
       parse_mode: 'HTML',
       reply_markup: {

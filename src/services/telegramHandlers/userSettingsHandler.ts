@@ -14,6 +14,8 @@ import XChangeService from "../XChange/XChangeService";
 import { ITask } from './../../models/types';
 
 export async function userSettingsHandler(userSettings: IUserSettings, notification: Message, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
     const lang = notification.getLanguage();
     const user = await notification.getUser();
     const text = notification.getText();
@@ -24,9 +26,9 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
         case APP_TYPE_ENUM.WEATHER_REQUEST:
 
             const weather = await WeatherService.get({ city: text, lang });
-            if (weather.icon) await notification.send({ url: weather.icon });
+            if (weather.icon) await notificator.send(chatId, { url: weather.icon });
 
-            await notification.send({
+            await notificator.send(chatId, {
                 text: i18.t('weather.tg-string', {
                     city: weather.name,
                     temp: Math.ceil(Number(weather.main.temp)),
@@ -92,13 +94,13 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                 params = { parse_mode: 'HTML' };
             }
 
-            await notification.send({ text: message, options: params });
+            await notificator.send(chatId, { text: message, options: params });
             break;
 
         case APP_TYPE_ENUM.TASK_DELETE:
             try {
                 await TaskService.delete({ _id: text });
-                await notification.send({
+                await notificator.send(chatId, {
                     text: i18.t('tasks.delete.success') + '\n' + i18.t('tasks.reset-with-delete-task-description'), options: {
                         parse_mode: 'HTML',
                         reply_markup: {
@@ -109,7 +111,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                     }
                 });
             } catch (error) {
-                await notification.send({
+                await notificator.send(chatId, {
                     text: i18.t('tasks.delete.error'), options: {
                         reply_markup: {
                             inline_keyboard: [
@@ -134,7 +136,7 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                 message = error.message;
             }
 
-            await notification.send({
+            await notificator.send(chatId, {
                 text: message, options: {
                     parse_mode: 'HTML',
                     reply_markup: {

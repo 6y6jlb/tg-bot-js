@@ -5,6 +5,8 @@ import { getResetOptions } from "../template";
 
 
 export async function randomImage(notification: Message, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
     let url = '';
     let message = '';
     try {
@@ -17,6 +19,6 @@ export async function randomImage(notification: Message, i18: i18n) {
 
     }
 
-    await notification.send({ text: message, options: getResetOptions() });
-    await notification.send({ url });
+    await notificator.send(chatId, { text: message, options: getResetOptions() });
+    await notificator.send(chatId, { url });
 }

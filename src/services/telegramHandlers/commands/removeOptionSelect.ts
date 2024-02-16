@@ -3,13 +3,14 @@ import mongoose, { Schema } from 'mongoose';
 import { TaskError } from "../../../exceptions/Task";
 import { APP_TYPE_ENUM } from "../../../models/const";
 import { ITask } from "../../../models/types";
-import { COMMANDS } from '../../../utils/const';
+import { IUpdateTaskRequest } from "../../../requests/Task/types";
 import { Callback } from "../../BotNotification/Callback";
 import TaskService from "../../Task/TaskService";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
-import { IUpdateTaskRequest } from "../../../requests/Task/types";
 
 export async function removeOptionSelect(notification: Callback, i18: i18n) {
+  const chatId = String(notification.getChatId());
+  const notificator = notification.getNotificator()
   const data = notification.getData();
   const user = await notification.getUser();
 
@@ -31,21 +32,20 @@ export async function removeOptionSelect(notification: Callback, i18: i18n) {
 
     } else {
       const newTaskData: IUpdateTaskRequest = { options: newOptions, _id: taskId }
-
       await TaskService.update(newTaskData)
-
     }
 
     await UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: { task_id: taskId } });
 
-    await notification.send({
+    await notificator.send(chatId, {
       text: i18.t('tasks.update.success'), options: {
         parse_mode: 'HTML'
       }
     });
+
   } else {
     console.warn('Removing subtask error: data - ' + data)
-    await notification.send({ text: `${i18.t('tasks.update.error')}` });
+    await notificator.send(chatId, { text: `${i18.t('tasks.update.error')}` });
   }
 }
 

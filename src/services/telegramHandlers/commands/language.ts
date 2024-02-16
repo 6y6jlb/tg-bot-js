@@ -7,7 +7,8 @@ import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 
 export async function language(notification: Callback, i18: i18n) {
-
+  const chatId = String(notification.getChatId());
+  const notificator = notification.getNotificator()
   const data = notification.getData();
 
   if (!data) {
@@ -17,7 +18,7 @@ export async function language(notification: Callback, i18: i18n) {
   const languageCode = data.split('?')[1];
 
   if (!languageCode) {
-    await notification.send({
+    await notificator.send(chatId, {
       text: i18.t("settings.params.language.title"), options: {
         parse_mode: 'HTML',
         reply_markup: {
@@ -35,6 +36,6 @@ export async function language(notification: Callback, i18: i18n) {
     i18.changeLanguage(languageCode);
 
 
-    await notification.send({ text: i18.t("settings.update-succesfully") });
+    await notificator.send(chatId, { text: i18.t("settings.update-succesfully") });
   }
 }

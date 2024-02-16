@@ -1,53 +1,57 @@
-import TelegramBotApi from "node-telegram-bot-api";
-import Bot from "../../controllers/telegram/Bot";
+import { USER_ID_ENUM } from "../../models/const";
 import { IUser } from "../../models/types";
 import AdminService from "../Admin/AdminService";
-import { NotificationFactory } from "../BotNotification/AbstractFactory";
 import { Message } from '../BotNotification/Message';
-import { TypeEnum } from '../BotNotification/consts';
+import LocaleService from "../Locale/LocaleService";
 import UserService from "../User/UserService";
-import { commadsHandler } from './CommandsHandler';
-import { USER_ID_ENUM } from "../../models/const";
+import AbstractHandler from "./AbstractHandler";
+import { CommandHandler } from './CommandsHandler';
 
+export class MessageHandler extends AbstractHandler {
 
-
-export const messageHandler = async (bot: Bot, msg: TelegramBotApi.Message,) => {
-  const userId = msg?.from?.id;
-  const name = msg?.from?.username || msg?.from?.first_name;
-  let user: IUser | null | undefined = null;
-
-  try {
-    user = await UserService.getById(userId, USER_ID_ENUM.TELEGRAM_ID);
-  } catch (error: any) {
-    console.log(error.message)
+  constructor(notification: Message, localeService: typeof LocaleService) {
+    super(notification, localeService);
   }
 
-  const language = user?.locale || msg?.from?.language_code;
-  bot.localeService.changeLanguage(language);
-  const notification = new NotificationFactory(TypeEnum.MESSAGE, { bot: bot.instance, msg }).build() as Message;
-
-
-  if (!user) {
-    await UserService.store({ telegram_id: String(userId), name: name || 'guest', locale: language })
-    await AdminService.sendMesssageToAdmin(
-      bot.instance, { text: bot.localeService.i18.t('notifications.common.new-user', { userId, userName: name }) }
-    )
-
-    await notification.send({ text: bot.localeService.i18.t("actions.greeting", { userName: name ?? bot.localeService.i18.t('guest') }) });
-
-  } else if (msg.web_app_data) {
+  async handle() {
+    const notification = this.getNotification() as Message;
+    const localeService = this.getLocaleService();
+    const name = notification.getName();
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator();
+    const msg = notification.getMsg();
+    let user: IUser | undefined;
 
     try {
-
-      const parsedData = JSON.parse(msg.web_app_data?.data);
-      await notification.send({ text: `${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}` });
-
-    } catch (error) {
-      console.warn(error)
-      await notification.send({ text: bot.localeService.i18.t('notifications.errors.something-went-wrong') });
+      user = await UserService.getById(chatId, USER_ID_ENUM.TELEGRAM_ID);
+    } catch (error: any) {
+      console.log(error.message)
     }
 
-  } else {
-    commadsHandler(notification, bot.localeService.i18)
+    const language = user?.locale || this.notification.getLanguage();
+    localeService.changeLanguage(language);
+
+    if (!user) {
+      await UserService.store({ telegram_id: String(chatId), name: name || 'guest', locale: language })
+      await AdminService.sendMesssageToAdmin(
+        notification.getNotificator(), { text: this.localeService.i18.t('notifications.common.new-user', { userId: chatId, userName: name }) }
+      )
+
+      await notificator.send(chatId, { text: this.localeService.i18.t("actions.greeting", { userName: name ?? this.localeService.i18.t('guest') }) });
+
+    } else if (msg.web_app_data) {
+      try {
+
+        const parsedData = JSON.parse(msg.web_app_data?.data);
+        await notificator.send(chatId, { text: `${parsedData && parsedData.name} ${parsedData && parsedData.language} ${parsedData && parsedData.timezone}` });
+
+      } catch (error) {
+        console.warn(error)
+        await notificator.send(chatId, ({ text: this.localeService.i18.t('notifications.errors.something-went-wrong') }));
+      }
+
+    } else {
+      new CommandHandler(notification, localeService).handle()
+    }
   }
-};
+}

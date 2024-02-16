@@ -1,12 +1,13 @@
 import { i18n } from "i18next";
+import { TaskError } from "../../../exceptions/Task";
 import { EVENT_ENUM, EVENT_OPTIONS } from "../../../models/const";
 import { COMMANDS } from '../../../utils/const';
 import { Callback } from "../../BotNotification/Callback";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
-import { TaskError } from "../../../exceptions/Task";
 
 export async function setOptions(notification: Callback, i18: i18n) {
-
+  const chatId = String(notification.getChatId());
+  const notificator = notification.getNotificator()
   const data = notification.getData();
   const user = await notification.getUser();
 
@@ -24,7 +25,7 @@ export async function setOptions(notification: Callback, i18: i18n) {
     //@ts-ignore
     await UserSettingsService.updateOrCreate({ user_id: user._id, app_type: Number(key), created_at: new Date(), payload: { task_id: taskId } });
 
-    await notification.send({
+    await notificator.send(chatId, {
       text: i18.t(message[type]), options: {
         parse_mode: 'HTML',
         reply_markup: {
@@ -36,7 +37,7 @@ export async function setOptions(notification: Callback, i18: i18n) {
     });
   } else {
     console.warn('Set task option error: data - ' + data)
-    await notification.send({ text: `${i18.t('tasks.update.error')}` });
+    await notificator.send(chatId, { text: `${i18.t('tasks.update.error')}` });
   }
 }
 

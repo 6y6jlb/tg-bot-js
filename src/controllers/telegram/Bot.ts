@@ -1,12 +1,14 @@
 import moment from "moment";
 import TelegramBotApi from "node-telegram-bot-api";
 import AdminService from "../../services/Admin/AdminService";
+import { NotificationFactory } from "../../services/BotNotification/AbstractFactory";
+import { TelegramNotificator } from "../../services/BotNotification/TelegramNotificator";
+import { TypeEnum } from "../../services/BotNotification/consts";
 import { CronScheduler } from "../../services/Cron/CronScheduler";
 import LocaleService from '../../services/Locale/LocaleService';
 import TaskService from "../../services/Task/TaskService";
-import { callbackHandler } from '../../services/telegramHandlers/CallbackHandler';
-import { locationHandler } from '../../services/telegramHandlers/LocationHandler';
-import { messageHandler } from "../../services/telegramHandlers/MessageHandler";
+import { CallbackHandler } from "../../services/telegramHandlers/CallbackHandler";
+import { MessageHandler } from "../../services/telegramHandlers/MessageHandler";
 import config from "../../utils/config";
 
 
@@ -16,11 +18,13 @@ class Bot {
   instance: TelegramBotApi;
   localeService: typeof LocaleService;
   scheduler: CronScheduler;
+  notificator: TelegramNotificator;
 
   constructor() {
     this.localeService = LocaleService;
     this.instance = new TelegramBotApi(config.TG_TOKEN, { polling: true });
-    this.scheduler = new CronScheduler(this.instance, this.localeService);
+    this.notificator = new TelegramNotificator(this.instance)
+    this.scheduler = new CronScheduler(this.notificator, this.localeService);
     //@ts-ignore
     global.tgBotInstance = this.instance
   }
@@ -32,24 +36,32 @@ class Bot {
       TaskService.resetQueue();
     } catch (error: any) {
       AdminService.sendMesssageToAdmin(
-        this.instance, { text: error.message });
+        this.notificator, { text: error.message });
     }
 
     this.instance.on("message", async (msg) => {
-      messageHandler(this, msg);
+      new MessageHandler(
+        new NotificationFactory(TypeEnum.MESSAGE, { notificator: this.notificator, msg }).build(),
+        this.localeService
+      ).handle();
     });
 
     this.instance.on("location", async (msg) => {
-      locationHandler(this, msg)
+      // TODO
+      console.log('Location handler', msg)
+
     });
 
     this.instance.on("callback_query", async (msg) => {
-      callbackHandler(this, msg)
+      new CallbackHandler(
+        new NotificationFactory(TypeEnum.CALLBACK, { notificator: this.notificator, msg }).build(),
+        this.localeService
+      ).handle();
     });
 
     const now = moment().format('HH:mma MM.DD.YYYY');
     AdminService.sendMesssageToAdmin(
-      this.instance, { text: this.localeService.i18.t('notifications.common.start', { date: now }) }
+      this.notificator, { text: this.localeService.i18.t('notifications.common.start', { date: now }) }
     )
     console.info(`Telegram bot started at ${now}`)
   }

@@ -1,11 +1,14 @@
 import { i18n } from "i18next";
 import { APP_TYPE_ENUM } from "../../../models/const";
-import { Notification } from "../../BotNotification/Abstract";
+import { AbstractNotification } from "../../BotNotification/AbstractNotification";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 import { getResetOptions } from "../template";
 
 
-export async function restart(notification: Notification, i18: i18n) {
+export async function restart(notification: AbstractNotification, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
+
     let message = '';
     try {
         const user = await notification.getUser();
@@ -15,5 +18,5 @@ export async function restart(notification: Notification, i18: i18n) {
         message = error.message;
     }
 
-    await notification.send({ text: message, options: getResetOptions() });
+    await notificator.send(chatId, { text: message, options: getResetOptions() });
 }

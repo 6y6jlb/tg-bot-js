@@ -5,6 +5,8 @@ import { Message } from "../../BotNotification/Message";
 import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 export async function exchange(notification: Message, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
     const user = await notification.getUser();
     let message = '';
 
@@ -15,7 +17,7 @@ export async function exchange(notification: Message, i18: i18n) {
         message = error.message;
     }
 
-    await notification.send({
+    await notificator.send(chatId, {
         text: message, options: {
             parse_mode: 'HTML',
             reply_markup: {

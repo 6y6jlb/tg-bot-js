@@ -5,6 +5,8 @@ import TaskService from '../../Task/TaskService';
 
 export async function makeTaskRegular(notification: Callback, i18: i18n) {
   const data = notification.getData();
+  const chatId = notification.getChatId();
+  const notificator = notification.getNotificator()
 
   if (!data) {
     throw new TaskError('Task can not be regular because data is empty')
@@ -15,8 +17,8 @@ export async function makeTaskRegular(notification: Callback, i18: i18n) {
   if (taskId) {
     //@ts-ignore
     await TaskService.update({ _id: taskId, is_regular: true });
-    await notification.send({ text: `${i18.t('tasks.update.success')}` });
+    await notificator.send(chatId, { text: `${i18.t('tasks.update.success')}` });
   } else {
-    await notification.send({ text: `${i18.t('tasks.update.error')}` });
+    await notificator.send(chatId, { text: `${i18.t('tasks.update.error')}` });
   }
 }

@@ -1,15 +1,16 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { TypeEnum } from './consts';
-import { Message } from './Message';
 import { Callback } from './Callback';
+import { Message } from './Message';
+import { TelegramNotificator } from './TelegramNotificator';
+import { TypeEnum } from './consts';
 
 export interface IBotMessage {
-    bot: TelegramBot
+    notificator: TelegramNotificator
     msg: TelegramBot.Message
 }
 
 export interface IBotCallback {
-    bot: TelegramBot
+    notificator: TelegramNotificator
     msg: TelegramBot.CallbackQuery
 }
 

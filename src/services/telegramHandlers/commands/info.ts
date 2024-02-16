@@ -1,11 +1,11 @@
 import { i18n } from "i18next";
 import moment from "moment-timezone";
-import { IUser } from "../../../models/types";
 import { Message } from "../../BotNotification/Message";
-import UserService from "../../User/UserService";
 
 
 export async function info(notification: Message, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
     let message = '';
     try {
         const user = await notification.getUser();
@@ -17,7 +17,7 @@ export async function info(notification: Message, i18: i18n) {
         message = error.message;
     }
 
-    await notification.send({
+    await notificator.send(chatId, {
         text: message, options: {
             parse_mode: 'HTML',
         }

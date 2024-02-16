@@ -1,12 +1,13 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { Notification } from './Abstract';
+import { AbstractNotification } from './AbstractNotification';
 import { IBotCallback } from './types';
 import UserService from '../User/UserService';
 import { IUser } from '../../models/types';
 import { UserError } from '../../exceptions/User';
 import { USER_ID_ENUM } from '../../models/const';
+import { TelegramNotificator } from './TelegramNotificator';
 
-export class Callback extends Notification {
+export class Callback extends AbstractNotification {
 
     constructor(parameters: IBotCallback) {
         super(parameters);
@@ -25,6 +26,14 @@ export class Callback extends Notification {
     }
     getData() {
         return this.msg.data;
+    }
+
+    getNotificator(): TelegramNotificator {
+        return this.notificator;
+    }
+
+    getMsg(): any {
+        return this.msg;
     }
 
     async getUser(): Promise<IUser> {

@@ -1,9 +1,11 @@
 import { i18n } from "i18next";
-import { Callback } from "../../BotNotification/Callback";
 import { EVENT_ENUM } from "../../../models/const";
+import { Callback } from "../../BotNotification/Callback";
 import { COMMANDS } from './../../../utils/const';
 
 export async function choiceOptions(notification: Callback, i18: i18n) {
+  const chatId = String(notification.getChatId());
+  const notificator = notification.getNotificator()
   const data = notification.getData();
 
   if (!data) {
@@ -14,7 +16,7 @@ export async function choiceOptions(notification: Callback, i18: i18n) {
 
   const taskId = params.has('task_id') && params.get('task_id');
   if (taskId) {
-    await notification.send({
+    await notificator.send(chatId, {
       text: `${i18.t('tasks.update.options')}`, options: {
         parse_mode: 'HTML',
         reply_markup: {
@@ -30,6 +32,6 @@ export async function choiceOptions(notification: Callback, i18: i18n) {
     });
   } else {
     console.warn('Choice task option error: data - ' + data)
-    await notification.send({ text: `${i18.t('tasks.update.error')}` });
+    await notificator.send(chatId, { text: `${i18.t('tasks.update.error')}` });
   }
 }

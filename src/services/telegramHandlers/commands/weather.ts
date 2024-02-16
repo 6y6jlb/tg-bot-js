@@ -6,6 +6,8 @@ import UserSettingsService from "../../UserSetttings/UserSettingsService";
 
 
 export async function weather(notification: Message, i18: i18n) {
+    const chatId = String(notification.getChatId());
+    const notificator = notification.getNotificator()
     const user = await notification.getUser();
     let message = '';
     try {
@@ -15,7 +17,7 @@ export async function weather(notification: Message, i18: i18n) {
         message = error.message;
     }
 
-    await notification.send({
+    await notificator.send(chatId, {
         text: message, options: {
             reply_markup: {
                 inline_keyboard: [
