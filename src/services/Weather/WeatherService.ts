@@ -1,9 +1,16 @@
+import WeatherClient from "../../dal/Weather/Client";
+import { WeatherError } from "../../exceptions/Weather";
 import { IGetWeatehrRequest } from "../../requests/Weather/types";
-import WeatherClient from "../../dal/Weather/Client"
 
 class WeatherService {
-    get(data: IGetWeatehrRequest) {
-        return WeatherClient.get(data);
+    async get(data: IGetWeatehrRequest) {
+        try {
+            return await WeatherClient.get(data);
+        } catch (error) {
+            console.warn(error)
+            throw new WeatherError('Weather response error')
+        }
+
     }
 
 }

@@ -1,4 +1,4 @@
-import { GetWeatherError } from '../../exceptions/Weather';
+import { WeatherError } from '../../exceptions/Weather';
 import { IGetWeatehrRequest } from './types';
 
 class WeatherTgRequest {
@@ -7,7 +7,7 @@ class WeatherTgRequest {
         if (city.length) {
             return { city };
         }
-        throw new GetWeatherError('Incorrect data')
+        throw new WeatherError('Incorrect data')
     }
 }
 

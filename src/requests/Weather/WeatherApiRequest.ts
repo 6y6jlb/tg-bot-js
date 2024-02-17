@@ -1,6 +1,6 @@
 import { IGetWeatehrRequest } from './types';
 import { Request } from "express";
-import { GetWeatherError } from '../../exceptions/Weather';
+import { WeatherError } from '../../exceptions/Weather';
 
 class WeatherApiRequest {
     get(request: Request): IGetWeatehrRequest {
@@ -8,7 +8,7 @@ class WeatherApiRequest {
         if (city) {
             return { city, lang, units } as IGetWeatehrRequest;
         }
-        throw new GetWeatherError('Incorrect data')
+        throw new WeatherError('Incorrect data')
     }
 }
 

@@ -12,6 +12,7 @@ import WeatherService from "../Weather/WeatherService";
 import { OPEN_WEATHER_UNITS, TEMPERATURE_SIGN } from "../Weather/const";
 import XChangeService from "../XChange/XChangeService";
 import { ITask } from './../../models/types';
+import { WeatherError } from '../../exceptions/Weather';
 
 export async function userSettingsHandler(userSettings: IUserSettings, notification: Message, i18: i18n) {
     const chatId = String(notification.getChatId());
@@ -25,22 +26,39 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
 
         case APP_TYPE_ENUM.WEATHER_REQUEST:
 
-            const weather = await WeatherService.get({ city: text, lang });
-            if (weather.icon) await notificator.send(chatId, { url: weather.icon });
+            try {
+                const weather = await WeatherService.get({ city: text, lang });
 
-            await notificator.send(chatId, {
-                text: i18.t('weather.tg-string', {
-                    city: weather.name,
-                    temp: Math.ceil(Number(weather.main.temp)),
-                    feel: Math.ceil(Number(weather.main.feels_like)),
-                    humidity: weather.main.humidity,
-                    sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS],
-                    windSpeed: weather.wind.speed,
-                    description: weather.weather[0].description,
-                    pressure: weather.main.pressure,
-                    escapeValue: false
-                }) + '\n' +
-                    i18.t('weather.reset-with-description'), options: {
+                if (weather.icon) {
+                    await notificator.send(chatId, { url: weather.icon })
+                };
+
+                await notificator.send(chatId, {
+                    text: i18.t('weather.tg-string', {
+                        city: weather.name,
+                        temp: Math.ceil(Number(weather.main.temp)),
+                        feel: Math.ceil(Number(weather.main.feels_like)),
+                        humidity: weather.main.humidity,
+                        sign: TEMPERATURE_SIGN[weather.units as OPEN_WEATHER_UNITS],
+                        windSpeed: weather.wind.speed,
+                        description: weather.weather[0].description,
+                        pressure: weather.main.pressure,
+                        escapeValue: false
+                    }) + '\n' +
+                        i18.t('weather.reset-with-description'), options: {
+                            parse_mode: 'HTML',
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [{ text: i18.t('buttons.reset'), callback_data: COMMANDS.RESTART }],
+                                ]
+                            }
+                        }
+                });
+
+
+            } catch (error: any) {
+                await notificator.send(chatId, {
+                    text: i18.t('notifications.errors.something-went-wrong'), options: {
                         parse_mode: 'HTML',
                         reply_markup: {
                             inline_keyboard: [
@@ -48,7 +66,8 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
                             ]
                         }
                     }
-            });
+                });
+            }
 
             break;
 

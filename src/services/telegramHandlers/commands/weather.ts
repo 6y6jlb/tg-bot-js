@@ -10,6 +10,7 @@ export async function weather(notification: Message, i18: i18n) {
     const notificator = notification.getNotificator()
     const user = await notification.getUser();
     let message = '';
+
     try {
         UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.WEATHER_REQUEST, created_at: new Date() });
         message = i18.t('weather.get-description');
