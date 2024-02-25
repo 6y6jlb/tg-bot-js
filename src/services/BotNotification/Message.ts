@@ -37,12 +37,17 @@ export class Message extends AbstractNotification {
 
     async getUser(): Promise<IUser | undefined> {
         const user = await UserService.getById(this.getChatId(), USER_ID_ENUM.TELEGRAM_ID);
-        if (!user || !this.getText().includes(COMMANDS.START)) {
-            await this.getNotificator().send(this.getChatId(), { text: COMMANDS.START + ' ' + this.getChatId() })
+
+        if (user) {
+            return user;
+        } else if (!this.getText().includes(COMMANDS.START)) {
+            await UserService.store({ telegram_id: String(this.getChatId()), name: this.getName(), locale: this.getLanguage() })
+            // TODO, log to admin with admin locale for all instance
+            console.log('New user: ' + this.getName() + ', id:' + this.getChatId())
             return;
         }
 
-        return user;
+        return;
     }
 
 }
