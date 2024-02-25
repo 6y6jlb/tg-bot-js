@@ -27,8 +27,9 @@ export class CommandHandler extends AbstractHandler {
         const text = notification.getText()
         const i18 = this.localeService.i18
         const chatId = this.notification.getChatId();
+        const commandId = text.split(' ')[0];
 
-        switch (text) {
+        switch (commandId) {
 
             case COMMANDS.START:
                 await start(notification, i18);

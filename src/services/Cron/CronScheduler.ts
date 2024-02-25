@@ -29,6 +29,8 @@ export class CronScheduler {
     const now = moment().format('HH:mma M.D.YYYY');
     const user = await UserService.getById(task.user_id, USER_ID_ENUM.MONGO_ID) as IUser;
 
+    if (!user) return;
+
     const job = cron.schedule(expression, async () => {
 
       if (!user.telegram_id) {

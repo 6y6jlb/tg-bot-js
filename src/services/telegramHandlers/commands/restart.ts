@@ -12,6 +12,9 @@ export async function restart(notification: AbstractNotification, i18: i18n) {
     let message = '';
     try {
         const user = await notification.getUser();
+
+        if (!user) return;
+
         UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.DEFAULT, created_at: new Date(), payload: {} });
         message = i18.t('actions.reset.description');
     } catch (error: any) {

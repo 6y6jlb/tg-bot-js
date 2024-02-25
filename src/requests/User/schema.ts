@@ -11,7 +11,6 @@ export const loginUserSchema = Joi.object({
 export const storeUserSchema = Joi.object({
     email: Joi.string().email(),
     name: Joi.string().min(3).max(100),
-    telegram_id: Joi.string(),
     password: Joi.string().min(3).max(30).required(),
     password_repeat: Joi.any().valid(Joi.ref('password')).required()
 })
@@ -25,7 +24,6 @@ export const getUserSchema = Joi.object({
 
 export const UpdateUserSchema = Joi.object({
     email: Joi.string().email(),
-    telegram_id: Joi.string(),
     name: Joi.string(),
     currency: Joi.string(),
     locale: Joi.string(),

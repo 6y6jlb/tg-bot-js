@@ -17,7 +17,7 @@ export abstract class AbstractNotification {
 
     abstract getChatId(): number | string | undefined
 
-    abstract getUser(): Promise<IUser>
+    abstract getUser(): Promise<IUser | undefined>
 
     abstract getName(): string | undefined
 

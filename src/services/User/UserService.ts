@@ -5,9 +5,8 @@ import User from "../../models/User";
 import { TOKEN_TYPE, USER_ID_ENUM } from '../../models/const';
 import { DeleteUserRequest, LoginUserRequest, LogoutUserPasswordRequest, ResetUserPasswordRequest, StoreUserRequest, UpdateUserRequest } from "../../requests/User/types";
 import { DEFAULT_PASSWORD } from '../../utils/const';
-import { IUser } from './../../models/types';
-import Token from '../../models/Token';
 import TokenService from '../Token/TokenService';
+import { IUser } from './../../models/types';
 
 class UsersService {
     async login(data: LoginUserRequest) {
@@ -51,7 +50,7 @@ class UsersService {
 
         }
         const { userId, idType } = this.getIdAndTypeFromData(data);
-
+        console.log(idType)
 
         const user = await this.getById(userId, idType)
 

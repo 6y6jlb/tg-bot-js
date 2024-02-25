@@ -14,6 +14,9 @@ export async function updateTask(notification: Callback | AbstractNotification, 
     const chatId = String(notification.getChatId());
     const notificator = notification.getNotificator()
     const user = await notification.getUser();
+
+    if (!user) return;
+
     const isAdmin = user.telegram_id && AdminService.checkAdmin(user.telegram_id);
     UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.TASK_UPDATE, created_at: new Date() });
 

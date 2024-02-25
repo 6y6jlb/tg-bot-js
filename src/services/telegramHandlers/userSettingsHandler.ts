@@ -20,6 +20,9 @@ export async function userSettingsHandler(userSettings: IUserSettings, notificat
     const lang = notification.getLanguage();
     const user = await notification.getUser();
     const text = notification.getText();
+
+    if (!user) return;
+
     let message = '';
 
     switch (userSettings.app_type) {

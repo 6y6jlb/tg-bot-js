@@ -8,6 +8,9 @@ export async function exchange(notification: Message, i18: i18n) {
     const chatId = String(notification.getChatId());
     const notificator = notification.getNotificator()
     const user = await notification.getUser();
+
+    if (!user) return;
+
     let message = '';
 
     try {

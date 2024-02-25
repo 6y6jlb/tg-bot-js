@@ -1,5 +1,6 @@
 import { TelegramError } from '../../exceptions/Telegram';
 import AdminService from '../Admin/AdminService';
+import { TelegramNotificator } from '../BotNotification/TelegramNotificator';
 import { ApiNotification as Notification } from './Abstract';
 import { IApiNotification } from './types';
 
@@ -29,7 +30,7 @@ export class Telegram extends Notification {
 
     private getBotInstance() {
         //@ts-ignore
-        return global.tgBotInstance
+        return global.tgBotInstance as TelegramNotificator
     }
 
 }

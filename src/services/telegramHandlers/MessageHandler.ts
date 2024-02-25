@@ -1,6 +1,5 @@
 import { USER_ID_ENUM } from "../../models/const";
 import { IUser } from "../../models/types";
-import AdminService from "../Admin/AdminService";
 import { Message } from '../BotNotification/Message';
 import LocaleService from "../Locale/LocaleService";
 import UserService from "../User/UserService";
@@ -16,7 +15,6 @@ export class MessageHandler extends AbstractHandler {
   async handle() {
     const notification = this.getNotification() as Message;
     const localeService = this.getLocaleService();
-    const name = notification.getName();
     const chatId = String(notification.getChatId());
     const notificator = notification.getNotificator();
     const msg = notification.getMsg();
@@ -31,15 +29,7 @@ export class MessageHandler extends AbstractHandler {
     const language = user?.locale || this.notification.getLanguage();
     localeService.changeLanguage(language);
 
-    if (!user) {
-      await UserService.store({ telegram_id: String(chatId), name: name || 'guest', locale: language })
-      await AdminService.sendMesssageToAdmin(
-        notification.getNotificator(), { text: this.localeService.i18.t('notifications.common.new-user', { userId: chatId, userName: name }) }
-      )
-
-      await notificator.send(chatId, { text: this.localeService.i18.t("actions.greeting", { userName: name ?? this.localeService.i18.t('guest') }) });
-
-    } else if (msg.web_app_data) {
+    if (msg.web_app_data) {
       try {
 
         const parsedData = JSON.parse(msg.web_app_data?.data);

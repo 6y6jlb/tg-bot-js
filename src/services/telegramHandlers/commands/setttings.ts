@@ -10,6 +10,8 @@ export async function settings(notification: Message, i18: i18n) {
   const notificator = notification.getNotificator()
   const user = await notification.getUser();
 
+  if (!user) return;
+
   UserSettingsService.updateOrCreate({ user_id: user._id, app_type: APP_TYPE_ENUM.SETTINGS, created_at: new Date(), payload: {} });
 
   await notificator.send(chatId, {

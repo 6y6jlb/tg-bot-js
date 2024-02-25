@@ -1,6 +1,6 @@
-import { UserError } from '../../exceptions/User';
 import { USER_ID_ENUM } from '../../models/const';
 import { IUser } from '../../models/types';
+import { COMMANDS } from '../../utils/const';
 import UserService from '../User/UserService';
 import { AbstractNotification } from './AbstractNotification';
 import { TelegramNotificator } from './TelegramNotificator';
@@ -35,11 +35,13 @@ export class Message extends AbstractNotification {
         return this.msg
     }
 
-    async getUser(): Promise<IUser> {
+    async getUser(): Promise<IUser | undefined> {
         const user = await UserService.getById(this.getChatId(), USER_ID_ENUM.TELEGRAM_ID);
-        if (!user) {
-            throw new UserError('User should exist')
+        if (!user || !this.getText().includes(COMMANDS.START)) {
+            await this.getNotificator().send(this.getChatId(), { text: COMMANDS.START + ' ' + this.getChatId() })
+            return;
         }
+
         return user;
     }
 

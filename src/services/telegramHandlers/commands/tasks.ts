@@ -12,6 +12,9 @@ export async function tasks(notification: Message, i18: i18n) {
     const chatId = String(notification.getChatId());
     const notificator = notification.getNotificator()
     const user = await notification.getUser();
+
+    if (!user) return;
+
     const isAdmin = user.telegram_id && AdminService.checkAdmin(user.telegram_id);
     const tasks = await TaskService.get(isAdmin ? {} : { user_id: user._id }) as ITask[];
     let message = i18.t('tasks.info-title');
