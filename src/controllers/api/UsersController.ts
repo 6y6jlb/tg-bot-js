@@ -15,7 +15,7 @@ class UsersController {
             //@ts-ignore
             const user: IUser = req.user;
             if (user.telegram_id || user.email) {
-                if (AdminService.checkAdmin(Number(user.telegram_id))) {
+                if (await AdminService.checkAdmin(Number(user.telegram_id))) {
                     res.json(await UserService.get())
                 } else {
                     res.json(await UserService.getById(user.telegram_id, USER_ID_ENUM.TELEGRAM_ID))
@@ -34,7 +34,7 @@ class UsersController {
         try {
             //@ts-ignore
             const user: IUser = req.user;
-            if (user._id || AdminService.checkAdmin(Number(user.telegram_id))) {
+            if (user._id || await AdminService.checkAdmin(Number(user.telegram_id))) {
                 const data = await UserApiRequest.update(req);
                 await UserService.update({ ...data, _id: user._id })
                 res.json().status(200)
@@ -51,7 +51,7 @@ class UsersController {
         try {
             //@ts-ignore
             const user: IUser = req.user;
-            if (user._id || AdminService.checkAdmin(Number(user.telegram_id))) {
+            if (user._id || await AdminService.checkAdmin(Number(user.telegram_id))) {
                 const data = await UserApiRequest.delete(req);
                 res.json(await UserService.delete(data))
             } else {

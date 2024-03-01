@@ -15,7 +15,7 @@ export class Telegram extends Notification {
         try {
             const botInstance = this.getBotInstance();
             await AdminService.sendMesssageToAdmin(botInstance, {
-                text: this.localeService.i18.t('feedback.portfolio.template-tg', { name: this.message.name, contacts: this.message.contacts, body: this.message.message }),
+                textObject: { key: 'feedback.portfolio.template-tg', variables: { name: this.message.name, contacts: this.message.contacts, body: this.message.message } },
                 options: {
                     parse_mode: 'HTML',
                 }

@@ -13,11 +13,6 @@ const MONGO_DB_PASS = process.env.MONGO_ATLAS_PASS || '';
 const MONGO_DB_NAME = process.env.MONGO_ATLAS_NAME || '';
 
 
-const ADMINS = [
-  process.env.ADMIN_ID
-];
-
-
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 const XCHANGE_API_KEY = process.env.XCHANGE_API_KEY;
 
@@ -31,7 +26,6 @@ const JWT_SECRET_REFRESH_KEY = process.env.JWT_SECRET_REFRESH_KEY || '';
 
 export default {
   TG_TOKEN,
-  ADMINS,
   PORT,
   TIMEZONE,
   ENV,

@@ -1,9 +1,15 @@
 
+export enum ROLE {
+    ADMIN = "ADMIN",
+    CUSTOMER = "CUSTOMER",
+}
+
 export enum EVENT_ENUM {
     WEATHER = "WEATHER",
     REMINDER = "REMINDER",
     EXCHANGE = "EXCHANGE"
 }
+
 export enum APP_TYPE_ENUM {
     DEFAULT = 0,
     WEATHER_REQUEST = 1,

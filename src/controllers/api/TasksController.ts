@@ -13,7 +13,7 @@ class TasksController {
             const user: IUser = req.user;
             if (user._id) {
                 const data = await TaskApiRequest.get(req);
-                if (AdminService.checkAdmin(Number(user.telegram_id))) {
+                if (await AdminService.checkAdmin(Number(user.telegram_id))) {
                     res.json(await TaskService.get(data))
                 } else {
                     res.json(await TaskService.get({ user_id: user._id, ...data }))
@@ -32,7 +32,7 @@ class TasksController {
             const user: IUser = req.user;
             if (user._id) {
                 const data = await TaskApiRequest.update(req);
-                if (AdminService.checkAdmin(Number(user.telegram_id))) {
+                if (await AdminService.checkAdmin(Number(user.telegram_id))) {
                     res.json(await TaskService.update(data))
                 } else {
                     res.json(await TaskService.update({ ...data, user_id: user._id }))
@@ -52,7 +52,7 @@ class TasksController {
             const user: IUser = req.user;
             if (user._id) {
                 const data = await TaskApiRequest.store(req);
-                if (AdminService.checkAdmin(Number(user.telegram_id))) {
+                if (await AdminService.checkAdmin(Number(user.telegram_id))) {
                     res.json(await TaskService.store(data))
                 } else {
                     res.json(await TaskService.store({ ...data, user_id: user._id }))
@@ -72,7 +72,7 @@ class TasksController {
             const user: IUser = req.user;
             if (user._id) {
                 const data = await TaskApiRequest.delete(req);
-                if (AdminService.checkAdmin(Number(user.telegram_id))) {
+                if (await AdminService.checkAdmin(Number(user.telegram_id))) {
                     res.json(await TaskService.delete(data))
                 } else {
                     res.json(await TaskService.delete({ user_id: user._id, ...data }))

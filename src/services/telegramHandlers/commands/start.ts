@@ -23,7 +23,11 @@ export async function start(notification: Message, i18: i18n) {
     } else if (!user) {
         await UserService.store({ telegram_id: String(chatId), name: name || 'guest', locale: notification.getLanguage() })
         await AdminService.sendMesssageToAdmin(
-            notification.getNotificator(), { text: i18.t('notifications.common.new-user', { userId: chatId, userName: name }) }
+            notification.getNotificator(), {
+            textObject: {
+                key: 'notifications.common.new-user', variables: { userId: chatId, userName: name }
+            }
+        }
         )
     }
 

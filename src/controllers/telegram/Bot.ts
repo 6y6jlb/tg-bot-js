@@ -36,7 +36,7 @@ class Bot {
       TaskService.resetQueue();
     } catch (error: any) {
       AdminService.sendMesssageToAdmin(
-        this.notificator, { text: error.message });
+        this.notificator, { textObject: { text: error.message } });
     }
 
     this.instance.on("message", async (msg) => {
@@ -61,7 +61,7 @@ class Bot {
 
     const now = moment().format('HH:mma MM.DD.YYYY');
     AdminService.sendMesssageToAdmin(
-      this.notificator, { text: this.localeService.i18.t('notifications.common.start', { date: now }) }
+      this.notificator, { textObject: { key: 'notifications.common.start', variables: { date: now } } }
     )
     console.info(`Telegram bot started at ${now}`)
   }

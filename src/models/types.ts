@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import { APP_TYPE_ENUM, EVENT_ENUM, TOKEN_TYPE } from "./const"
+import { APP_TYPE_ENUM, EVENT_ENUM, ROLE, TOKEN_TYPE } from "./const"
 
 export interface IUser {
     _id: Schema.Types.ObjectId,
@@ -7,6 +7,7 @@ export interface IUser {
     email?: string,
     created_at: Date,
     name: string,
+    roles: ROLE[],
     tz?: string,
     location?: string,
     currency?: string,

@@ -29,7 +29,7 @@ export async function deleteTask(notification: Callback, i18: i18n) {
 
   } else {
 
-    const isAdmin = user.telegram_id && AdminService.checkAdmin(user.telegram_id);
+    const isAdmin = user.telegram_id && await AdminService.checkAdmin(user.telegram_id);
     const tasks = await TaskService.get(isAdmin ? {} : { user_id: user._id }) as ITask[];
 
     tasks.forEach(task => buttons.push([{ text: task._id, callback_data: `${COMMANDS.TASKS_DELETE}?task_id=${task._id}` }]))
