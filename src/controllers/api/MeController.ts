@@ -14,7 +14,19 @@ class MeController {
             //@ts-ignore
             const user: IUser = req.user;
             if (user.telegram_id || user.email) {
-                res.json(await UserService.getById(user.telegram_id, USER_ID_ENUM.TELEGRAM_ID))
+                const me = await UserService.getById(user.telegram_id, USER_ID_ENUM.TELEGRAM_ID)
+                res.json(me ? {
+                    _id: me._id,
+                    telegram_id: me.telegram_id,
+                    email: me.email,
+                    created_at: me.created_at,
+                    name: me.name,
+                    roles: me.roles,
+                    tz: me.tz,
+                    location: me.location,
+                    currency: me.currency,
+                    locale: me.locale,
+                } : null)
 
             } else {
                 throw new Error('Invalid user')
