@@ -53,7 +53,7 @@ class TasksController {
             if (user._id) {
                 const data = await TaskApiRequest.store(req);
                 if (await AdminService.checkAdmin(Number(user.telegram_id))) {
-                    res.json(await TaskService.store(data))
+                    res.json(await TaskService.store({ ...data, user_id: user._id }))
                 } else {
                     res.json(await TaskService.store({ ...data, user_id: user._id }))
                 }

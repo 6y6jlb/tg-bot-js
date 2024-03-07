@@ -6,7 +6,6 @@ export const getSchema = Joi.object({
 });
 
 export const storeSchema = Joi.object({
-    user_id: Joi.string().allow(null),
     tz: Joi.string().min(3).max(50),
     call_at: Joi.string().required(),
     is_regular: Joi.boolean(),
