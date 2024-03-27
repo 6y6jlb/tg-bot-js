@@ -4,6 +4,7 @@ import AdminService from "../../services/Admin/AdminService";
 import TaskService from "../../services/Task/TaskService";
 import ErrorResponse from "../../services/response/ErrorResponse";
 import { TaskError } from "../../exceptions/Task";
+import { IUser } from "../../models/types";
 
 
 class TasksController {
